@@ -1,0 +1,20 @@
+.popoverContentBody {
+  @apply border-brand-indigo border-4;
+  box-shadow: 0px 0px 0px 6px theme("colors.black"), 0px 0px 0px 10px theme("colors.gray.800");
+  filter: drop-shadow(0 4px 20px rgba(10, 10, 10, 0.5));
+}
+
+.popoverButtonProfile {
+  @apply rounded-full  border-4;
+  box-shadow: 0px 0px 0px 6px theme("colors.black"), 0px 0px 0px 10px theme("colors.gray.800");
+  filter: drop-shadow(0 4px 20px rgba(10, 10, 10, 0.5));
+}
+
+.popoverButtonProfile {
+  @apply border-gray-200;
+}
+
+.popoverButtonProfile:focus,
+.popoverButtonProfile[aria-expanded=true] {
+  @apply border-brand-indigo;
+}

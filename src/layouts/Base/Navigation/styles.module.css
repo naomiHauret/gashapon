@@ -1,0 +1,15 @@
+.navlink {
+    @apply rounded-full bg-black border-brand-pink border-4;
+    box-shadow: 0px 0px 0px 6px theme("colors.black"), 0px 0px 0px 10px theme("colors.gray.900");
+}
+
+.navlink-desktop {
+    @apply px-3 py-1 ;
+}
+
+.navlink-desktop:focus {
+  @apply border-brand-pink border-2;
+  box-shadow: 0px 0px 0px 6px #000000, 0px 0px 0px 10px theme("colors.brand-indigo");
+}
+  
+  

@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "Be Vietnam Pro";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/BeVietnamPro-VariableItalic.woff2') format("woff2");
+}
+ 
+@font-face {
+  font-family: "Be Vietnam Pro";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/BeVietnamPro-Variable.woff2') format("woff2");
+}
+
+@font-face {
+  font-family: "Fredoka";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/Fredoka-Variable.woff2') format("woff2");
+}
+
+@font-face {
+    font-family: "Inconsolata";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/Inconsolata-Variable.woff2') format("woff2");
+  }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        @apply bg-black text-white overflow-x-hidden;
+    }
+
+    body {
+        @apply font-sans min-h-screen flex flex-col;
+    }
+
+    #root {
+      @apply flex flex-grow flex-col
+    }
+
+    .link {
+      @apply text-pink-300 underline hover:no-underline focus:text-pink-400 focus:no-underline
+    }
+}
+
+@layer components {
+    .container {
+        @apply w-full max-w-screen-lg px-3;
+    }
+}
