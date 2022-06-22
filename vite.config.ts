@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
-import solidPlugin from 'vite-plugin-solid';
+import { defineConfig } from 'vite'
+import solidPlugin from 'vite-plugin-solid'
 import path from 'path'
 
 export default defineConfig({
@@ -20,4 +20,4 @@ export default defineConfig({
       '@helpers': path.resolve(__dirname, './src/helpers'),
     },
   },
-});
+})

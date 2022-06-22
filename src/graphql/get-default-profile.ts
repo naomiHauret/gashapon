@@ -1,5 +1,4 @@
-
-import { client } from '@config/urql';
+import { client } from '@config/urql'
 
 const GET_DEFAULT_PROFILES = `
   query($request: DefaultProfileRequest!) {
@@ -83,12 +82,15 @@ const GET_DEFAULT_PROFILES = `
       }
     }
   }
-`;
+`
 
-export async function getDefaultProfile(ethereumAddress)  {
-    const challenge = await client.query(GET_DEFAULT_PROFILES, {
-    request: {
-      ethereumAddress,
-   }, }).toPromise()
-    return challenge
-  }
+export async function getDefaultProfile(ethereumAddress) {
+  const challenge = await client
+    .query(GET_DEFAULT_PROFILES, {
+      request: {
+        ethereumAddress,
+      },
+    })
+    .toPromise()
+  return challenge
+}

@@ -1,11 +1,10 @@
 .aspect-popout-primary {
   @apply border-white border-4;
-  box-shadow: 0px 0px 0px 6px theme("colors.black"), 0px 0px 0px 10px theme("colors.white");
+  box-shadow: 0px 0px 0px 6px theme('colors.black'), 0px 0px 0px 10px theme('colors.white');
 }
 
 .aspect-popout-primary:focus,
-.aspect-popout-primary[aria-expanded="true"] {
+.aspect-popout-primary[aria-expanded='true'] {
   @apply border-white border-4;
-  box-shadow: 0px 0px 0px 6px #000000, 0px 0px 0px 10px theme("colors.brand-indigo");
+  box-shadow: 0px 0px 0px 6px #000000, 0px 0px 0px 10px theme('colors.brand-indigo');
 }
-

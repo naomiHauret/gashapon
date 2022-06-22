@@ -5,7 +5,12 @@ import button from './button'
 export const Button = (props) => {
   return (
     <button
-      class={button({ intent: props.intent ?? 'primary', aspect: props.aspect ?? "default", scale: props.scale ?? 'default', class: props.class ?? '' })}
+      class={button({
+        intent: props.intent ?? 'primary',
+        aspect: props.aspect ?? 'default',
+        scale: props.scale ?? 'default',
+        class: props.class ?? '',
+      })}
       aria-disabled={props.disabled || props.isLoading}
       {...omitProps(props, ['children', 'class', 'isLoading', 'intent', 'scale', 'aspect'])}
     >

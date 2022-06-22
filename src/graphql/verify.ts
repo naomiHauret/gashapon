@@ -6,7 +6,7 @@ const VERIFY = `
 `
 
 export const verify = (accessToken) => {
-  return client.query(VERIFY,{
-    accessToken, 
+  return client.query(VERIFY, {
+    accessToken,
   })
 }

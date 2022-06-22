@@ -1,4 +1,4 @@
-import { client } from '@config/urql';
+import { client } from '@config/urql'
 
 const AUTHENTICATION = `
   mutation($request: SignedAuthChallenge!) { 
@@ -10,13 +10,15 @@ const AUTHENTICATION = `
 `
 
 export async function authenticate(address, signature) {
-  const authenticated = await client.mutation(AUTHENTICATION, {
-    request: {
-      address,
-      signature
-    }
-  }).toPromise()
-  
+  const authenticated = await client
+    .mutation(AUTHENTICATION, {
+      request: {
+        address,
+        signature,
+      },
+    })
+    .toPromise()
+
   return authenticated
 }
 

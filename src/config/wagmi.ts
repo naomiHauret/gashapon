@@ -1,4 +1,3 @@
-
 import { createClient, chain } from '@wagmi/core'
 import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask'
 

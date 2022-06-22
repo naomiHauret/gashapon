@@ -5,9 +5,9 @@ import useAccount from '../useAccount'
 
 interface FetchDefaultProfileState {
   error: null | string
-  success: boolean,
-  loading: boolean,
-  data: any,
+  success: boolean
+  loading: boolean
+  data: any
   setError: (error: string | null) => void
   setLoading: (isLoading: boolean) => void
   setSuccess: (success: boolean) => void
@@ -15,17 +15,17 @@ interface FetchDefaultProfileState {
 }
 
 const useFetchDefaultProfileStore = create<FetchDefaultProfileState>((set) => ({
-    error: null,
-    loading: false,
-    success: false,
-    data: null,
-    setSuccess: (value) => set((state) => ({ success: value })),
-    setData: (value) => set((state) => ({ data: value })),
-    setLoading: (value) => set((state) => ({ loading: value })),
-    setError: (error: string | null) => set((state) => ({  error })),
+  error: null,
+  loading: false,
+  success: false,
+  data: null,
+  setSuccess: (value) => set((state) => ({ success: value })),
+  setData: (value) => set((state) => ({ data: value })),
+  setLoading: (value) => set((state) => ({ loading: value })),
+  setError: (error: string | null) => set((state) => ({ error })),
 }))
-  
-const ContextDefaultProfile = createContext();
+
+const ContextDefaultProfile = createContext()
 
 export function ProviderDefaultProfile(props) {
   const stateFetchDefaultProfile = useFetchDefaultProfileStore()
@@ -35,26 +35,24 @@ export function ProviderDefaultProfile(props) {
     stateFetchDefaultProfile.setLoading(true)
     stateFetchDefaultProfile.setError(null)
 
-   try {
-    const address = accountData().address
-    const profile = await getDefaultProfile(address);
-    stateFetchDefaultProfile.setError(null)
-    stateFetchDefaultProfile.setLoading(false)
-    if(!profile.error || profile.error === null) {
-      stateFetchDefaultProfile.setData(profile.data?.defaultProfile ?? null)
-      stateFetchDefaultProfile.setSuccess(true)
-    } else {
+    try {
+      const address = accountData().address
+      const profile = await getDefaultProfile(address)
+      stateFetchDefaultProfile.setError(null)
+      stateFetchDefaultProfile.setLoading(false)
+      if (!profile.error || profile.error === null) {
+        stateFetchDefaultProfile.setData(profile.data?.defaultProfile ?? null)
+        stateFetchDefaultProfile.setSuccess(true)
+      } else {
+        stateFetchDefaultProfile.setSuccess(false)
+        stateFetchDefaultProfile.setError(profile.error)
+      }
+    } catch (e) {
       stateFetchDefaultProfile.setSuccess(false)
-      stateFetchDefaultProfile.setError(profile.error)
-
+      stateFetchDefaultProfile.setLoading(false)
+      stateFetchDefaultProfile.setError(e)
     }
-   } catch(e) {
-    stateFetchDefaultProfile.setSuccess(false)
-    stateFetchDefaultProfile.setLoading(false)
-    stateFetchDefaultProfile.setError(e)
-   }
   }
-
 
   createEffect(async () => {
     if (accountData().address) {
@@ -64,19 +62,16 @@ export function ProviderDefaultProfile(props) {
     }
   })
 
-  const store= {
+  const store = {
     stateFetchDefaultProfile,
-    fetchDefaultProfile
+    fetchDefaultProfile,
   }
-  
 
-  return (
-    <ContextDefaultProfile.Provider value={store}>
-      {props.children}
-    </ContextDefaultProfile.Provider>
-  );
+  return <ContextDefaultProfile.Provider value={store}>{props.children}</ContextDefaultProfile.Provider>
 }
 
-export function useDefaultProfile() { return useContext(ContextDefaultProfile); }
+export function useDefaultProfile() {
+  return useContext(ContextDefaultProfile)
+}
 
 export default useDefaultProfile

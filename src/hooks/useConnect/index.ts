@@ -3,13 +3,9 @@ import useVerifyUser from './../useVerifyUser'
 import useWagmiStore from '../useWagmiStore'
 import { COOKIE_ACCESS_TOKENS } from '@config/storage'
 
-
 export function useConnect() {
   const wagmiState = useWagmiStore()
-  const {
-    walletVerifiedState,
-    remove
-  } = useVerifyUser()
+  const { walletVerifiedState, remove } = useVerifyUser()
 
   async function connectWallet(connector) {
     walletVerifiedState.setVerified(false)
@@ -32,7 +28,7 @@ export function useConnect() {
     try {
       await disconnect()
       remove(COOKIE_ACCESS_TOKENS)
-      walletVerifiedState.setVerified(false)  
+      walletVerifiedState.setVerified(false)
       walletVerifiedState.setConnected(false)
       walletVerifiedState.setLoading(false)
     } catch (e) {

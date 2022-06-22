@@ -13,10 +13,7 @@ export const button = cva(
   {
     variants: {
       intent: {
-        primary: [
-          'bg-brand-pink text-black',
-          'border-white border-solid',
-        ],
+        primary: ['bg-brand-pink text-black', 'border-white border-solid'],
         'wallet-MetaMask': [
           'text-white hover:text-black',
           'hover:bg-[#F6851B]',
@@ -27,7 +24,7 @@ export const button = cva(
         default: '',
         'popout-primary': `${styles['aspect-popout-primary']}`,
         'outline-sm': 'border-2',
-        'outline-default': 'border-4'
+        'outline-default': 'border-4',
       },
       scale: {
         sm: ['text-xs', 'px-3 py-1.5', 'font-bold'],

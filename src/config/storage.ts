@@ -1,1 +1,1 @@
-export const COOKIE_ACCESS_TOKENS = "gashapon.accessTokens"
+export const COOKIE_ACCESS_TOKENS = 'gashapon.accessTokens'

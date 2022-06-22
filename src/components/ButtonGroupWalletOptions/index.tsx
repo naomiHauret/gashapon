@@ -29,7 +29,7 @@ export const ButtonGroupWalletOptions = () => {
               }}
               isLoading={walletVerifiedState.loading === true}
             >
-                {/* @ts-ignore */} 
+              {/* @ts-ignore */}
               {connector?.name}{' '}
             </Button>
           </>
