@@ -2,17 +2,13 @@ import { createMemo, createUniqueId, For } from 'solid-js'
 import { Link } from 'solid-app-router'
 import * as popover from '@zag-js/popover'
 import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
-import button from '@components/Button//button'
 import popoverStyles from '@components/PopoverConnectWallet/styles.module.css'
 import navigationItems from './navigationItems'
 import type { PropTypes } from '@zag-js/solid'
 import { IconMenu } from '@components/Icons'
 import styles from './styles.module.css'
 
-//@ts-ignore
-const popoverButtonStyles = button({ intent: 'primary', aspect: 'popout-primary', scale: 'sm' })
-
-export const NavigationMobile = (props) => {
+export const NavigationMobile = () => {
   const id = createUniqueId()
   const [state, send] = useMachine(popover.machine)
   const ref = useSetup({ send, id })

@@ -18,7 +18,12 @@ export const ROUTE_COMMUNITY = '/game/:idGame/community/:idCommunity'
 export const ROUTE_COMMUNITY_POST = '/game/:idGame/community/:idCommunity/post/:idPost'
 
 // Gated (authenticated only)
-export const ROUTE_PROFILE = '/my-profile'
+export const ACCOUNT_NESTED_ROUTE_PROFILE = '/profile'
+export const ACCOUNT_NESTED_ROUTE_SETTINGS = '/settings'
+export const ROUTE_ACCOUNT = '/account'
+export const ROUTE_EDIT_PROFILE = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_PROFILE}`
+export const ROUTE_SETTINGS = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_SETTINGS}`
+
 export const ROUTE_LIBRARY = '/my-library'
 export const ROUTE_DASHBOARD = '/dashboard'
 export const ROUTE_FEED = '/my-feed'

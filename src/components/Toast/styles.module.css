@@ -1,0 +1,15 @@
+.toast {
+  box-shadow: 0px 0px 0px 6px theme('colors.black'), 0px 0px 0px 10px theme('colors.gray.900');
+}
+
+.toast--error {
+  @apply border-negative-500;
+}
+
+.toast--success {
+  @apply border-positive-400;
+}
+
+.toast--info {
+  @apply border-brand-indigo;
+}

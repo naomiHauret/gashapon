@@ -36,11 +36,38 @@
 
 @layer base {
   html {
+    --brand: theme('colors.brand-pink');
+    scrollbar-color: var(--brand) Canvas;
+    color-scheme: dark;
+  }
+
+  :root {
+    accent-color: var(--brand);
+  }
+  :focus-visible {
+    outline-color: var(--brand);
+  }
+  ::selection {
+    background-color: var(--brand);
+  }
+  ::marker {
+    color: var(--brand);
+  }
+
+  :is(::-webkit-calendar-picker-indicator, ::-webkit-clear-button, ::-webkit-inner-spin-button, ::-webkit-outer-spin-button) {
+    color: var(--brand);
+  }
+  html {
     @apply bg-black text-white overflow-x-hidden;
   }
 
   body {
     @apply font-sans min-h-screen flex flex-col;
+  }
+
+  [type='radio'],
+  [type='checkbox'] {
+    @apply cursor-pointer disabled:cursor-not-allowed;
   }
 
   #root {
@@ -56,4 +83,36 @@
   .container {
     @apply w-full max-w-screen-lg px-3;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+.toast-group [data-part='root'] {
+  animation-name: fadeIn;
+  animation-fill-mode: forwards;
+  animation-duration: 0.2s;
+}
+
+.toast-group [data-part='root']:not([data-open]) {
+  animation-duration: var(--remove-delay);
+  animation-name: fadeOut;
 }

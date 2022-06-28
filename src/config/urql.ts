@@ -1,13 +1,14 @@
 import { createClient } from 'urql'
-
-const APIURL = 'https://api.lens.dev/'
+import { COOKIE_ACCESS_TOKENS } from '@config/storage'
+import Cookies from 'js-cookie'
+import { API_URL } from './lens'
 
 export const client = createClient({
-  url: APIURL,
-  /*
+  url: API_URL,
   fetchOptions: () => {
-    const token = getToken()
-    return token ? { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.packages-preview+json' }} : {}
+    const token = Cookies.get(COOKIE_ACCESS_TOKENS)
+    return {
+      headers: { authorization: token ? `Bearer ${token}` : '' },
+    }
   },
-  */
 })

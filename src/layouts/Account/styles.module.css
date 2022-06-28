@@ -1,0 +1,23 @@
+.navbar {
+  scrollbar-color: rgba(255, 255, 255, 0.25) Canvas;
+  grid-template-columns: repeat(3, 1fr);
+  @apply border-b border-opacity-10 border-white md:border-0  md:h-[min-content] md:grid-cols-1 grid min-w-screen gap-6 -mx-3 md:px-0 md:mx-0 md:min-w-0 md:w-1/4 overflow-x-auto md:overflow-hidden;
+}
+
+.navItem {
+  @apply md:rounded-md text-center md:text-start col-span-1 px-3 pb-2.5 md:p-3 whitespace-nowrap md:whitespace-normal uppercase text-xs font-bold tracking-wide md:tracking-normal md:normal-case;
+}
+
+.navBar .navItem:first-child {
+  @apply pis-6 md:pis-0;
+}
+
+.navBar .navItem:last-child {
+  @apply pie-6 md:pie-0;
+}
+.navItem:not(.navItem--active) {
+  @apply text-opacity-80 text-white md:hover:bg-white md:hover:bg-opacity-10;
+}
+.navItem--active {
+  @apply border-b-4 md:border-b-0 border-brand-pink md:bg-brand-pink md:bg-opacity-10 md:text-brand-pink;
+}

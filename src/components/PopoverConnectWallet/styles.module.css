@@ -1,17 +1,17 @@
 .popoverContentBody {
   @apply border-brand-indigo border-4;
-  box-shadow: 0px 0px 0px 6px theme('colors.black'), 0px 0px 0px 10px theme('colors.gray.800');
+  box-shadow: 0px 0px 0px 6px theme('colors.black'), 0px 0px 0px 10px theme('colors.neutral.800');
   filter: drop-shadow(0 4px 20px rgba(10, 10, 10, 0.5));
 }
 
 .popoverButtonProfile {
   @apply rounded-full  border-4;
-  box-shadow: 0px 0px 0px 6px theme('colors.black'), 0px 0px 0px 10px theme('colors.gray.800');
+  box-shadow: 0px 0px 0px 6px theme('colors.black'), 0px 0px 0px 10px theme('colors.neutral.800');
   filter: drop-shadow(0 4px 20px rgba(10, 10, 10, 0.5));
 }
 
 .popoverButtonProfile {
-  @apply border-gray-200;
+  @apply border-neutral-200;
 }
 
 .popoverButtonProfile:focus,
@@ -20,11 +20,11 @@
 }
 
 .popoverSectionName {
-  @apply text-gray-300 bg-white bg-opacity-5 border-white border-opacity-5 px-2 py-2 leading-none uppercase text-3xs font-semibold tracking-wide;
+  @apply text-neutral-300 bg-white bg-opacity-5 border-white border-opacity-5 px-2 py-2 leading-none uppercase text-3xs font-semibold tracking-wide;
 }
 
 .popoverSectionLink {
-  @apply p-2.5 md:py-1.5 flex bg-gray-900 bg-opacity-0 hover:bg-opacity-50 focus:hover:bg-opacity-75 focus:bg-opacity-100;
+  @apply p-2.5 md:py-1.5 flex bg-neutral-900 bg-opacity-0 hover:bg-opacity-50 focus:hover:bg-opacity-75 focus:bg-opacity-100;
 }
 
 .popoverSectionName,

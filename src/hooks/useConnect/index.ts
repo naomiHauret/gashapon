@@ -1,10 +1,13 @@
-import { disconnect, connect } from '@wagmi/core'
+import { disconnect, connect, switchNetwork, chain } from '@wagmi/core'
 import useVerifyUser from './../useVerifyUser'
 import useWagmiStore from '../useWagmiStore'
 import { COOKIE_ACCESS_TOKENS } from '@config/storage'
+import { createEffect } from 'solid-js'
+import useNetwork from '@hooks/useNetwork/index.'
 
 export function useConnect() {
   const wagmiState = useWagmiStore()
+  const { networkData } = useNetwork()
   const { walletVerifiedState, remove } = useVerifyUser()
 
   async function connectWallet(connector) {
@@ -38,8 +41,23 @@ export function useConnect() {
     }
   }
 
+  async function switchToSupportedNetwork() {
+    try {
+      await switchNetwork({ chainId: chain.polygonMumbai.id })
+    } catch (e) {
+      //@TODO: add toast error here
+      console.error(e)
+    }
+  }
+
+  createEffect(async () => {
+    if (networkData()?.chain?.supported === false || !networkData()?.chain) {
+      await disconnectWallet()
+    }
+  })
   return {
     connect: connectWallet,
+    switchToSupportedNetwork,
     disconnect: disconnectWallet,
     //@ts-ignore
     connectors: wagmiState.connectors,

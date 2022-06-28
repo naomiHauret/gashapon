@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "@abis/*": ["abis/*"],
       "@components/*": ["components/*"],
       "@layouts/*": ["layouts/*"],
       "@hooks/*": ["hooks/*"],
@@ -20,6 +21,7 @@
     "jsxImportSource": "solid-js",
     "types": ["vite/client"],
     "noEmit": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "resolveJsonModule": true
   }
 }

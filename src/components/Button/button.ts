@@ -1,6 +1,5 @@
 import { cva } from 'class-variance-authority'
 import styles from './styles.module.css'
-import type { VariantProps } from 'class-variance-authority'
 
 export const button = cva(
   [
@@ -13,32 +12,43 @@ export const button = cva(
   {
     variants: {
       intent: {
+        //@ts-ignore
         primary: ['bg-brand-pink text-black', 'border-white border-solid'],
         'wallet-MetaMask': [
+          //@ts-ignore
           'text-white hover:text-black',
+          //@ts-ignore
           'hover:bg-[#F6851B]',
+          //@ts-ignore
           'border-solid border-[#F6851B] focus:ring-[#F6851B]',
         ],
       },
       aspect: {
+        //@ts-ignore
         default: '',
+        //@ts-ignore
         'popout-primary': `${styles['aspect-popout-primary']}`,
+        //@ts-ignore
         'outline-sm': 'border-2',
+        //@ts-ignore
         'outline-default': 'border-4',
       },
       scale: {
+        //@ts-ignore
         sm: ['text-xs', 'px-3 py-1.5', 'font-bold'],
+        //@ts-ignore
         default: ['text-xs', 'py-2 px-3', 'font-bold'],
       },
     },
     defaultVariants: {
+      //@ts-ignore
       intent: 'primary',
+      //@ts-ignore
       scale: 'default',
+      //@ts-ignore
       aspect: 'default',
     },
   },
 )
-
-export type SystemUiButtonProps = VariantProps<typeof button>
 
 export default button

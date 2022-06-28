@@ -5,11 +5,13 @@ import * as dialog from '@zag-js/dialog'
 import { createCookieStorage } from '@solid-primitives/storage'
 import { signMessage } from '@wagmi/core'
 import create from 'solid-zustand'
-import generateChallenge from '@graphql/generate-challenge'
-import authenticate from '@graphql/authenticate'
+import generateChallenge from '@graphql/authentication/generate-challenge'
+import authenticate from '@graphql/authentication/authenticate'
 import { COOKIE_ACCESS_TOKENS } from '@config/storage'
 import useAccount from '../useAccount'
 import type { PropTypes } from '@zag-js/solid'
+import useNetwork from '@hooks/useNetwork/index.'
+import useToast from '@hooks/useToast'
 
 interface WalletVerifiedState {
   error: null | string
@@ -36,6 +38,7 @@ const useVerifyWalletStore = create<WalletVerifiedState>((set) => ({
 const ContextUserVerification = createContext()
 
 export function ProviderUserVerification(props) {
+  const toast = useToast()
   const dialogId = createUniqueId()
   const [state, send] = useMachine(
     dialog.machine({
@@ -46,8 +49,10 @@ export function ProviderUserVerification(props) {
   const dialogRef = useSetup({ send, id: dialogId })
   const dialogApi = createMemo(() => dialog.connect<PropTypes>(state, send, normalizeProps))
 
-  const [storage, setStorage, { remove, clear }] = createCookieStorage()
+  const [storage, setStorage, { remove }] = createCookieStorage()
   const { accountData } = useAccount()
+  const { networkData } = useNetwork()
+
   const walletVerifiedState = useVerifyWalletStore()
 
   async function verify() {
@@ -75,20 +80,27 @@ export function ProviderUserVerification(props) {
       walletVerifiedState.setVerified(true)
       walletVerifiedState.setConnected(true)
     } catch (e) {
+      //@ts-ignore
+      toast().create({
+        type: 'error',
+        title: e?.message ?? e,
+      })
+      console.error(e)
       walletVerifiedState.setVerified(false)
-      walletVerifiedState.setConnected(false)
       walletVerifiedState.setLoading(false)
       walletVerifiedState.setError(e)
     }
   }
 
   createEffect(async () => {
-    if (accountData().address && storage[COOKIE_ACCESS_TOKENS] !== null) {
+    if (
+      accountData().address &&
+      networkData()?.chain?.unsupported === false &&
+      storage[COOKIE_ACCESS_TOKENS] !== null
+    ) {
       walletVerifiedState.setLoading(false)
       walletVerifiedState.setVerified(true)
       walletVerifiedState.setConnected(true)
-    } else if (accountData().address && storage[COOKIE_ACCESS_TOKENS] === null) {
-      await verify()
     }
   })
 
