@@ -2,7 +2,7 @@ import { For, Show } from 'solid-js'
 import useConnect from '@hooks/useConnect'
 import Button from '@components/Button'
 import useVerifyUser from '@hooks/useVerifyUser'
-import useNetwork from '@hooks/useNetwork/index.'
+import useNetwork from '@hooks/useNetwork'
 import useAccount from '@hooks/useAccount'
 
 export const ButtonGroupWalletOptions = () => {
