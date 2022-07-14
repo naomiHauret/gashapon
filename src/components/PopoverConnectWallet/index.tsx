@@ -7,23 +7,32 @@ import useConnect from '@hooks/useConnect'
 import button from '@components/Button//button'
 import { shortenEthereumAddress } from '@helpers/shortenEthereumAddress'
 import popoverStyles from './styles.module.css'
-import type { PropTypes } from '@zag-js/solid'
 import useVerifyUser from '@hooks/useVerifyUser'
 import useCurrentUserDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
 import { Link } from 'solid-app-router'
-import { ROUTE_CREATE_GAME, ROUTE_DASHBOARD, ROUTE_FEED, ROUTE_LIBRARY, ROUTE_PROFILE } from '@config/routes'
+import {
+  ROUTE_CREATE_GAME,
+  ROUTE_DASHBOARD,
+  ROUTE_FEED,
+  ROUTE_LIBRARY,
+  ROUTE_ACCOUNT,
+  ROUTE_EDIT_PROFILE,
+} from '@config/routes'
 import { IconLogout } from '@components/Icons'
 
+//@ts-ignore
 const popoverButtonStyles = button({ intent: 'primary', aspect: 'popout-primary', scale: 'sm' })
 
 export const PopoverConnectWallet = (props) => {
   const id = createUniqueId()
   const [state, send] = useMachine(popover.machine)
   const ref = useSetup({ send, id })
-  const api = createMemo(() => popover.connect<PropTypes>(state, send, normalizeProps))
+  const api = createMemo(() => popover.connect(state, send, normalizeProps))
   const { accountData } = useAccount()
   const { disconnect } = useConnect()
+  //@ts-ignore
   const { walletVerifiedState } = useVerifyUser()
+  //@ts-ignore
   const { stateFetchDefaultProfile } = useCurrentUserDefaultProfile()
 
   const [popoverLabel, setPopoverLabel] = createSignal(
@@ -107,15 +116,18 @@ export const PopoverConnectWallet = (props) => {
               }
             >
               <div class={`divide-y-1 divide-neutral-6 text-2xs mt-1 font-bold sm:font-semibold bg-black`}>
-                <Link class={`flex-col ${popoverStyles.popoverSectionLink}`} href={ROUTE_PROFILE}>
+                <Link
+                  class={`flex-col ${popoverStyles.popoverSectionLink}`}
+                  href={stateFetchDefaultProfile.data?.handle ? ROUTE_EDIT_PROFILE : ROUTE_ACCOUNT}
+                >
                   <Show when={stateFetchDefaultProfile.data?.handle || stateFetchDefaultProfile.data?.handle !== null}>
-                    <span class="font-normal text-gray-400 text-[0.8em]">Logged in as</span>{' '}
+                    <span class="font-normal text-neutral-400 text-[0.8em]">Logged in as</span>{' '}
                     <span class="overflow-hidden text-ellipsis text-brand-pink">
                       {stateFetchDefaultProfile.data?.handle}
                     </span>
                   </Show>
                   <Show when={!stateFetchDefaultProfile.data?.handle || stateFetchDefaultProfile.data?.handle === null}>
-                    My profile
+                    {accountData().address && shortenEthereumAddress(accountData().address)}
                   </Show>
                 </Link>
                 <div>
@@ -150,7 +162,7 @@ export const PopoverConnectWallet = (props) => {
 
                 <button
                   class={`mt-1 border-opacity-10 border-white w-full ${popoverStyles.logoutButton} ${popoverStyles.popoverSectionLink}`}
-                  onClick={disconnect}
+                  onClick={async () => await disconnect()}
                 >
                   <IconLogout class="text-neutral-9 h-[1em] mie-[0.5ch]" />
                   Log out
@@ -169,8 +181,8 @@ export const PopoverConnectWallet = (props) => {
                   <div class="px-2 space-y-3">
                     <ButtonGroupWalletOptions />
                   </div>
-                  <div class="px-2 text-center overflow-hidden pb-3 bg-gray-900">
-                    <p class="xs:text-2xs text-gray-12 pt-2.5 font-medium">Curious about Ethereum wallets ?</p>
+                  <div class="px-2 text-center overflow-hidden pb-3 bg-neutral-900">
+                    <p class="xs:text-2xs pt-2.5 font-medium">Curious about Ethereum wallets ?</p>
                     <a
                       class="xs:text-2xs font-medium link"
                       href="https://github.com/naomihauret/"

@@ -1,0 +1,3 @@
+.radio:checked ~ .label {
+  @apply font-bold;
+}

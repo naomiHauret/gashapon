@@ -1,6 +1,6 @@
 import { client } from '@config/urql'
 
-const GET_DEFAULT_PROFILES = `
+const GET_DEFAULT_PROFILE = `
   query($request: DefaultProfileRequest!) {
     defaultProfile(request: $request) {
       id
@@ -86,7 +86,7 @@ const GET_DEFAULT_PROFILES = `
 
 export async function getDefaultProfile(ethereumAddress) {
   const challenge = await client
-    .query(GET_DEFAULT_PROFILES, {
+    .query(GET_DEFAULT_PROFILE, {
       request: {
         ethereumAddress,
       },

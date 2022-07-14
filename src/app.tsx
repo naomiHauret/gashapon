@@ -1,22 +1,29 @@
 import type { Component } from 'solid-js'
 import { MetaProvider } from 'solid-meta'
-import { useRoutes } from 'solid-app-router'
-import { routes } from './routes'
 import { BasicLayout } from '@layouts/Base'
 import { ProviderUserVerification } from '@hooks/useVerifyUser'
 import { ProviderDefaultProfile } from '@hooks/useCurrentUserDefaultProfile'
-const App: Component = () => {
-  const Route = useRoutes(routes)
+import { ProviderToast } from '@hooks/useToast'
+import { ProviderSkynet } from '@hooks/useSkynet'
+import { Router } from './routes'
+import { ProviderWagmi } from '@hooks/useWagmiStore'
 
+const App: Component = () => {
   return (
     <MetaProvider>
-      <ProviderUserVerification>
-        <ProviderDefaultProfile>
-          <BasicLayout>
-            <Route />
-          </BasicLayout>
-        </ProviderDefaultProfile>
-      </ProviderUserVerification>
+      <ProviderToast>
+        <ProviderWagmi>
+          <ProviderUserVerification>
+            <ProviderDefaultProfile>
+              <ProviderSkynet>
+                <BasicLayout>
+                  <Router />
+                </BasicLayout>
+              </ProviderSkynet>
+            </ProviderDefaultProfile>
+          </ProviderUserVerification>
+        </ProviderWagmi>
+      </ProviderToast>
     </MetaProvider>
   )
 }

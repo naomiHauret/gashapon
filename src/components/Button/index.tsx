@@ -12,6 +12,7 @@ export const Button = (props) => {
         class: props.class ?? '',
       })}
       aria-disabled={props.disabled || props.isLoading}
+      disabled={props.disabled || props.isLoading}
       {...omitProps(props, ['children', 'class', 'isLoading', 'intent', 'scale', 'aspect'])}
     >
       {props.isLoading && <IconSpinner aria-hidden="true" class="animate-spin mie-1ex" />}

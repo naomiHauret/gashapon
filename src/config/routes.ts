@@ -8,6 +8,9 @@ export const ROUTE_COMMUNITIES = '/communities'
 // Accessible to all but with some restrictions for interactions
 export const ROUTE_USER = '/user/:idUser'
 export const ROUTE_USER_POST = '/user/:idUser/post/:idPost'
+export const USER_NESTED_ROUTE_BASE = '/user'
+export const USER_NESTED_ROUTE_PROFILE = '/:idUser'
+export const USER_NESTED_ROUTE_POST = '/:idUser/post/:idPost'
 
 export const ROUTE_GAME = '/game/:idGame'
 export const ROUTE_GAME_COMMUNITIES = '/game/:idGame/communities'
@@ -18,7 +21,12 @@ export const ROUTE_COMMUNITY = '/game/:idGame/community/:idCommunity'
 export const ROUTE_COMMUNITY_POST = '/game/:idGame/community/:idCommunity/post/:idPost'
 
 // Gated (authenticated only)
-export const ROUTE_PROFILE = '/my-profile'
+export const ACCOUNT_NESTED_ROUTE_PROFILE = '/profile'
+export const ACCOUNT_NESTED_ROUTE_SETTINGS = '/settings'
+export const ROUTE_ACCOUNT = '/account'
+export const ROUTE_EDIT_PROFILE = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_PROFILE}`
+export const ROUTE_SETTINGS = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_SETTINGS}`
+
 export const ROUTE_LIBRARY = '/my-library'
 export const ROUTE_DASHBOARD = '/dashboard'
 export const ROUTE_FEED = '/my-feed'

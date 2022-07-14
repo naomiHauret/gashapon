@@ -1,17 +1,17 @@
-import { disconnect, connect } from '@wagmi/core'
+import { disconnect, connect, switchNetwork, chain } from '@wagmi/core'
 import useVerifyUser from './../useVerifyUser'
 import useWagmiStore from '../useWagmiStore'
 import { COOKIE_ACCESS_TOKENS } from '@config/storage'
 
 export function useConnect() {
   const wagmiState = useWagmiStore()
+  //@ts-ignore
   const { walletVerifiedState, remove } = useVerifyUser()
 
   async function connectWallet(connector) {
     walletVerifiedState.setVerified(false)
     walletVerifiedState.setConnected(false)
     walletVerifiedState.setError(null)
-    walletVerifiedState.setLoading(true)
     try {
       await disconnect()
       await connect({ connector })
@@ -25,21 +25,25 @@ export function useConnect() {
   }
 
   async function disconnectWallet() {
+    remove(COOKIE_ACCESS_TOKENS)
+    walletVerifiedState.setVerified(false)
+    walletVerifiedState.setConnected(false)
+    walletVerifiedState.setLoading(false)
+    await disconnect()
+  }
+
+  async function switchToSupportedNetwork() {
     try {
-      await disconnect()
-      remove(COOKIE_ACCESS_TOKENS)
-      walletVerifiedState.setVerified(false)
-      walletVerifiedState.setConnected(false)
-      walletVerifiedState.setLoading(false)
+      await switchNetwork({ chainId: chain.polygonMumbai.id })
     } catch (e) {
-      walletVerifiedState.setLoading(false)
-      walletVerifiedState.setError(e)
+      //@TODO: add toast error here
       console.error(e)
     }
   }
 
   return {
     connect: connectWallet,
+    switchToSupportedNetwork,
     disconnect: disconnectWallet,
     //@ts-ignore
     connectors: wagmiState.connectors,

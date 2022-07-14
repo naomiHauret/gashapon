@@ -1,16 +1,8 @@
-import { createSignal, createEffect } from 'solid-js'
-import { watchAccount, getAccount } from '@wagmi/core'
+import { useWagmi } from '@hooks/useWagmiStore'
 
 export function useAccount() {
-  const [accountData, setAccountData] = createSignal(getAccount())
-
-  createEffect(() => {
-    setAccountData(getAccount())
-    const unwatch = watchAccount(setAccountData)
-    return () => {
-      unwatch()
-    }
-  })
+  //@ts-ignore
+  const { accountData } = useWagmi()
 
   return {
     accountData,

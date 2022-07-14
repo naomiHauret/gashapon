@@ -1,3 +1,4 @@
+const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 const typography = {
   fontSizeMin: 1.125,
@@ -89,10 +90,18 @@ module.exports = {
       300: 300,
     },
     extend: {
+      aspectRatio: {
+        banner: '3 / 1',
+      },
       colors: {
         'brand-pink': '#FF98E8',
         'brand-indigo': '#7087FF',
         'brand-yellow': '#F4FF70',
+        negative: colors.rose,
+        positive: colors.emerald,
+        warning: colors.yellow,
+        neutral: colors.gray,
+        'tinted-neutral': colors.slate,
       },
       keyframes: {
         appear: {
@@ -133,6 +142,7 @@ module.exports = {
         2.5: '0.025',
         3.5: '0.035',
         7.5: '0.075',
+        15: '0.15',
       },
       spacing: {
         '1ex': '1ex',
