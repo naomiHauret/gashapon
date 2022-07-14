@@ -1,0 +1,21 @@
+.pseudoIndicator {
+  @apply relative cursor-pointer;
+  padding-inline-start: calc(theme('spacing.4') + 1ex);
+}
+.pseudoIndicator::before {
+  content: ' ';
+  @apply absolute top-1/2 -translate-y-1/2 inline-start-0 w-4 aspect-square border-2 border-solid rounded-full;
+}
+
+.pseudoIndicator[aria-checked='true']::after {
+  content: ' ';
+  @apply absolute top-1/2 -translate-y-1/2 inline-start-1 w-2 aspect-square bg-brand-pink rounded-full;
+}
+
+.pseudoIndicator[aria-checked='false']::before {
+  @apply border-white border-opacity-25;
+}
+
+.pseudoIndicator[aria-checked='true']::before {
+  @apply border-brand-pink;
+}

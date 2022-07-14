@@ -1,9 +1,8 @@
 import { client } from '@config/urql'
 
-const GET_PROFILES = `
-  query($request: ProfileQueryRequest!) {
-    profiles(request: $request) {
-      items {
+const GET_PROFILE = `
+  query($request: SingleProfileQueryRequest!) {
+    profile(request: $request) {
         id
         name
         bio
@@ -76,27 +75,23 @@ const GET_PROFILES = `
             recipient
           }
           ... on ProfileFollowModuleSettings {
-           type
+            type
           }
           ... on RevertFollowModuleSettings {
-           type
+            type
           }
         }
-      }
-      pageInfo {
-        prev
-        next
-        totalCount
-      }
     }
   }
 `
 
-export async function getProfiles(request) {
-  const profiles = await client
-    .query(GET_PROFILES, {
+export async function getProfile(request) {
+  const profile = await client
+    .query(GET_PROFILE, {
       request,
     })
     .toPromise()
-  return profiles
+  return profile
 }
+
+export default getProfile
