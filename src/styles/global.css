@@ -39,10 +39,11 @@
     --brand: theme('colors.brand-pink');
     scrollbar-color: var(--brand) Canvas;
     color-scheme: dark;
+    accent-color: var(--brand);
   }
 
-  :root {
-    accent-color: var(--brand);
+  main {
+    @apply pb-20 animate-appear;
   }
   :focus-visible {
     outline-color: var(--brand);
@@ -52,6 +53,15 @@
   }
   ::marker {
     color: var(--brand);
+  }
+
+  ::-moz-color-swatch,
+  ::-webkit-color-swatch {
+    @apply border-0 overflow-hidden;
+  }
+
+  input[type='color'] {
+    @apply w-10 h-10 p-1 overflow-hidden;
   }
 
   :is(::-webkit-calendar-picker-indicator, ::-webkit-clear-button, ::-webkit-inner-spin-button, ::-webkit-outer-spin-button) {
@@ -76,6 +86,34 @@
 
   .link {
     @apply text-pink-300 underline hover:no-underline focus:text-pink-400 focus:no-underline;
+  }
+}
+
+@layer base {
+  .bg-user-custom-color {
+    background-color: var(--layer);
+  }
+
+  .border--accent {
+    border-color: var(--accent);
+  }
+
+  .bg--accent {
+    background-color: var(--accent);
+  }
+  .input-error-border {
+    @apply border-negative-600 focus:border-negative-800;
+  }
+
+  .input-error-layer {
+    @apply bg-negative-900 hover:bg-negative-200 text-negative-400;
+  }
+
+  .input-report-error[aria-invalid='true'],
+  .input-report-error:not(:placeholder-shown):invalid,
+  .default-input[aria-invalid='true'],
+  .default-input:not(:placeholder-shown):invalid {
+    @apply bg-negative-900 bg-opacity-25 hover:bg-opacity-40 border-negative-600 focus:border-negative-800 text-negative-400 !important;
   }
 }
 
@@ -106,6 +144,14 @@
     transform: scale(0);
   }
 }
+
+:root {
+  --accent-user-profile: ;
+}
+#page-user-profile {
+  accent-color: var(--accent-user-profile);
+}
+
 .toast-group [data-part='root'] {
   animation-name: fadeIn;
   animation-fill-mode: forwards;

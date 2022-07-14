@@ -1,16 +1,18 @@
 import { createClient, chain, configureChains } from '@wagmi/core'
 import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask'
 import { publicProvider } from 'wagmi/providers/public'
+import { API_URL } from './lens'
 
-const defaultChains = [chain.polygon, chain.polygonMumbai]
-const { provider } = configureChains(defaultChains, [publicProvider()])
+const appChains = API_URL === 'https://api.lens.dev' ? [chain.polygon] : [chain.polygonMumbai]
+const providers = [publicProvider()]
+export const { chains, provider } = configureChains(appChains, providers)
 
 export const client = createClient({
   provider,
-  autoConnect: true,
+  autoConnect: false,
   connectors: [
     new MetaMaskConnector({
-      chains: defaultChains,
+      chains: appChains,
     }),
   ],
 })

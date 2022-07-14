@@ -90,6 +90,9 @@ module.exports = {
       300: 300,
     },
     extend: {
+      aspectRatio: {
+        banner: '3 / 1',
+      },
       colors: {
         'brand-pink': '#FF98E8',
         'brand-indigo': '#7087FF',
@@ -139,6 +142,7 @@ module.exports = {
         2.5: '0.025',
         3.5: '0.035',
         7.5: '0.075',
+        15: '0.15',
       },
       spacing: {
         '1ex': '1ex',

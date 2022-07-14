@@ -2,19 +2,16 @@ import { disconnect, connect, switchNetwork, chain } from '@wagmi/core'
 import useVerifyUser from './../useVerifyUser'
 import useWagmiStore from '../useWagmiStore'
 import { COOKIE_ACCESS_TOKENS } from '@config/storage'
-import { createEffect } from 'solid-js'
-import useNetwork from '@hooks/useNetwork/index.'
 
 export function useConnect() {
   const wagmiState = useWagmiStore()
-  const { networkData } = useNetwork()
+  //@ts-ignore
   const { walletVerifiedState, remove } = useVerifyUser()
 
   async function connectWallet(connector) {
     walletVerifiedState.setVerified(false)
     walletVerifiedState.setConnected(false)
     walletVerifiedState.setError(null)
-    walletVerifiedState.setLoading(true)
     try {
       await disconnect()
       await connect({ connector })
@@ -28,17 +25,11 @@ export function useConnect() {
   }
 
   async function disconnectWallet() {
-    try {
-      await disconnect()
-      remove(COOKIE_ACCESS_TOKENS)
-      walletVerifiedState.setVerified(false)
-      walletVerifiedState.setConnected(false)
-      walletVerifiedState.setLoading(false)
-    } catch (e) {
-      walletVerifiedState.setLoading(false)
-      walletVerifiedState.setError(e)
-      console.error(e)
-    }
+    remove(COOKIE_ACCESS_TOKENS)
+    walletVerifiedState.setVerified(false)
+    walletVerifiedState.setConnected(false)
+    walletVerifiedState.setLoading(false)
+    await disconnect()
   }
 
   async function switchToSupportedNetwork() {
@@ -50,11 +41,6 @@ export function useConnect() {
     }
   }
 
-  createEffect(async () => {
-    if (networkData()?.chain?.supported === false || !networkData()?.chain) {
-      await disconnectWallet()
-    }
-  })
   return {
     connect: connectWallet,
     switchToSupportedNetwork,

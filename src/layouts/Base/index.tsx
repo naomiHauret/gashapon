@@ -6,8 +6,9 @@ import {
   ROUTE_CREATE_GAME,
   ROUTE_CREATE_GAME_UPDATE,
   ROUTE_CREATE_POST,
-  ROUTE_PROFILE,
   ROUTE_SIGN_IN,
+  ROUTE_USER,
+  USER_NESTED_ROUTE_BASE,
 } from '@config/routes'
 import PopoverConnectWallet from '@components/PopoverConnectWallet'
 import styles from './Navigation/styles.module.css'
@@ -48,7 +49,7 @@ export const BasicLayout = (props) => {
   })
 
   createEffect(async () => {
-    if (accountData().address) {
+    if (accountData().address && walletVerifiedState.connected && walletVerifiedState.verified) {
       await fetchProfiles()
       await fetchDefaultProfile()
     } else {
@@ -59,7 +60,7 @@ export const BasicLayout = (props) => {
 
   return (
     <>
-      <div class="flex mx-auto container relative z-10">
+      <div class="flex mx-auto container relative z-20">
         <div class="xs:hidden"></div>
         <div
           class={`${styles['navlink']} p-1 flex items-center justify-center aspect-square translate-y-[calc(75%-6px)] rounded-full mie-8 xs:mie-10`}
@@ -80,7 +81,13 @@ export const BasicLayout = (props) => {
       <div class="w-full bg-brand-indigo h-1" />
       <div class="w-full bg-brand-yellow h-1 my-0.5" />
       <div class="w-full bg-brand-pink h-1.5" />
-      <div class="flex-grow flex flex-col pt-10 sm:pt-20">
+      <div
+        id={location.pathname.includes(USER_NESTED_ROUTE_BASE) ? 'page-user-profile' : 'page'}
+        classList={{
+          'pt-10 sm:pt-20': !location.pathname.includes(USER_NESTED_ROUTE_BASE),
+        }}
+        class="flex-grow flex flex-col "
+      >
         <Show when={!isRouting()}>{props.children}</Show>
       </div>
       {dialogApi().isOpen && (
@@ -137,7 +144,7 @@ export const BasicLayout = (props) => {
               </Show>
               <div class="flex">
                 <Button
-                  isLoading={walletVerifiedState.loading}
+                  isLoading={walletVerifiedState.loading === true}
                   onClick={async () => await verify()}
                   class="mx-auto mt-5"
                 >

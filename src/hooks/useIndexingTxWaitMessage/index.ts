@@ -1,15 +1,21 @@
 import { createEffect, createSignal } from 'solid-js'
 
-export function useIndexingTxWaitMessage(_state) {
+export function useIndexingTxWaitMessage() {
   const [showWaitMessage, setShowWaitMessage] = createSignal(false)
+  const [canStartCountdown, setCanStartCountdown] = createSignal(false)
+
   createEffect(() => {
-    if (_state.isLoading) {
+    if (canStartCountdown() === true) {
       setTimeout(() => {
-        if (_state.isLoading) setShowWaitMessage(true)
+        if (canStartCountdown()) setShowWaitMessage(true)
       }, 10000)
     }
   })
-  return showWaitMessage
+
+  return {
+    showWaitMessage,
+    setCanStartCountdown,
+  }
 }
 
 export default useIndexingTxWaitMessage

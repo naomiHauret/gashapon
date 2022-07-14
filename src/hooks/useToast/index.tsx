@@ -3,7 +3,6 @@ import * as toast from '@zag-js/toast'
 import { createContext, createUniqueId, For, useContext, createMemo } from 'solid-js'
 import Toast from '@components/Toast'
 import { Portal } from 'solid-js/web'
-import type { PropTypes } from '@zag-js/solid'
 
 const ContextToast = createContext()
 
@@ -20,7 +19,7 @@ export const ProviderToast = (props) => {
     }),
   )
   const ref = useSetup({ send, id })
-  const api = createMemo(() => toast.group.connect<PropTypes>(state, send, normalizeProps))
+  const api = createMemo(() => toast.group.connect(state, send, normalizeProps))
 
   return (
     <ContextToast.Provider value={api}>

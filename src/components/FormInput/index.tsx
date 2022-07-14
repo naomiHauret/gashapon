@@ -13,6 +13,7 @@ export const FormInput = (props) => {
             //@ts-ignore
             appearance: 'square-start',
             scale: props.scale ?? 'default',
+            //@ts-ignore
             variant: props.hasError === true ? 'error' : 'default',
           })}
         >
@@ -25,6 +26,7 @@ export const FormInput = (props) => {
           //@ts-ignore
           appearance: props.appearance ?? 'square',
           scale: props.scale ?? 'default',
+          //@ts-ignore
           variant: props.hasError === true ? 'error' : 'default',
           class: props.class ?? '',
         })}
@@ -35,6 +37,7 @@ export const FormInput = (props) => {
             //@ts-ignore
             appearance: 'square-end',
             scale: props.scale ?? 'default',
+            //@ts-ignore
             variant: props.hasError === true ? 'error' : 'default',
           })}
         >

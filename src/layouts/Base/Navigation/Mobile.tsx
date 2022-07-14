@@ -4,7 +4,6 @@ import * as popover from '@zag-js/popover'
 import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
 import popoverStyles from '@components/PopoverConnectWallet/styles.module.css'
 import navigationItems from './navigationItems'
-import type { PropTypes } from '@zag-js/solid'
 import { IconMenu } from '@components/Icons'
 import styles from './styles.module.css'
 
@@ -12,7 +11,7 @@ export const NavigationMobile = () => {
   const id = createUniqueId()
   const [state, send] = useMachine(popover.machine)
   const ref = useSetup({ send, id })
-  const api = createMemo(() => popover.connect<PropTypes>(state, send, normalizeProps))
+  const api = createMemo(() => popover.connect(state, send, normalizeProps))
 
   return (
     <div class="relative" ref={ref}>

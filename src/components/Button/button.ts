@@ -8,6 +8,7 @@ export const button = cva(
     'font-sans',
     'rounded-full',
     'transition-colors transition-500',
+    'disabled:opacity-50',
   ],
   {
     variants: {
@@ -22,6 +23,9 @@ export const button = cva(
           //@ts-ignore
           'border-solid border-[#F6851B] focus:ring-[#F6851B]',
         ],
+        accent: 'bg--accent text-black',
+        'accent-revert': 'text-white bg-black hover:text-black hover:bg--accent border--accent',
+        danger: ['bg-negative-400 text-black'],
       },
       aspect: {
         //@ts-ignore
@@ -34,6 +38,8 @@ export const button = cva(
         'outline-default': 'border-4',
       },
       scale: {
+        //@ts-ignore
+        xs: ['text-2xs', 'px-3 py-1', 'font-bold'],
         //@ts-ignore
         sm: ['text-xs', 'px-3 py-1.5', 'font-bold'],
         //@ts-ignore

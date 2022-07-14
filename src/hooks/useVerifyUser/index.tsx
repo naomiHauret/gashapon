@@ -9,10 +9,8 @@ import generateChallenge from '@graphql/authentication/generate-challenge'
 import authenticate from '@graphql/authentication/authenticate'
 import { COOKIE_ACCESS_TOKENS } from '@config/storage'
 import useAccount from '../useAccount'
-import type { PropTypes } from '@zag-js/solid'
-import useNetwork from '@hooks/useNetwork/index.'
+import useNetwork from '@hooks/useNetwork'
 import useToast from '@hooks/useToast'
-
 interface WalletVerifiedState {
   error: null | string
   loading: boolean
@@ -47,7 +45,7 @@ export function ProviderUserVerification(props) {
     }),
   )
   const dialogRef = useSetup({ send, id: dialogId })
-  const dialogApi = createMemo(() => dialog.connect<PropTypes>(state, send, normalizeProps))
+  const dialogApi = createMemo(() => dialog.connect(state, send, normalizeProps))
 
   const [storage, setStorage, { remove }] = createCookieStorage()
   const { accountData } = useAccount()
@@ -69,7 +67,7 @@ export function ProviderUserVerification(props) {
 
       const accessTokens = await authenticate(address, signature)
       setStorage(COOKIE_ACCESS_TOKENS, accessTokens.data.authenticate.accessToken, {
-        expires: addMinutes(new Date(), 30),
+        expires: addMinutes(new Date(), 30).toUTCString(),
         secure: true,
         httpOnly: true,
         sameSite: 'Strict',

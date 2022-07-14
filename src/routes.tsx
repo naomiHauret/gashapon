@@ -1,6 +1,5 @@
 import { lazy } from 'solid-js'
 import { Route, Routes } from 'solid-app-router'
-
 import Home from './pages/home'
 import {
   ACCOUNT_NESTED_ROUTE_SETTINGS,
@@ -24,8 +23,13 @@ import {
   ROUTE_SIGN_IN,
   ROUTE_USER,
   ROUTE_USER_POST,
+  USER_NESTED_ROUTE_BASE,
+  USER_NESTED_ROUTE_PROFILE,
 } from '@config/routes'
-import AccoutLayout from '@layouts/Account'
+import { UserProfileData } from '@pages/user/[idUser].data'
+
+const LayoutAccount = lazy(() => import('./layouts/Account'))
+const LayoutUserProfile = lazy(() => import('./layouts/UserProfile'))
 
 const PageError404 = lazy(() => import('./errors/404'))
 const PageSignIn = lazy(() => import('./pages/sign-in'))
@@ -37,16 +41,22 @@ const PageCommunities = lazy(() => import('./pages/communities'))
 const PageExplore = lazy(() => import('./pages/explore'))
 const PageUserFeed = lazy(() => import('./pages/my-feed'))
 const PageUserGames = lazy(() => import('./pages/my-library'))
+const PageUserProfile = lazy(() => import('./pages/user/[idUser]'))
+const PageUserPost = lazy(() => import('./pages/user/[idUser]/post/[idPost]'))
 
 export const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path={ROUTE_SIGN_IN} element={<PageSignIn />} />
-      <Route path={ROUTE_ACCOUNT} element={<AccoutLayout />}>
+      <Route path={ROUTE_ACCOUNT} element={<LayoutAccount />}>
         <Route path="/" element={<PageAccount />} />
         <Route path={ACCOUNT_NESTED_ROUTE_PROFILE} element={<PageEditProfile />} />
         <Route path={ACCOUNT_NESTED_ROUTE_SETTINGS} element={<PageSettingsCollect />} />
+      </Route>
+      <Route path={USER_NESTED_ROUTE_BASE}>
+        <Route path={USER_NESTED_ROUTE_PROFILE} data={UserProfileData} element={<PageUserProfile />} />
+        <Route path={USER_NESTED_ROUTE_PROFILE} data={UserProfileData} element={<PageUserPost />} />
       </Route>
       <Route path={ROUTE_DASHBOARD} element={<PageDashboard />} />
       <Route path={ROUTE_COMMUNITIES} element={<PageCommunities />} />

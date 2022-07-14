@@ -7,7 +7,6 @@ import useConnect from '@hooks/useConnect'
 import button from '@components/Button//button'
 import { shortenEthereumAddress } from '@helpers/shortenEthereumAddress'
 import popoverStyles from './styles.module.css'
-import type { PropTypes } from '@zag-js/solid'
 import useVerifyUser from '@hooks/useVerifyUser'
 import useCurrentUserDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
 import { Link } from 'solid-app-router'
@@ -28,7 +27,7 @@ export const PopoverConnectWallet = (props) => {
   const id = createUniqueId()
   const [state, send] = useMachine(popover.machine)
   const ref = useSetup({ send, id })
-  const api = createMemo(() => popover.connect<PropTypes>(state, send, normalizeProps))
+  const api = createMemo(() => popover.connect(state, send, normalizeProps))
   const { accountData } = useAccount()
   const { disconnect } = useConnect()
   //@ts-ignore
@@ -163,7 +162,7 @@ export const PopoverConnectWallet = (props) => {
 
                 <button
                   class={`mt-1 border-opacity-10 border-white w-full ${popoverStyles.logoutButton} ${popoverStyles.popoverSectionLink}`}
-                  onClick={disconnect}
+                  onClick={async () => await disconnect()}
                 >
                   <IconLogout class="text-neutral-9 h-[1em] mie-[0.5ch]" />
                   Log out

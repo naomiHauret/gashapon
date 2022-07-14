@@ -1,14 +1,13 @@
 import * as toast from '@zag-js/toast'
 import { Match, Switch, createMemo } from 'solid-js'
 import { useActor, normalizeProps } from '@zag-js/solid'
-import type { PropTypes } from '@zag-js/solid'
 import { toastIcon, toastLayer } from './styles'
 import { IconCircleSolidCheck, IconClose, IconErrorCircleOutline, IconSpinner } from '@components/Icons'
 
 const Toast = (props) => {
   const [state, send] = useActor(props.toast)
   //@ts-ignore
-  const api = createMemo(() => toast.connect<PropTypes>(state, send, normalizeProps))
+  const api = createMemo(() => toast.connect(state, send, normalizeProps))
   //@ts-ignore
   const layerStyles = toastLayer({ intent: api().type ?? 'info' })
   //@ts-ignore

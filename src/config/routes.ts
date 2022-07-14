@@ -8,6 +8,9 @@ export const ROUTE_COMMUNITIES = '/communities'
 // Accessible to all but with some restrictions for interactions
 export const ROUTE_USER = '/user/:idUser'
 export const ROUTE_USER_POST = '/user/:idUser/post/:idPost'
+export const USER_NESTED_ROUTE_BASE = '/user'
+export const USER_NESTED_ROUTE_PROFILE = '/:idUser'
+export const USER_NESTED_ROUTE_POST = '/:idUser/post/:idPost'
 
 export const ROUTE_GAME = '/game/:idGame'
 export const ROUTE_GAME_COMMUNITIES = '/game/:idGame/communities'

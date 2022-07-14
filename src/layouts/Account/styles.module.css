@@ -5,7 +5,11 @@
 }
 
 .navItem {
-  @apply md:rounded-md text-center md:text-start col-span-1 px-3 pb-2.5 md:p-3 whitespace-nowrap md:whitespace-normal uppercase text-xs font-bold tracking-wide md:tracking-normal md:normal-case;
+  @apply flex items-center justify-center md:rounded-md md:justify-start col-span-1 px-3 pb-2.5 md:p-3 whitespace-nowrap md:whitespace-normal uppercase text-xs font-bold tracking-wide md:tracking-normal md:normal-case;
+}
+
+.navItem:not(a) {
+  @apply cursor-not-allowed;
 }
 
 .navBar .navItem:first-child {

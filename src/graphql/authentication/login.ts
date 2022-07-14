@@ -18,10 +18,10 @@ export async function login() {
 
     const accessTokens = await authenticate(address, signature)
     Cookies.set(COOKIE_ACCESS_TOKENS, accessTokens.data.authenticate.accessToken, {
-      expires: addMinutes(new Date(), 30),
+      expires: addMinutes(new Date(), 30).toUTCString(),
       secure: true,
       httpOnly: true,
-      sameSite: 'Strict',
+      SameSite: 'Strict',
       path: '/',
     })
     return accessTokens.data
