@@ -28,10 +28,23 @@ export const ROUTE_EDIT_PROFILE = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_PROFIL
 export const ROUTE_SETTINGS = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_SETTINGS}`
 
 export const ROUTE_LIBRARY = '/my-library'
-export const ROUTE_DASHBOARD = '/dashboard'
 export const ROUTE_FEED = '/my-feed'
 export const ROUTE_CREATE_GAME = '/game/new'
 export const ROUTE_CREATE_COMMUNITY = '/game/:idGame/community/new'
 export const ROUTE_CREATE_GAME_UPDATE = '/game/:idGame/update/new'
 export const ROUTE_CREATE_COMMUNITY_POST = '/game/:idGame/community/:idCommunity/post/new'
 export const ROUTE_CREATE_POST = '/post/new'
+
+// Dashboard
+export const ROUTE_DASHBOARD = '/dashboard'
+export const ROUTE_DASHBOARD_LIST_GAMES = '/dashboard/games'
+export const ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT_DATA = '/dashboard/game/:idGame/edit'
+export const ROUTE_DASHBOARD_GAME_OVERVIEW = '/dashboard/game/:idGame'
+export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE = '/post'
+export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS = '/offers'
+export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_DOWNLOAD_LINKS = '/download-links'
+export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT = '/edit'
+
+export const ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE = `${ROUTE_DASHBOARD_GAME_OVERVIEW}/post`
+export const ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS = `${ROUTE_DASHBOARD_GAME_OVERVIEW}/offers`
+export const ROUTE_DASHBOARD_GAME_OVERVIEW_DOWNLOAD_LINKS = `${ROUTE_DASHBOARD_GAME_OVERVIEW}/download-links`

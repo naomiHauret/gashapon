@@ -47,24 +47,24 @@ export const UserProfileLayout = (props) => {
     //@ts-ignore
     root.style.setProperty(
       '--accent-user-profile',
-      props?.profile?.latest?.attributes.filter((attr) => attr.key === 'gashaponProfileAccentColor')[0]?.value,
+      props?.profile?.attributes.filter((attr) => attr.key === 'gashaponProfileAccentColor')[0]?.value,
     )
   })
 
   createEffect(async () => {
-    if (accountData()?.address && props?.profile?.latest?.id) await checkIfIsFollowing(props?.profile?.latest?.id)
+    if (accountData()?.address && props?.profile?.id) await checkIfIsFollowing(props?.profile?.id)
   })
 
   return (
     <>
-      <Show when={props?.profile?.latest}>
+      <Show when={props?.profile}>
         <div class="animate-appear pt-12 relative flex-grow flex flex-col w-full max-w-screen-sm mx-auto">
-          <Show when={props?.profile?.latest?.coverPicture?.original?.url}>
+          <Show when={props?.profile?.coverPicture?.original?.url}>
             <div class="rounded-xl overflow-hidden">
               <div class="relative z-10 md:flex md:justify-center">
                 <img
                   class="bg-neutral-900 aspect-banner rounded-lg object-cover w-full"
-                  src={props?.profile?.latest?.coverPicture?.original?.url}
+                  src={props?.profile?.coverPicture?.original?.url}
                 />
               </div>
             </div>
@@ -72,17 +72,17 @@ export const UserProfileLayout = (props) => {
           <div class="flex space-i-4">
             <section class="w-auto flex flex-col px-8 pb-5 mt-3">
               <div class="bg-neutral-900 mb-4 -mt-14 ring-8 ring-black relative z-10 rounded-xl aspect-square overflow-hidden w-24">
-                <img class="bg-neutral-900" src={props?.profile?.latest?.picture?.original?.url} />
+                <img class="bg-neutral-900" src={props?.profile?.picture?.original?.url} />
               </div>
-              <span class="font-bold">{props?.profile?.latest?.name}</span>
-              <span class="font-bold text-brand-pink font-mono">{props?.profile?.latest?.handle}</span>
+              <span class="font-bold">{props?.profile?.name}</span>
+              <span class="font-bold text-brand-pink font-mono">{props?.profile?.handle}</span>
               <div class="text-2xs mt-3">
                 <div>
                   <span class="font-bold text-md">
                     {new Intl.NumberFormat('en-US', {
                       notation: 'compact',
                       maximumFractionDigits: 3,
-                    }).format(parseInt(props?.profile?.latest?.stats?.totalFollowing))}
+                    }).format(parseInt(props?.profile?.stats?.totalFollowing))}
                   </span>{' '}
                   <span class="pis-1ex">following</span>
                 </div>
@@ -91,14 +91,14 @@ export const UserProfileLayout = (props) => {
                     {new Intl.NumberFormat('en-US', {
                       notation: 'compact',
                       maximumFractionDigits: 3,
-                    }).format(parseInt(props?.profile?.latest?.stats?.totalFollowers))}
+                    }).format(parseInt(props?.profile?.stats?.totalFollowers))}
                   </span>{' '}
                   <span class="pis-1ex">followers</span>
                 </div>
               </div>
               <div class="flex flex-col space-y-3 mt-4">
                 <div>
-                  <ButtonFollow profile={props?.profile?.latest} />
+                  <ButtonFollow profile={props?.profile} />
                 </div>
                 <Button
                   ref={refDialogSendTip}
@@ -109,7 +109,7 @@ export const UserProfileLayout = (props) => {
                     walletVerifiedState.verified === false
                   }
                   style={{
-                    '--accent': props?.profile?.latest?.attributes.filter(
+                    '--accent': props?.profile?.attributes.filter(
                       (attr) => attr.key === 'gashaponProfileAccentColor',
                     )[0]?.value,
                   }}
@@ -122,7 +122,7 @@ export const UserProfileLayout = (props) => {
               </div>
               <Show
                 when={
-                  props?.profile?.latest?.attributes.filter(
+                  props?.profile?.attributes.filter(
                     (attr) =>
                       ['website', 'twitter', 'itch', 'twitch'].includes(attr.key) &&
                       attr.value !== null &&
@@ -132,7 +132,7 @@ export const UserProfileLayout = (props) => {
               >
                 <ul class="pt-6 space-y-3 flex flex-col text-2xs font-semibold text-tinted-neutral-300">
                   <For
-                    each={props?.profile?.latest?.attributes.filter(
+                    each={props?.profile?.attributes.filter(
                       (attr) =>
                         ['website', 'twitter', 'itch', 'twitch'].includes(attr.key) &&
                         attr.value !== null &&
@@ -164,7 +164,7 @@ export const UserProfileLayout = (props) => {
           </Portal>
         )}
       </Show>
-      <Show when={!props?.profile?.latest}>...</Show>
+      <Show when={!props?.profile}>...</Show>
     </>
   )
 }

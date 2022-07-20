@@ -26,6 +26,9 @@ export const button = cva(
         accent: 'bg--accent text-black',
         'accent-revert': 'text-white bg-black hover:text-black hover:bg--accent border--accent',
         danger: ['bg-negative-400 text-black'],
+        'danger--revert': [
+          'bg-black hover:bg-negative-400 hover:text-black focus:bg-negative-500 focus:text-black text-white focus:border-negative-500 border-negative-400',
+        ],
       },
       aspect: {
         //@ts-ignore

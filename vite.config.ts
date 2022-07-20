@@ -19,6 +19,10 @@ export default defineConfig({
       '@styles': path.resolve(__dirname, './src/styles'),
       '@layouts': path.resolve(__dirname, './src/layouts'),
       '@helpers': path.resolve(__dirname, './src/helpers'),
+      'tailwind.config.js': path.resolve(__dirname, './tailwind.config.js'),
     },
+  },
+  optimizeDeps: {
+    include: ['tailwind.config.js'],
   },
 })

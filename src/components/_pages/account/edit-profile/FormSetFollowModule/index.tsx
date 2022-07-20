@@ -10,7 +10,6 @@ import useNetwork from '@hooks/useNetwork'
 import InputToken from '@components/InputToken'
 import { whitelist } from '@helpers/tokens'
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from 'solid-headless'
-import styles from './styles.module.css'
 
 export const FormSetFollowModule = () => {
   const { storeForm, stateSetFollowModule, showWaitMessage } = useSetFollowModule()
@@ -49,28 +48,28 @@ export const FormSetFollowModule = () => {
             <>
               <RadioGroupLabel class="sr-only">Follow settings</RadioGroupLabel>
               <div class="space-y-4">
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.FREE}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.FREE}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">Free</span> - Anyone can follow you, for free.
                     </>
                   )}
                 </RadioGroupOption>
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.REVERT}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.REVERT}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">No followers</span> - No one can follow you.
                     </>
                   )}
                 </RadioGroupOption>
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.PROFILE}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.PROFILE}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">Profiles only</span> - Only people with a profile can follow you.
                     </>
                   )}
                 </RadioGroupOption>
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.FEE}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.FEE}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">Charge a fee</span> - Charge a fee to allow people to follow you.

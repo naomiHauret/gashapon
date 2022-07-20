@@ -2,7 +2,7 @@ import { IconClose } from '@components/Icons'
 import styles from './styles.module.css'
 export const DialogModal = (props) => {
   return (
-    <div class="fixed inset-0 z-10 overflow-y-auto">
+    <div class="fixed inset-0 z-50 overflow-y-auto">
       <div class="min-h-screen px-4 flex items-center justify-center">
         <div class="bg-black bg-opacity-50 fixed inset-0" {...props.api().backdropProps} />
         <span class="inline-block h-screen align-middle" aria-hidden="true">

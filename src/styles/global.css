@@ -89,7 +89,7 @@
   }
 }
 
-@layer base {
+@layer utilities {
   .bg-user-custom-color {
     background-color: var(--layer);
   }
@@ -101,6 +101,7 @@
   .bg--accent {
     background-color: var(--accent);
   }
+
   .input-error-border {
     @apply border-negative-600 focus:border-negative-800;
   }
@@ -108,18 +109,126 @@
   .input-error-layer {
     @apply bg-negative-900 hover:bg-negative-200 text-negative-400;
   }
-
-  .input-report-error[aria-invalid='true'],
-  .input-report-error:not(:placeholder-shown):invalid,
-  .default-input[aria-invalid='true'],
-  .default-input:not(:placeholder-shown):invalid {
-    @apply bg-negative-900 bg-opacity-25 hover:bg-opacity-40 border-negative-600 focus:border-negative-800 text-negative-400 !important;
-  }
 }
 
 @layer components {
   .container {
     @apply w-full max-w-screen-lg px-3;
+  }
+
+  .input-file_wrapper {
+    @apply focus-within:ring-2 focus-within:ring-white focus-within:ring-opacity-20;
+  }
+
+  .input-report-error[aria-invalid='true'],
+  .input-report-error:not(:placeholder-shown):invalid {
+    @apply bg-negative-900 bg-opacity-25 hover:bg-opacity-40 border-negative-600 focus:border-negative-800 text-negative-400 !important;
+  }
+
+  .multiselect-custom .search-wrapper {
+    @apply rounded-md bg-white text-white border-white border-solid border-opacity-20 hover:border-opacity-25 focus:border-opacity-40 bg-opacity-3.5 focus:bg-opacity-5;
+  }
+
+  .multiselect-custom.scale--default .search-wrapper {
+    @apply px-3 py-1.5 text-xs border;
+  }
+  .multiselect-custom.scale--sm .search-wrapper {
+    @apply px-3 py-0.5 text-xs border;
+  }
+  .multiselect-custom.scale--md .search-wrapper {
+    @apply px-4 py-1.5 text-sm border;
+  }
+
+  .multiselect-custom .optionContainer li:not(:last-child):not(.highlight) {
+    @apply border-b border-white border-opacity-10;
+  }
+
+  .multiselect-custom .chip,
+  .input-tags_tag {
+    @apply border-solid border-4 border-black relative rounded-full m-0 bg-brand-pink text-black font-medium text-2xs leading-none pis-3 pie-2 py-1.5;
+  }
+
+  .multiselect-custom .chip::after {
+    @apply absolute top-1/2 inline-end-1.5 -translate-y-1/2 pointer-events-none;
+    content: url("data:image/svg+xml,%3Csvg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 512 512' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z'%3E%3C/path%3E%3C/svg%3E");
+  }
+
+  .multiselect-custom .chip img {
+    @apply opacity-0;
+  }
+
+  .multiselect-custom .optionListContainer {
+    @apply bg-transparent;
+  }
+
+  .multiselect-custom .optionContainer {
+    @apply bg-black border-white border-solid border-opacity-20 rounded-md;
+  }
+  .multiselect-custom .option:not(.highlight) {
+    @apply text-white hover:bg-white hover:bg-opacity-10;
+  }
+  .multiselect-custom .notFound {
+    @apply italic opacity-75;
+  }
+  .multiselect-custom .option.highlight:not(.disableSelection) {
+    @apply bg-brand-pink hover:bg-opacity-90 text-black;
+  }
+
+  .multiselect-custom .option:not(.disableSelection) {
+    @apply cursor-pointer;
+  }
+  .multiselect-custom .option.disableSelection {
+    @apply bg-white bg-opacity-5 text-opacity-50 text-white;
+  }
+
+  .multiselect-custom .searchBox {
+    @apply m-0 capitalize;
+  }
+
+  .radio-pseudoIndicator {
+    @apply relative cursor-pointer whitespace-pre-wrap;
+    padding-inline-start: calc(theme('spacing.4') + 2ex);
+  }
+  .radio-pseudoIndicator::before {
+    content: ' ';
+    @apply absolute top-1/2 -translate-y-1/2 inline-start-0 w-4 h-4 border-2 border-solid rounded-full;
+  }
+
+  .radio-pseudoIndicator[aria-checked='true']::after {
+    content: ' ';
+    @apply absolute top-1/2 -translate-y-1/2 inline-start-1 w-2 h-2 bg-brand-pink rounded-full;
+  }
+
+  .radio-pseudoIndicator[aria-checked='false']::before {
+    @apply border-white border-opacity-25;
+  }
+
+  .radio-pseudoIndicator[aria-checked='true']::before {
+    @apply border-brand-pink;
+  }
+
+  .flair-game-status {
+    @apply text-3xs uppercase tracking-wide font-bold  px-1 py-0.5 rounded-md;
+  }
+
+  .flair-game-status--not-ready {
+    @apply text-warning-900 bg-warning-200;
+  }
+
+  .flair-game-status--stable {
+    @apply text-positive-900 bg-positive-200;
+  }
+
+  .flair-game-status--stable-eol {
+    @apply text-black text-opacity-75 bg-brand-indigo;
+  }
+
+  .flair-game-status--abandonware-unstable {
+    @apply text-negative-900 bg-negative-400;
+  }
+
+  .flair-game-status--undefined {
+    @apply text-black bg-neutral-200;
   }
 }
 

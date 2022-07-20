@@ -4,9 +4,9 @@ import { input } from '@components/FormInput/styles'
 export const FormTextarea = (props) => {
   //@ts-ignore
   return (
-    <div class="flex items-center">
+    <div class={`flex items-center ${props.wrapperClass ?? ''}`}>
       <textarea
-        {...omitProps(props, ['class', 'appearance', 'scale', 'hasError'])}
+        {...omitProps(props, ['class', 'wrapperClass', 'appearance', 'scale', 'hasError'])}
         class={input({
           //@ts-ignore
           appearance: props.appearance ?? 'square',

@@ -188,6 +188,7 @@ export function useEditProfile() {
         bio: data?.bio ?? null,
         cover_picture: profileBannerSrc(),
         attributes: [
+          ...stateFetchDefaultProfile.data.attributes,
           {
             traitType: 'string',
             value: data?.location ?? null,
