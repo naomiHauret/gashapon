@@ -12,13 +12,14 @@ export const USER_NESTED_ROUTE_BASE = '/user'
 export const USER_NESTED_ROUTE_PROFILE = '/:idUser'
 export const USER_NESTED_ROUTE_POST = '/:idUser/post/:idPost'
 
-export const ROUTE_GAME = '/game/:idGame'
-export const ROUTE_GAME_COMMUNITIES = '/game/:idGame/communities'
-export const ROUTE_GAME_UPDATE = '/game/:idGame/update/:idUpdate'
+export const ROUTE_GAME_PREFIX = '/game'
+export const ROUTE_GAME = `${ROUTE_GAME_PREFIX}/:idGame`
+export const ROUTE_GAME_COMMUNITIES = `${ROUTE_GAME}/communities`
+export const ROUTE_GAME_UPDATE = `${ROUTE_GAME}/update/:idUpdate`
 
 // A game can have * communities
-export const ROUTE_COMMUNITY = '/game/:idGame/community/:idCommunity'
-export const ROUTE_COMMUNITY_POST = '/game/:idGame/community/:idCommunity/post/:idPost'
+export const ROUTE_COMMUNITY = `${ROUTE_GAME}/community/:idCommunity`
+export const ROUTE_COMMUNITY_POST = `${ROUTE_COMMUNITY}/post/:idPost`
 
 // Gated (authenticated only)
 export const ACCOUNT_NESTED_ROUTE_PROFILE = '/profile'
@@ -29,17 +30,17 @@ export const ROUTE_SETTINGS = `${ROUTE_ACCOUNT}${ACCOUNT_NESTED_ROUTE_SETTINGS}`
 
 export const ROUTE_LIBRARY = '/my-library'
 export const ROUTE_FEED = '/my-feed'
-export const ROUTE_CREATE_GAME = '/game/new'
 export const ROUTE_CREATE_COMMUNITY = '/game/:idGame/community/new'
 export const ROUTE_CREATE_GAME_UPDATE = '/game/:idGame/update/new'
 export const ROUTE_CREATE_COMMUNITY_POST = '/game/:idGame/community/:idCommunity/post/new'
-export const ROUTE_CREATE_POST = '/post/new'
 
 // Dashboard
 export const ROUTE_DASHBOARD = '/dashboard'
-export const ROUTE_DASHBOARD_LIST_GAMES = '/dashboard/games'
-export const ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT_DATA = '/dashboard/game/:idGame/edit'
-export const ROUTE_DASHBOARD_GAME_OVERVIEW = '/dashboard/game/:idGame'
+export const ROUTE_CREATE_POST = `${ROUTE_DASHBOARD}/post/new`
+export const ROUTE_CREATE_GAME = `${ROUTE_DASHBOARD}/game/new`
+export const ROUTE_DASHBOARD_LIST_GAMES = `${ROUTE_DASHBOARD}/games`
+export const ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT_DATA = `${ROUTE_DASHBOARD}/game/:idGame/edit`
+export const ROUTE_DASHBOARD_GAME_OVERVIEW = `${ROUTE_DASHBOARD}/game/:idGame`
 export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE = '/post'
 export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS = '/offers'
 export const NESTED_ROUTE_DASHBOARD_GAME_OVERVIEW_DOWNLOAD_LINKS = '/download-links'

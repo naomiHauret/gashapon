@@ -1,4 +1,6 @@
 import { string, object, instanceof as zodValidationInstanceOf } from 'zod'
+import * as dialog from '@zag-js/dialog'
+import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
 import { validator } from '@felte/validator-zod'
 import { createForm } from '@felte/solid'
 import { createAsyncStore } from '@hooks/useAsync'
@@ -15,11 +17,12 @@ import { signTypedData, writeContract } from '@wagmi/core'
 import splitSignature from '@helpers/splitSignature'
 import { CONTRACT_LENS_HUB_PROXY, CONTRACT_LENS_PERIPHERY } from '@config/contracts'
 import { v4 as uuidv4 } from 'uuid'
-import { createSignal } from 'solid-js'
+import { createSignal, createMemo, createUniqueId, createEffect } from 'solid-js'
 import updateProfilePictureMetadata from '@graphql/profile/update-profile-picture'
 
 const useStoreUploadProfilePicture = createAsyncStore()
 const useStoreUploadProfileBanner = createAsyncStore()
+const useStoreUploadProfileData = createAsyncStore()
 
 const useStoreEditProfile = createAsyncStore()
 const schema = object({
@@ -41,6 +44,7 @@ export function useEditProfile() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const stateEditProfile = useStoreEditProfile()
+  const stateUploadProfileData = useStoreUploadProfileData()
   const stateUploadProfilePicture = useStoreUploadProfilePicture()
   const stateUploadProfileBanner = useStoreUploadProfileBanner()
 
@@ -55,6 +59,18 @@ export function useEditProfile() {
     stateFetchDefaultProfile.data?.coverPicture?.original?.url ?? null,
   )
   const [fileProfileBanner, setFileProfileBanner] = createSignal()
+  const [stateDialogModalTrackProgress, sendDialogModalTrackProgress] = useMachine(
+    dialog.machine({
+      role: 'alertdialog',
+      closeOnOutsideClick: false,
+      closeOnEsc: false,
+      preventScroll: true,
+    }),
+  )
+  const apiDialogModalTrackProgress = createMemo(() =>
+    dialog.connect(stateDialogModalTrackProgress, sendDialogModalTrackProgress, normalizeProps),
+  )
+  const dialogModalTrackProgressRef = useSetup({ send: sendDialogModalTrackProgress, id: createUniqueId() })
 
   const storeForm = createForm({
     initialValues: {
@@ -87,7 +103,7 @@ export function useEditProfile() {
     stateUploadProfileBanner.setIsLoading(true)
     try {
       const url = await uploadData({ file: fileProfileBanner(), silentUpload: true })
-      setProfileBannerSrc(url)
+      setProfileBannerSrc(url.https)
       stateUploadProfileBanner.setIsSuccess(true)
       stateUploadProfileBanner.setIsLoading(false)
       stateUploadProfileBanner.setError(null, false)
@@ -99,6 +115,28 @@ export function useEditProfile() {
       stateUploadProfileBanner.setIsSuccess(false)
       stateUploadProfileBanner.setIsLoading(false)
       stateUploadProfileBanner.setError(e?.message ?? e, true)
+    }
+  }
+
+  async function uploadProfileData(jsonFile) {
+    stateUploadProfileData.setIsLoading(true)
+    try {
+      const url = await uploadData({
+        file: jsonFile,
+        silentUpload: true,
+      })
+      stateUploadProfileData.setIsSuccess(true)
+      stateUploadProfileData.setIsLoading(false)
+      stateUploadProfileData.setError(null, false)
+      return url
+    } catch (e) {
+      console.error(e)
+      stateEditProfile.setIsLoading(false)
+      stateEditProfile.setIsSuccess(false)
+      stateEditProfile.setError(e?.message ?? e, true)
+      stateUploadProfileData.setIsSuccess(false)
+      stateUploadProfileData.setIsLoading(false)
+      stateUploadProfileData.setError(e?.message ?? e, true)
     }
   }
 
@@ -115,7 +153,7 @@ export function useEditProfile() {
       const url = await uploadData({ file: fileProfilePicture(), silentUpload: true })
       const setProfileImageUriRequest = {
         profileId,
-        url,
+        url: url.https,
       }
 
       const result = await updateProfilePictureMetadata(setProfileImageUriRequest)
@@ -162,6 +200,7 @@ export function useEditProfile() {
   async function updateUserProfile(data) {
     stateEditProfile.setIsLoading(true)
     stateEditProfile.setError(null, false)
+    apiDialogModalTrackProgress().open()
     const profileId = stateFetchDefaultProfile.data.id
     try {
       // If user changed profile picture
@@ -188,7 +227,18 @@ export function useEditProfile() {
         bio: data?.bio ?? null,
         cover_picture: profileBannerSrc(),
         attributes: [
-          ...stateFetchDefaultProfile.data.attributes,
+          ...stateFetchDefaultProfile.data.attributes.filter(
+            (attr) =>
+              ![
+                'location',
+                'website',
+                'itch',
+                'twitter',
+                'twitch',
+                'gashaponProfileLayerColor',
+                'gashaponProfileAccentColor',
+              ].includes(attr.key),
+          ),
           {
             traitType: 'string',
             value: data?.location ?? null,
@@ -233,15 +283,12 @@ export function useEditProfile() {
         `gashapon-profile-${profileId}-${profile.metadata_id}.json`,
         { type: 'application/json' },
       )
-      const metadataUrl = await uploadData({
-        file: profileJsonFile,
-        successMessage: 'Profile data uploaded successfully!',
-        errorMessage: "Something went wrong and your profile data couldn't be uploaded to Skynet.",
-      })
+
+      const metadataUrl = await uploadProfileData(profileJsonFile)
 
       const updateProfileMetadataRequest = {
         profileId,
-        metadata: metadataUrl,
+        metadata: metadataUrl.https,
       }
       //@ts-ignore
       const result = await updateProfileMetadata(updateProfileMetadataRequest)
@@ -262,9 +309,8 @@ export function useEditProfile() {
           functionName: 'setProfileMetadataURIWithSig',
           args: {
             profileId: typedData.value.profileId,
-            metadata: metadataUrl,
+            metadata: metadataUrl.https,
             ...profile,
-
             sig: {
               v,
               r,
@@ -277,21 +323,22 @@ export function useEditProfile() {
         await pollUntilIndexed(tx.hash)
         stateEditProfile.setIsSuccess(true)
         stateEditProfile.setData(result.data)
+        stateEditProfile.setIsLoading(false)
         //@ts-ignore
-
         toast().create({
           type: 'success',
           title: `Your profile was updated successfully!`,
         })
       } else {
         stateEditProfile.setError(result.error.message, true)
+        stateEditProfile.setIsLoading(false)
+        stateEditProfile.setIsSuccess(false)
         //@ts-ignore
         toast().create({
           type: 'error',
           title: `Something went wrong and your profile data couldn't be updated: ${result.error.message}`,
         })
       }
-      stateEditProfile.setIsLoading(false)
     } catch (e) {
       console.error(e)
       stateEditProfile.setError(e?.message ?? e, true)
@@ -305,6 +352,27 @@ export function useEditProfile() {
       console.error(e)
     }
   }
+
+  createEffect(() => {
+    if (!apiDialogModalTrackProgress().isOpen) {
+      stateEditProfile.setIsLoading(false)
+      stateEditProfile.setIsSuccess(false)
+      stateEditProfile.setError(null, false)
+
+      stateUploadProfilePicture.setIsSuccess(false)
+      stateUploadProfilePicture.setIsLoading(false)
+      stateUploadProfilePicture.setError(null, false)
+
+      stateUploadProfileBanner.setIsSuccess(false)
+      stateUploadProfileBanner.setIsLoading(false)
+      stateUploadProfileBanner.setError(null, false)
+
+      stateUploadProfileData.setIsSuccess(false)
+      stateUploadProfileData.setIsLoading(false)
+      stateUploadProfileData.setError(null, false)
+    }
+  })
+
   return {
     storeForm,
     stateEditProfile,
@@ -313,6 +381,13 @@ export function useEditProfile() {
     onInputProfileBannerChange,
     profilePictureSrc,
     profileBannerSrc,
+    apiDialogModalTrackProgress,
+    dialogModalTrackProgressRef,
+    stateUploadProfilePicture,
+    stateUploadProfileBanner,
+    stateUploadProfileData,
+    fileProfileBanner,
+    fileProfilePicture,
   }
 }
 

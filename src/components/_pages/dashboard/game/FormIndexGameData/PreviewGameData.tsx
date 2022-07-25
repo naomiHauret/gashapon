@@ -61,7 +61,7 @@ export const PreviewGameData = (props) => {
                 <>[ Team name]</>
               )}
             </p>
-            <p class="text-xs mb-4">
+            <p class="text-xs mb-4 text-300">
               {props.storeForm.data().tagline !== '' ? (
                 props.storeForm.data().tagline
               ) : (

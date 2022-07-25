@@ -5,6 +5,8 @@ import FormInput from '@components/FormInput'
 import FormTextarea from '@components/FormTextarea'
 import { IconCamera } from '@components/Icons'
 import { Show } from 'solid-js'
+import { Portal } from 'solid-js/web'
+import DialogTrackProgressDataIndexing from './DialogTrackProgressDataIndexing'
 import useEditProfile from './useEditProfile'
 
 export const FormEditProfile = () => {
@@ -16,6 +18,12 @@ export const FormEditProfile = () => {
     onInputProfileBannerChange,
     profilePictureSrc,
     profileBannerSrc,
+    stateUploadProfileData,
+    apiDialogModalTrackProgress,
+    stateUploadProfilePicture,
+    stateUploadProfileBanner,
+    fileProfileBanner,
+    fileProfilePicture,
   } = useEditProfile()
   const { form } = storeForm
   return (
@@ -311,6 +319,21 @@ export const FormEditProfile = () => {
           <Show when={stateEditProfile.isError === true}>Try again</Show>
         </Button>
       </form>
+
+      {apiDialogModalTrackProgress().isOpen && (
+        <Portal>
+          <DialogTrackProgressDataIndexing
+            api={apiDialogModalTrackProgress}
+            stateUploadProfilePicture={stateUploadProfilePicture}
+            stateUploadProfileBanner={stateUploadProfileBanner}
+            stateUploadProfileData={stateUploadProfileData}
+            stateEditProfile={stateEditProfile}
+            fileProfileBanner={fileProfileBanner}
+            fileProfilePicture={fileProfilePicture}
+            showWaitMessage={showWaitMessage}
+          />
+        </Portal>
+      )}
     </>
   )
 }

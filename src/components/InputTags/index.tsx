@@ -32,7 +32,7 @@ export const InputTags = (props) => {
           {...props.api().inputProps}
         />
       </div>
-      <button class="text-2xs mt-1 text-neutral-500 px-3" onClick={() => props.api().clearAll()}>
+      <button type="button" class="text-2xs mt-1 text-neutral-500 px-3" onClick={() => props.api().clearAll()}>
         Clear all tags
       </button>
     </>

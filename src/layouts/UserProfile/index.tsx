@@ -147,7 +147,11 @@ export const UserProfileLayout = (props) => {
                           {/* @ts-ignore */}
                           {Icons[social.key].icon}
                           {/* @ts-ignore */}
-                          <span class="pis-1ex">{social.value}</span>
+
+                          <span class="pis-1ex">
+                            <Show when={social.key !== 'website'}>{social.value}</Show>
+                            <Show when={social.key === 'website'}>website</Show>
+                          </span>
                         </a>
                       </li>
                     )}

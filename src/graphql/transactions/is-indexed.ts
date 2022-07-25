@@ -83,23 +83,19 @@ async function hasTxBeenIndexed(txHash: string) {
       request: {
         txHash,
       },
-      options: { fetchPolicy: 'network-only' },
+      fetchPolicy: 'network-only',
     })
     .toPromise()
-  console.log(isIndexed)
   return isIndexed
 }
 
 export async function pollUntilIndexed(txHash: string) {
   while (true) {
     const result = await hasTxBeenIndexed(txHash)
-    console.log('pool until indexed: result', result.data)
 
     const response = result.data.hasTxHashBeenIndexed
+    console.log(response, response.__typename)
     if (response.__typename === 'TransactionIndexedResult') {
-      console.log('pool until indexed: indexed', response.indexed)
-      console.log('pool until metadataStatus: metadataStatus', response.metadataStatus)
-
       if (response.metadataStatus) {
         if (response.metadataStatus.status === 'SUCCESS') {
           return response
@@ -114,8 +110,7 @@ export async function pollUntilIndexed(txHash: string) {
         }
       }
 
-      console.log('pool until indexed: sleep for 1500 milliseconds then try again')
-      // sleep for a second before trying again
+      // sleep for a 1.5 sec before trying again
       await sleep(1500)
     } else {
       // it got reverted and failed!

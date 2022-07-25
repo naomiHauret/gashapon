@@ -30,7 +30,7 @@ const Toast = (props) => {
           </Switch>
         </div>
         <div class="pis-3 pie-7">
-          <p class="text-xs" {...api().titleProps}>
+          <p class="text-xs break-words whitespace-pre-line" {...api().titleProps}>
             {api().title}
           </p>
         </div>

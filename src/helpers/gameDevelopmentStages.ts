@@ -15,13 +15,13 @@ export default {
   [EARLY]: {
     label: 'Early access',
     description: 'The game is playable but may not be feature-complete, or may still have several bugs.',
-    value: [EARLY],
+    value: EARLY,
   },
   [STABLE]: {
     label: 'Released - in stable development',
     description:
       'A playable version of the game is released. The game is maintained and has passed all verifications/tests.\nNew features and/or content are likely to be added in the future.',
-    value: 'stable',
+    value: STABLE,
   },
   [COMPLETE]: {
     label: 'Complete',

@@ -11,7 +11,7 @@ export const DialogTrackProgressDataIndexing = (props) => {
         <Show when={props.fileGameThumbnail()}>
           <li
             classList={{
-              'text-white text-opacity-50': props.stateUploadGameThumbnail.isLoading,
+              'text-white': props.stateUploadGameThumbnail.isLoading,
               'text-positive-300': props.stateUploadGameThumbnail.isSuccess,
               'text-negative-400': props.stateUploadGameThumbnail.isError,
             }}
@@ -34,7 +34,8 @@ export const DialogTrackProgressDataIndexing = (props) => {
         <Show when={props.fileGameBanner()}>
           <li
             classList={{
-              'text-white text-opacity-50': props.stateUploadGameBanner.isLoading,
+              'animate-pulse text-white text-opacity-50': props.stateUploadGameThumbnail.isLoading,
+              'text-white': !props.stateUploadGameThumbnail.isLoading && props.stateUploadGameBanner.isLoading,
               'text-positive-300': props.stateUploadGameBanner.isSuccess,
               'text-negative-400': props.stateUploadGameBanner.isError,
             }}
@@ -51,20 +52,31 @@ export const DialogTrackProgressDataIndexing = (props) => {
                 <IconErrorCircleOutline class="text-md mie-1ex" />
               </Match>
             </Switch>
-            Uploading baner image to Skynet
+            Uploading banner image to Skynet
           </li>
         </Show>
         <Show when={props.filesMedias()}>
           <li
             classList={{
-              'text-white text-opacity-50': props.stateUploadGameMedias.isLoading,
+              'animate-pulse text-white text-opacity-50':
+                props.stateUploadGameThumbnail.isLoading || props.stateUploadGameBanner.isLoading,
+              'text-white':
+                !props.stateUploadGameThumbnail.isLoading &&
+                !props.stateUploadGameBanner.isLoading &&
+                props.stateUploadGameMedias.isLoading,
               'text-positive-300': props.stateUploadGameMedias.isSuccess,
               'text-negative-400': props.stateUploadGameMedias.isError,
             }}
             class="flex items-center"
           >
             <Switch>
-              <Match when={props.stateUploadGameMedias.isLoading}>
+              <Match
+                when={
+                  !props.stateUploadGameThumbnail.isLoading &&
+                  !props.stateUploadGameBanner.isLoading &&
+                  props.stateUploadGameMedias.isLoading
+                }
+              >
                 <IconSpinner class="text-md mie-1ex animate-spin" />
               </Match>
               <Match when={props.stateUploadGameMedias.isSuccess}>
@@ -79,14 +91,29 @@ export const DialogTrackProgressDataIndexing = (props) => {
         </Show>
         <li
           classList={{
-            'text-white text-opacity-50': props.stateUploadNewGameData.isLoading,
+            'text-white text-opacity-50 animate-pulse':
+              props.stateUploadGameThumbnail.isLoading ||
+              props.stateUploadGameBanner.isLoading ||
+              props.stateUploadGameMedias.isLoading,
+            'text-white':
+              !props.stateUploadGameThumbnail.isLoading &&
+              !props.stateUploadGameBanner.isLoading &&
+              !props.stateUploadGameMedias.isLoading &&
+              props.stateUploadNewGameData.isLoading,
             'text-positive-300': props.stateUploadNewGameData.isSuccess,
             'text-negative-400': props.stateUploadNewGameData.isError,
           }}
           class="flex items-center"
         >
           <Switch>
-            <Match when={props.stateUploadNewGameData.isLoading}>
+            <Match
+              when={
+                !props.stateUploadGameThumbnail.isLoading &&
+                !props.stateUploadGameBanner.isLoading &&
+                !props.stateUploadGameMedias.isLoading &&
+                props.stateUploadNewGameData.isLoading
+              }
+            >
               <IconSpinner class="text-md mie-1ex animate-spin" />
             </Match>
             <Match when={props.stateUploadNewGameData.isSuccess}>
@@ -96,15 +123,63 @@ export const DialogTrackProgressDataIndexing = (props) => {
               <IconErrorCircleOutline class="text-md mie-1ex" />
             </Match>
           </Switch>
-          Uploading game data to Skynet & indexing your game data on Lens
+          Uploading your game data to Skynet
+        </li>
+
+        <li
+          classList={{
+            'text-white text-opacity-50 animate-pulse':
+              props.stateUploadGameThumbnail.isLoading ||
+              props.stateUploadGameBanner.isLoading ||
+              props.stateUploadGameMedias.isLoading ||
+              props.stateUploadNewGameData.isLoading,
+            'text-white':
+              !props.stateUploadGameThumbnail.isLoading &&
+              !props.stateUploadGameBanner.isLoading &&
+              !props.stateUploadGameMedias.isLoading &&
+              !props.stateUploadNewGameData.isLoading &&
+              props.stateIndexGameData.isLoading,
+            'text-positive-300': props.stateIndexGameData.isSuccess,
+            'text-negative-400': props.stateIndexGameData.isError,
+          }}
+          class="flex items-center"
+        >
+          <Switch>
+            <Match
+              when={
+                !props.stateUploadGameThumbnail.isLoading &&
+                !props.stateUploadGameBanner.isLoading &&
+                !props.stateUploadGameMedias.isLoading &&
+                !props.stateUploadNewGameData.isLoading &&
+                props.stateIndexGameData.isLoading
+              }
+            >
+              <IconSpinner class="text-md mie-1ex animate-spin" />
+            </Match>
+            <Match when={props.stateIndexGameData.isSuccess}>
+              <IconCircleSolidCheck class="text-md mie-1ex" />
+            </Match>
+            <Match when={props.stateIndexGameData.isError}>
+              <IconErrorCircleOutline class="text-md mie-1ex" />
+            </Match>
+          </Switch>
+          <div>
+            Indexing your changes on Lens. <br />
+            <span class="font-bold">Make sure to sign both the message and the transaction in your wallet !</span>
+          </div>
         </li>
       </ol>
-      <Show when={props.stateUploadNewGameData.isLoading && props.showWaitMessage() === true}>
+      <Show when={props.stateIndexGameData.isLoading && props.showWaitMessage() === true}>
         <Callout class="my-6 animate-appear">
           Looks like indexing your game data is taking a bit of time. If the transaction already succeeded in your
           wallet, please reload the page.
         </Callout>
         <Button {...props.api().closeButtonProps}>Close</Button>
+      </Show>
+      <Show when={props.stateIndexGameData.isError || props.stateIndexGameData.isSuccess}>
+        <Button class="mt-6" {...props.api().closeButtonProps}>
+          Go back
+        </Button>
       </Show>
     </DialogTrackProgress>
   )

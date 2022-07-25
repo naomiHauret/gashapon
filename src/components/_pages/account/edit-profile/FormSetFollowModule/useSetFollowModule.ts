@@ -13,7 +13,6 @@ import splitSignature from '@helpers/splitSignature'
 import { CONTRACT_LENS_HUB_PROXY } from '@config/contracts'
 import abiLensHubProxy from '@abis/lens-hub-proxy'
 import useToast from '@hooks/useToast'
-import { createEffect } from 'solid-js'
 
 export const FOLLOW_MODULE_TYPES = {
   FREE: 'free',

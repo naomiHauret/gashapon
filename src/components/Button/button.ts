@@ -3,10 +3,9 @@ import styles from './styles.module.css'
 
 export const button = cva(
   [
-    'inline-flex items-center justify-center',
+    'rounded-full inline-flex items-center justify-center',
     'focus:outline-none',
     'font-sans',
-    'rounded-full',
     'transition-colors transition-500',
     'disabled:opacity-50',
   ],
@@ -25,9 +24,12 @@ export const button = cva(
         ],
         accent: 'bg--accent text-black',
         'accent-revert': 'text-white bg-black hover:text-black hover:bg--accent border--accent',
-        danger: ['bg-negative-400 text-black'],
+        danger: ['bg-negative-400 hover:bg-opacity-90 focus:bg-negative-500 text-black'],
         'danger--revert': [
           'bg-black hover:bg-negative-400 hover:text-black focus:bg-negative-500 focus:text-black text-white focus:border-negative-500 border-negative-400',
+        ],
+        'neutral--revert': [
+          'bg-black hover:bg-neutral-100 hover:text-black focus:bg-neutral-300 focus:text-black text-white focus:border-transparent border-neutral-500',
         ],
       },
       aspect: {

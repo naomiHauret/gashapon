@@ -2,7 +2,7 @@ import * as tagsInput from '@zag-js/tags-input'
 import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
 import { Button } from '@components/Button'
 import { createMemo, createUniqueId, Show } from 'solid-js'
-import useUpdaGameMetadata from './useUpdateGameMetadata'
+import useIndexGameData from './useIndexGameData'
 import FieldsetGameInfo from './FieldsGameInfo'
 import FieldsetSystemRequirements from './FieldsSystemRequirements'
 import FieldsetMedias from './FieldsMedias'
@@ -17,6 +17,7 @@ export const FormIndexGameData = (props) => {
     storeForm,
     showWaitMessage,
     stateUploadNewGameData,
+    stateIndexGameData,
     gameThumbnailSrc,
     onInputGameThumbnailChange,
     stateUploadGameThumbnail,
@@ -33,8 +34,9 @@ export const FormIndexGameData = (props) => {
     filesMedias,
     removeMedia,
     apiDialogModalTrackProgress,
-  } = useUpdaGameMetadata({
+  } = useIndexGameData({
     initialData: props?.initialData,
+    reference: props?.reference,
   })
   const { form } = storeForm
   const [stateTagsInput, sendtagsInput] = useMachine(
@@ -134,6 +136,7 @@ export const FormIndexGameData = (props) => {
             filesMedias={filesMedias}
             stateUploadGameMedias={stateUploadGameMedias}
             stateUploadNewGameData={stateUploadNewGameData}
+            stateIndexGameData={stateIndexGameData}
             showWaitMessage={showWaitMessage}
           />
         </Portal>

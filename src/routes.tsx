@@ -45,7 +45,7 @@ const PageSettingsCollect = lazy(() => import('./pages/account/settings'))
 
 const PageDashboard = lazy(() => import('./pages/dashboard/index'))
 
-const PageCreateNewGame = lazy(() => import('./pages/game/new'))
+const PageCreateNewGame = lazy(() => import('./pages/dashboard/game/new'))
 const PageDashboardGamesList = lazy(() => import('./pages/dashboard/games'))
 const PageDashboardGameOverview = lazy(() => import('./pages/dashboard/game/[idGame]/index'))
 const PageDashboardGameEditData = lazy(() => import('./pages/dashboard/game/[idGame]/edit'))

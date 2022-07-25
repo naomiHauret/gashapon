@@ -1,4 +1,5 @@
 import { IconClose } from '@components/Icons'
+import { Show } from 'solid-js'
 import styles from './styles.module.css'
 export const DialogModal = (props) => {
   return (
@@ -9,7 +10,11 @@ export const DialogModal = (props) => {
           &#8203;
         </span>
         <div
-          class={`${styles.dialogContentBody} bg-black z-10 rounded-xl inline-block w-full max-w-screen-xs my-8 overflow-hidden align-middle`}
+          classList={{
+            [styles.dialogContentBody]: !props.isDanger,
+            [styles['dialogContentBody--danger']]: props.isDanger,
+          }}
+          class={`bg-black z-10 rounded-xl inline-block w-full max-w-screen-xs my-8 overflow-hidden align-middle`}
           {...props.api().underlayProps}
         >
           <div {...props.api().contentProps}>
@@ -21,12 +26,14 @@ export const DialogModal = (props) => {
             <p class="sr-only" {...props.api().descriptionProps}>
               {props.description}
             </p>
-            <button
-              class="absolute rounded-full flex items-center justify-center inline-end-2 top-2"
-              {...props.api().closeButtonProps}
-            >
-              <IconClose />
-            </button>
+            <Show when={!props.hideCloseButton}>
+              <button
+                class="absolute rounded-full flex items-center justify-center inline-end-2 top-2"
+                {...props.api().closeButtonProps}
+              >
+                <IconClose />
+              </button>
+            </Show>
             <div class="px-6 pt-4 pb-6">{props.children}</div>
           </div>
         </div>

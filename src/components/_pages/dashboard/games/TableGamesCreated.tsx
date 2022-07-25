@@ -73,7 +73,7 @@ const defaultColumns = [
     header: () => 'Genres',
     cell: (info) => (
       <ul class="flex space-y-3 text-2xs flex-col text-white text-opacity-75">
-        <For each={info.getValue().split(',')}>
+        <For each={info.getValue().split(';')}>
           {(genre) => (
             <li>
               {/* @ts-ignore */}
@@ -89,7 +89,7 @@ const defaultColumns = [
     header: () => 'Platforms',
     cell: (info) => (
       <ul class="text-white text-opacity-75 text-2xs flex space-y-4 flex-col">
-        <For each={info.getValue().split(',')}>
+        <For each={info.getValue().split(';')}>
           {(platform) => (
             <li>
               {/* @ts-ignore */}

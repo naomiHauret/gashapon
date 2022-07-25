@@ -208,7 +208,7 @@
   }
 
   .flair-game-status {
-    @apply text-3xs uppercase tracking-wide font-bold  px-1 py-0.5 rounded-md;
+    @apply inline-flex text-center text-3xs uppercase tracking-wide font-bold  px-1 py-0.5 rounded-md;
   }
 
   .flair-game-status--not-ready {

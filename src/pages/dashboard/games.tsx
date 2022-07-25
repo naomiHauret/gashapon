@@ -1,22 +1,24 @@
-import { LENS_PUBLICATIONS_APP_ID } from '@config/lens'
-import { getPublications } from '@graphql/publication/get-publications'
+import { LENS_PUBLICATIONS_APP_ID_GAMES_STORE } from '@config/lens'
+import { getPublications } from '@graphql/publications/get-publications'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
 import { createEffect, createResource, createSignal, For, Match, Show, Switch } from 'solid-js'
 import { Title } from 'solid-meta'
 import { Suspense } from 'solid-js'
 import Callout from '@components/Callout'
-import { ROUTE_DASHBOARD, ROUTE_DASHBOARD_LIST_GAMES, ROUTE_GAME } from '@config/routes'
-import { Link } from 'solid-app-router'
+import { ROUTE_CREATE_GAME, ROUTE_DASHBOARD, ROUTE_DASHBOARD_LIST_GAMES } from '@config/routes'
 import TableGamesCreated from '@components/_pages/dashboard/games/TableGamesCreated'
 import Breadcrumbs from '@components/Breadcrumbs'
 import { IconLock } from '@components/Icons'
+import Button from '@components/Button'
+import button from '@components/Button/button'
+import { Link } from 'solid-app-router'
 
 async function fetchGames(profileId) {
   if (!profileId) return
   const result = await getPublications({
     profileId,
     publicationTypes: ['POST'],
-    sources: [LENS_PUBLICATIONS_APP_ID],
+    sources: [LENS_PUBLICATIONS_APP_ID_GAMES_STORE],
   })
   return result
 }
@@ -32,9 +34,6 @@ export default function Page() {
     if (stateFetchDefaultProfile?.data?.id) setUserId(stateFetchDefaultProfile?.data?.id)
   })
 
-  createEffect(() => {
-    console.log(games())
-  })
   return (
     <>
       <Title>Created games dashboard - Gashapon</Title>
@@ -53,7 +52,16 @@ export default function Page() {
               },
             ]}
           />
-          <h1 class="font-bold text-2xl">Created games</h1>
+          <div class="mt-4 space-y-4 flex flex-col md:flex-row md:justify-between md:items-center md:space-y-0">
+            <h1 class="font-bold text-2xl">Created games</h1>
+            <Show when={userId()}>
+              <div>
+                <Link href={ROUTE_CREATE_GAME} class={button({ scale: 'xs' })}>
+                  Create new game
+                </Link>
+              </div>
+            </Show>
+          </div>
         </div>
       </div>
 
@@ -77,7 +85,19 @@ export default function Page() {
           <Show when={games()?.data?.publications}>
             <div class="animate-appear">
               <Switch>
-                <Match when={games()?.data?.publications?.items.length === 0}>No game created</Match>
+                <Match when={games()?.data?.publications?.items.length === 0}>
+                  <div class="mt-8 flex flex-col justify-center items-center">
+                    <p class="text-neutral-500 font-bold text-xl">It looks like you didn't create any game yet.</p>
+                    <Link
+                      class={button({
+                        class: 'mt-6',
+                      })}
+                      href={ROUTE_CREATE_GAME}
+                    >
+                      Create my first game
+                    </Link>
+                  </div>
+                </Match>
                 <Match when={games()?.data?.publications?.items.length > 0}>
                   <TableGamesCreated
                     games={games()?.data?.publications?.items.map((game) => ({

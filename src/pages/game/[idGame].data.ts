@@ -1,5 +1,5 @@
 import { createResource } from 'solid-js'
-import { getPublication } from '@graphql/publication/get-publication'
+import { getPublication } from '@graphql/publications/get-publication'
 
 async function fetchGameData(publicationId) {
   const game = await getPublication(`${publicationId}`)

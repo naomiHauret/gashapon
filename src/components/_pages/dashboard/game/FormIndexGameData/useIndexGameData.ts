@@ -1,10 +1,10 @@
-import { string, object, instanceof as zodValidationInstanceOf, number } from 'zod'
+import { string, object, instanceof as zodValidationInstanceOf } from 'zod'
 import { validator } from '@felte/validator-zod'
 import { createForm } from '@felte/solid'
 import { createAsyncStore } from '@hooks/useAsync'
 import * as dialog from '@zag-js/dialog'
 import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
-import { createMemo, createUniqueId } from 'solid-js'
+import { createEffect, createMemo, createUniqueId } from 'solid-js'
 import abiLensHubProxy from '@abis/lens-hub-proxy'
 import useToast from '@hooks/useToast'
 import { pollUntilIndexed } from '@graphql/transactions/is-indexed'
@@ -17,8 +17,10 @@ import splitSignature from '@helpers/splitSignature'
 import { CONTRACT_LENS_HUB_PROXY } from '@config/contracts'
 import { v4 as uuidv4 } from 'uuid'
 import { createSignal } from 'solid-js'
-import { createPublicationTypedData } from '@graphql/publication/create'
-import { LENS_PUBLICATIONS_APP_ID } from '@config/lens'
+import { createPublicationTypedData } from '@graphql/publications/create'
+import { LENS_PUBLICATIONS_APP_ID_GAMES_STORE } from '@config/lens'
+import { PORTAL } from '@config/skynet'
+import { login } from '@graphql/authentication/login'
 
 const schema = object({
   // About
@@ -36,10 +38,10 @@ const schema = object({
   // Promo material & content
   tagline: string().trim().max(140),
   description: string().trim(),
-  thumbnail: zodValidationInstanceOf(File).optional(),
+  thumbnail: zodValidationInstanceOf(File).optional().or(string()),
   videoTrailerUrl: string().url().or(string().max(0)),
-  banner: zodValidationInstanceOf(File).optional(),
-  medias: zodValidationInstanceOf(File).array().optional(),
+  banner: zodValidationInstanceOf(File).optional().or(string()),
+  medias: zodValidationInstanceOf(File).array().optional().or(string()),
   website: string().url().or(string().max(0)),
 
   // Alternative distribution platforms
@@ -69,8 +71,9 @@ const useStoreUploadGameThumbnail = createAsyncStore()
 const useStoreUploadGameBanner = createAsyncStore()
 const useStoreUploadGameMedias = createAsyncStore()
 const useStoreUploadNewGameData = createAsyncStore()
+const useStoreIndexGameData = createAsyncStore()
 
-export function useUpdaGameMetadata(options) {
+export function useIndexGameData(options) {
   const [stateDialogModalTrackProgress, sendDialogModalTrackProgress] = useMachine(
     dialog.machine({
       role: 'alertdialog',
@@ -86,7 +89,7 @@ export function useUpdaGameMetadata(options) {
   const dialogModalTrackProgressRef = useSetup({ send: sendDialogModalTrackProgress, id: createUniqueId() })
 
   //@ts-ignore
-  const { uploadData } = useSkynet()
+  const { uploadData, setDataLink, getEntryLink, getFileMetadata } = useSkynet()
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const toast = useToast()
@@ -94,6 +97,8 @@ export function useUpdaGameMetadata(options) {
   const stateUploadGameBanner = useStoreUploadGameBanner()
   const stateUploadGameMedias = useStoreUploadGameMedias()
   const stateUploadNewGameData = useStoreUploadNewGameData()
+  const stateIndexGameData = useStoreIndexGameData()
+
   const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
 
   // Game thumbnail
@@ -129,15 +134,15 @@ export function useUpdaGameMetadata(options) {
     stateUploadGameThumbnail.setIsLoading(true)
     try {
       const url = await uploadData({ file: fileGameThumbnail(), silentUpload: true })
-      setGameThumbnailSrc(url)
+      setGameThumbnailSrc(url.https)
       stateUploadGameThumbnail.setIsSuccess(true)
       stateUploadGameThumbnail.setIsLoading(false)
       stateUploadGameThumbnail.setError(null, false)
     } catch (e) {
       console.error(e)
-      stateUploadNewGameData.setIsLoading(false)
-      stateUploadNewGameData.setIsSuccess(false)
-      stateUploadNewGameData.setError(e?.message ?? e, true)
+      stateIndexGameData.setIsLoading(false)
+      stateIndexGameData.setIsSuccess(false)
+      stateIndexGameData.setError(e?.message ?? e, true)
       stateUploadGameThumbnail.setIsSuccess(false)
       stateUploadGameThumbnail.setIsLoading(false)
       stateUploadGameThumbnail.setError(e?.message ?? e, true)
@@ -154,15 +159,15 @@ export function useUpdaGameMetadata(options) {
     stateUploadGameBanner.setIsLoading(true)
     try {
       const url = await uploadData({ file: fileGameBanner(), silentUpload: true })
-      setGameBannerSrc(url)
+      setGameBannerSrc(url.https)
       stateUploadGameBanner.setIsSuccess(true)
       stateUploadGameBanner.setIsLoading(false)
       stateUploadGameBanner.setError(null, false)
     } catch (e) {
       console.error(e)
-      stateUploadNewGameData.setIsLoading(false)
-      stateUploadNewGameData.setIsSuccess(false)
-      stateUploadNewGameData.setError(e?.message ?? e, true)
+      stateIndexGameData.setIsLoading(false)
+      stateIndexGameData.setIsSuccess(false)
+      stateIndexGameData.setError(e?.message ?? e, true)
       stateUploadGameBanner.setIsSuccess(false)
       stateUploadGameBanner.setIsLoading(false)
       stateUploadGameBanner.setError(e?.message ?? e, true)
@@ -188,13 +193,14 @@ export function useUpdaGameMetadata(options) {
     //@ts-ignore
     setFilesMedias([...newFilesArray])
   }
+  gameThumbnailSrc() && gameThumbnailSrc() !== null
 
   function removeMedia(index) {
     const newMediasArray = mediasSrc().filter((media, i) => index !== i)
     //@ts-ignore
-    const newFilesArray = filesMedias().filter((file, i) => index !== i)
+    const newFilesArray = filesMedias()?.filter((file, i) => index !== i)
     setMediasSrc([...newMediasArray])
-    setFilesMedias([...newFilesArray])
+    if (filesMedias()) setFilesMedias([...newFilesArray])
   }
 
   function removeBanner() {
@@ -210,55 +216,93 @@ export function useUpdaGameMetadata(options) {
   async function uploadGameMedias() {
     stateUploadGameMedias.setIsLoading(true)
     try {
-      const url = await uploadData({ file: filesMedias(), silentUpload: true })
-      setMediasSrc(url)
+      let uploadedFilesLinks = []
+      //@ts-ignore
+      for (let i = 0; i < filesMedias()?.length; i++) {
+        const url = await uploadData({ file: filesMedias()[i], silentUpload: true })
+        uploadedFilesLinks = [...uploadedFilesLinks, url.https]
+      }
+      setMediasSrc([...uploadedFilesLinks])
       stateUploadGameMedias.setIsSuccess(true)
       stateUploadGameMedias.setIsLoading(false)
       stateUploadGameMedias.setError(null, false)
     } catch (e) {
       console.error(e)
-      stateUploadNewGameData.setIsLoading(false)
-      stateUploadNewGameData.setIsSuccess(false)
-      stateUploadNewGameData.setError(e?.message ?? e, true)
+      stateIndexGameData.setIsLoading(false)
+      stateIndexGameData.setIsSuccess(false)
+      stateIndexGameData.setError(e?.message ?? e, true)
       stateUploadGameMedias.setIsSuccess(false)
       stateUploadGameMedias.setIsLoading(false)
       stateUploadGameMedias.setError(e?.message ?? e, true)
     }
   }
 
-  async function updateGameMetadata(values) {
+  async function uploadGameData(jsonFile) {
     stateUploadNewGameData.setIsLoading(true)
-    stateUploadNewGameData.setError(null, false)
-    apiDialogModalTrackProgress().open()
     try {
+      const url = await uploadData({
+        file: jsonFile,
+        silentUpload: true,
+      })
+      stateUploadNewGameData.setIsSuccess(true)
+      stateUploadNewGameData.setIsLoading(false)
+      stateUploadNewGameData.setError(null, false)
+      return url
+    } catch (e) {
+      console.error(e)
+      stateIndexGameData.setIsLoading(false)
+      stateIndexGameData.setIsSuccess(false)
+      stateIndexGameData.setError(e?.message ?? e, true)
+      stateUploadNewGameData.setIsSuccess(false)
+      stateUploadNewGameData.setIsLoading(false)
+      stateUploadNewGameData.setError(e?.message ?? e, true)
+    }
+  }
+
+  async function updateGameMetadata(values) {
+    stateIndexGameData.setIsLoading(true)
+    stateIndexGameData.setError(null, false)
+    apiDialogModalTrackProgress().open()
+    const uuid = options?.reference ?? uuidv4()
+    try {
+      await login()
       // If thumbnail changed
-      if (gameThumbnailSrc() && gameThumbnailSrc() !== null) {
+      if (fileGameThumbnail()) {
         // Upload it to skynet
         await uploadGameThumbnail()
       }
       // If game banner changed
-      if (gameBannerSrc() && gameBannerSrc() !== null) {
+      if (fileGameBanner()) {
         // Upload it to skynet
         await uploadGameBanner()
       }
       // If game medias changed
-      if (mediasSrc() && mediasSrc() !== null) {
+
+      if (filesMedias()) {
         // Upload it to skynet
         await uploadGameMedias()
       }
+      const thumbnailMetadata = fileGameThumbnail()
+        ? fileGameThumbnail()?.type
+        : await getFileMetadata(gameThumbnailSrc())
       const gameMetadata = {
-        appId: LENS_PUBLICATIONS_APP_ID,
+        appId: LENS_PUBLICATIONS_APP_ID_GAMES_STORE,
         description: `${values.title} - Digital Gashapon Game Caspule`,
-        content: `${values.title}, a game distributed on Gashapon.`,
+        content: `${values.title} is a game distributed on Gashapon.`,
         name: `${values.title} - Game info`,
         image: gameThumbnailSrc(),
-        imageMimeType: '',
-        media: mediasSrc(),
+        //@ts-ignore
+        imageMimeType: thumbnailMetadata,
         attributes: [
           {
             displayType: 'string',
             value: 'game-info',
             traitType: 'type',
+          },
+          {
+            displayType: 'string',
+            value: uuid,
+            traitType: 'reference',
           },
           {
             displayType: 'string',
@@ -292,22 +336,22 @@ export function useUpdaGameMetadata(options) {
           },
           {
             displayType: 'string',
-            value: values?.genres ? values?.genres.toString() : null,
+            value: values?.genres ? values?.genres.join(';') : null,
             traitType: 'genres',
           },
           {
             displayType: 'string',
-            value: values?.tags ? values?.tags.toString() : null,
+            value: values?.tags ? values?.tags.join(';') : null,
             traitType: 'tags',
           },
           {
             displayType: 'string',
-            value: values?.playerModes ? values?.playerModes.toString() : null,
+            value: values?.playerModes ? values?.playerModes.join(';') : null,
             traitType: 'playerModes',
           },
           {
             displayType: 'string',
-            value: values?.platforms ? values?.platforms.toString() : null,
+            value: values?.platforms ? values?.platforms.join(';') : null,
             traitType: 'platforms',
           },
           {
@@ -317,8 +361,8 @@ export function useUpdaGameMetadata(options) {
           },
           {
             displayType: 'string',
-            value: mediasSrc() ?? null,
-            traitType: 'thumbnail',
+            value: mediasSrc() ? mediasSrc().join(';') : null,
+            traitType: 'medias',
           },
           {
             displayType: 'string',
@@ -355,11 +399,6 @@ export function useUpdaGameMetadata(options) {
             displayType: 'string',
             value: gameBannerSrc() ?? null,
             traitType: 'banner',
-          },
-          {
-            displayType: 'string',
-            value: mediasSrc() ?? null,
-            traitType: 'medias',
           },
           {
             displayType: 'string',
@@ -423,26 +462,35 @@ export function useUpdaGameMetadata(options) {
           },
         ],
         version: '1.0.0',
-        metadata_id: uuidv4(),
+        metadata_id: uuid,
       }
 
       const gameDataJSON = new File(
         [JSON.stringify(gameMetadata)],
-        `gashapon-game-${values.title.toLowerCase().replace(' ', '_')}-${gameMetadata.metadata_id}-${
-          stateFetchDefaultProfile.data.id
-        }.json`,
+        `gashapon-game-${uuid}-${stateFetchDefaultProfile.data.id}.json`,
         { type: 'application/json' },
       )
-      const metadataUrl = await uploadData({
-        file: gameDataJSON,
-        successMessage: 'Game data uploaded successfully!',
-        errorMessage: "Something went wrong and your game data couldn't be uploaded to Skynet.",
-      })
+      const metadataUrl = await uploadGameData(gameDataJSON)
+      const dataKey = uuid
+      const skylink = metadataUrl.skylink
 
-      // After all files upload
+      // set a registry entry to point at 'skylink'
+      await setDataLink(dataKey, skylink)
+
+      // get the resolver skylink which references the registry entry
+      const resolverSkylink = await getEntryLink(stateFetchDefaultProfile.data.id, dataKey)
+
+      if (options.initialData) {
+        stateIndexGameData.setError(null, false)
+        stateIndexGameData.setIsLoading(false)
+        stateIndexGameData.setIsSuccess(true)
+        return
+      }
+
+      // After all files are uploaded
       const newGameRequest = {
         profileId: stateFetchDefaultProfile.data.id,
-        contentURI: metadataUrl,
+        contentURI: `${PORTAL}/${resolverSkylink.replace('sia://', '')}`,
         collectModule: {
           freeCollectModule: {
             followerOnly: false,
@@ -453,7 +501,6 @@ export function useUpdaGameMetadata(options) {
         },
       }
       const result = await createPublicationTypedData(newGameRequest)
-
       if (result?.data) {
         const typedData = result.data.createPostTypedData.typedData
         const signature = await signTypedData({
@@ -461,9 +508,7 @@ export function useUpdaGameMetadata(options) {
           types: omit(typedData?.types, '__typename'),
           value: omit(typedData?.value, '__typename'),
         })
-
         const { v, r, s } = splitSignature(signature)
-
         const tx = await writeContract({
           addressOrName: CONTRACT_LENS_HUB_PROXY,
           contractInterface: abiLensHubProxy,
@@ -485,8 +530,8 @@ export function useUpdaGameMetadata(options) {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
-        stateUploadNewGameData.setIsSuccess(true)
-        stateUploadNewGameData.setData(result.data)
+        stateIndexGameData.setIsSuccess(true)
+        stateIndexGameData.setData(result.data)
         //@ts-ignore
 
         toast().create({
@@ -494,7 +539,9 @@ export function useUpdaGameMetadata(options) {
           title: `Your game was created successfully!`,
         })
       } else {
-        stateUploadNewGameData.setError(result.error.message, true)
+        stateIndexGameData.setError(result.error.message, true)
+        stateIndexGameData.setIsLoading(false)
+        stateIndexGameData.setIsSuccess(false)
         //@ts-ignore
         toast().create({
           type: 'error',
@@ -503,9 +550,9 @@ export function useUpdaGameMetadata(options) {
       }
     } catch (e) {
       console.error(e)
-      stateUploadNewGameData.setError(e?.message ?? e, true)
-      stateUploadNewGameData.setIsLoading(false)
-      stateUploadNewGameData.setIsSuccess(false)
+      stateIndexGameData.setError(e?.message ?? e, true)
+      stateIndexGameData.setIsLoading(false)
+      stateIndexGameData.setIsSuccess(false)
       //@ts-ignore
       toast().create({
         type: 'error',
@@ -514,6 +561,30 @@ export function useUpdaGameMetadata(options) {
       console.error(e)
     }
   }
+
+  createEffect(() => {
+    if (!apiDialogModalTrackProgress().isOpen) {
+      stateUploadNewGameData.setIsLoading(false)
+      stateUploadNewGameData.setIsSuccess(false)
+      stateUploadNewGameData.setError(null, false)
+
+      stateUploadGameBanner.setIsSuccess(false)
+      stateUploadGameBanner.setIsLoading(false)
+      stateUploadGameBanner.setError(null, false)
+
+      stateUploadGameThumbnail.setIsSuccess(false)
+      stateUploadGameThumbnail.setIsLoading(false)
+      stateUploadGameThumbnail.setError(null, false)
+
+      stateUploadGameMedias.setIsSuccess(false)
+      stateUploadGameMedias.setIsLoading(false)
+      stateUploadGameMedias.setError(null, false)
+
+      stateIndexGameData.setIsLoading(false)
+      stateIndexGameData.setIsSuccess(false)
+      stateIndexGameData.setError(null, false)
+    }
+  })
 
   return {
     storeForm,
@@ -538,9 +609,11 @@ export function useUpdaGameMetadata(options) {
     removeMedia,
     filesMedias,
 
+    stateIndexGameData,
+
     apiDialogModalTrackProgress,
     dialogModalTrackProgressRef,
   }
 }
 
-export default useUpdaGameMetadata
+export default useIndexGameData

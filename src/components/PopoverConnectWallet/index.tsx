@@ -148,13 +148,13 @@ export const PopoverConnectWallet = (props) => {
                   <div class={popoverStyles.popoverSectionName}>Creator</div>
                   <ul>
                     <li>
-                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_CREATE_GAME}>
-                        Create new game
+                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_DASHBOARD}>
+                        Dashboard
                       </Link>
                     </li>
                     <li>
-                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_DASHBOARD}>
-                        Dashboard
+                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_CREATE_GAME}>
+                        Create new game
                       </Link>
                     </li>
                   </ul>

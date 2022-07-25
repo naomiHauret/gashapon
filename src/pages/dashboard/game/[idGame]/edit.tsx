@@ -13,7 +13,9 @@ import { Title } from 'solid-meta'
 export default function Page() {
   const game = useRouteData()
   const params = useParams()
-
+  createEffect(() => {
+    console.log(game()?.data)
+  })
   return (
     <>
       <Suspense fallback={<>Loading...</>}>
@@ -75,6 +77,10 @@ export default function Page() {
             </div>
             <main class="container animate-appear mx-auto">
               <FormIndexGameData
+                reference={
+                  game()?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'reference')[0]
+                    ?.value
+                }
                 initialData={{
                   title: game()?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]
                     ?.value,
@@ -95,19 +101,19 @@ export default function Page() {
                   )[0]?.value,
                   genres: game()
                     ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'genres')[0]
-                    ?.value?.split(','),
+                    ?.value?.split(';'),
                   medias: game()
                     ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'medias')[0]
-                    ?.value?.split(','),
+                    ?.value?.split(';'),
                   tags: game()
                     ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'tags')[0]
-                    ?.value?.split(','),
+                    ?.value?.split(';'),
                   playerModes: game()
                     ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'playerModes')[0]
-                    ?.value?.split(','),
+                    ?.value?.split(';'),
                   platforms: game()
                     ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'platforms')[0]
-                    ?.value?.split(','),
+                    ?.value?.split(';'),
                   thumbnail: game()?.data?.publication?.metadata?.attributes.filter(
                     (attr) => attr.traitType === 'thumbnail',
                   )[0]?.value,
