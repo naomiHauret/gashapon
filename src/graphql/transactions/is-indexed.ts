@@ -83,8 +83,10 @@ async function hasTxBeenIndexed(txHash: string) {
       request: {
         txHash,
       },
-      fetchPolicy: 'network-only',
-    })
+    }, {
+      requestPolicy: 'network-only',
+    }
+  )
     .toPromise()
   return isIndexed
 }
@@ -94,7 +96,6 @@ export async function pollUntilIndexed(txHash: string) {
     const result = await hasTxBeenIndexed(txHash)
 
     const response = result.data.hasTxHashBeenIndexed
-    console.log(response, response.__typename)
     if (response.__typename === 'TransactionIndexedResult') {
       if (response.metadataStatus) {
         if (response.metadataStatus.status === 'SUCCESS') {
@@ -109,8 +110,7 @@ export async function pollUntilIndexed(txHash: string) {
           return response
         }
       }
-
-      // sleep for a 1.5 sec before trying again
+      // sleep for a second before trying again
       await sleep(1500)
     } else {
       // it got reverted and failed!

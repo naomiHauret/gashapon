@@ -165,7 +165,9 @@ export const DialogTrackProgressDataIndexing = (props) => {
           </Switch>
           <div>
             Indexing your changes on Lens. <br />
-            <span class="font-bold">Make sure to sign both the message and the transaction in your wallet !</span>
+            <Show when={!props.stateEditProfile.isSuccess}>
+              <span class="font-bold">Make sure to sign both the message and the transaction in your wallet !</span>
+            </Show>
           </div>
         </li>
       </ol>

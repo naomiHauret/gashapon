@@ -121,9 +121,10 @@ export const ListGames = (props) => {
             {(game) => (
               <li class="animate-appear relative bg-neutral-500 bg-opacity-10 focus-within:bg-opacity-15 md:bg-opacity-0">
                 <article class="flex flex-col md:flex-row md:space-i-6">
-                  <div class="rounded-t-md overflow-hidden md:rounded-none w-full aspect-banner md:w-auto md:h-inherit md:max-w-1/3">
+                  <div class="relative rounded-t-md overflow-hidden md:rounded-none w-full aspect-banner md:h-inherit md:w-ful md:max-w-1/3">
+                    <div class="absolute top-0 left-0 w-full h-full bg-white bg-opacity-10 animate-pulse" />
                     <img
-                      class="w-full h-full object-cover"
+                      class="relative z-10 w-full h-full object-cover"
                       src={game.metadata.attributes.filter((attr) => attr.traitType === 'banner')[0]?.value}
                       alt=""
                     />

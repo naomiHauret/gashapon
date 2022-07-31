@@ -47,14 +47,14 @@ export function ProviderUserVerification(props) {
   const dialogRef = useSetup({ send, id: dialogId })
   const dialogApi = createMemo(() => dialog.connect(state, send, normalizeProps))
 
-  const [storage, setStorage, { remove }] = createCookieStorage()
+  const [storage, setStorage, { clear }] = createCookieStorage()
   const { accountData } = useAccount()
   const { networkData } = useNetwork()
 
   const walletVerifiedState = useVerifyWalletStore()
 
   async function verify() {
-    remove(COOKIE_ACCESS_TOKENS)
+    clear()
     walletVerifiedState.setLoading(true)
     walletVerifiedState.setError(null)
 
@@ -105,7 +105,7 @@ export function ProviderUserVerification(props) {
   const store = {
     walletVerifiedState,
     storage,
-    remove,
+    clear,
     dialogApi,
     dialogRef,
     verify,

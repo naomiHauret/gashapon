@@ -30,8 +30,8 @@ export default function Page() {
       <main class="mx-auto container">
         <h1 class="font-bold text-2xl mb-8">Explore and discover the latest games</h1>
 
-        <Switch fallback={<span>Loading...</span>}>
-          <Match when={!games()?.data?.explorePublications?.items}>
+        <Switch fallback={<>Loading...</>}>   
+          <Match when={games()?.error?.message}>
             <Callout>{games()?.error?.message}</Callout>
           </Match>
           <Match when={games()?.data?.explorePublications?.items?.length === 0}>Empty</Match>
