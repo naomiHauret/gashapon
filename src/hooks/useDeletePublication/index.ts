@@ -1,6 +1,6 @@
 import { createAsyncStore } from '@hooks/useAsync'
 import * as dialog from '@zag-js/dialog'
-import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
+import { normalizeProps, useMachine } from '@zag-js/solid'
 import { createMemo, createUniqueId } from 'solid-js'
 import useToast from '@hooks/useToast'
 import deletePublication from '@graphql/publications/delete-publication'
@@ -11,12 +11,13 @@ export function useDeletePublication() {
     dialog.machine({
       closeOnOutsideClick: false,
       closeOnEsc: false,
+      id: createUniqueId(),
     }),
   )
   const apiDialogModalDeletePublication = createMemo(() =>
     dialog.connect(stateDialogModalDeletePublication, sendDialogModalDeletePublication, normalizeProps),
   )
-  const refDialogModalDeletePublication = useSetup({ send: sendDialogModalDeletePublication, id: createUniqueId() })
+
   const toast = useToast()
   const stateDeletePublication = useStoreDeletePublication()
 
@@ -63,7 +64,6 @@ export function useDeletePublication() {
     unindexPublication,
     stateDeletePublication,
     apiDialogModalDeletePublication,
-    refDialogModalDeletePublication,
   }
 }
 

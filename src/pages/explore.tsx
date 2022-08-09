@@ -30,7 +30,7 @@ export default function Page() {
       <main class="mx-auto container">
         <h1 class="font-bold text-2xl mb-8">Explore and discover the latest games</h1>
 
-        <Switch fallback={<>Loading...</>}>   
+        <Switch fallback={<>Loading...</>}>
           <Match when={games()?.error?.message}>
             <Callout>{games()?.error?.message}</Callout>
           </Match>

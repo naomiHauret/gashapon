@@ -20,7 +20,7 @@ const defaultColumns = [
       <>
         <span class="font-mono text-2xs">{info.getValue()}</span>
         <Link
-          class="absolute top-0 left-0 w-full h-full z-10 opacity-0"
+          class="absolute top-0 left-0 w-full h-full z-20 opacity-0"
           href={ROUTE_DASHBOARD_GAME_OVERVIEW.replace(':idGame', info.getValue())}
         >
           Go to game overview page
@@ -38,8 +38,9 @@ const defaultColumns = [
     header: () => 'Thumbnail',
     accessorKey: 'thumbnail',
     cell: (info) => (
-      <div class="relative w-32 md:w-auto md:h-20 lg:h-32 aspect-game-thumbnail overflow-hidden rounded-md bg-neutral-400">
-        <img class="absolute w-full h-full object-cover" src={info.getValue()} alt="" />
+      <div class="relative w-32 md:w-auto md:h-20 lg:h-32 aspect-game-thumbnail overflow-hidden">
+        <span class="bg-white bg-opacity-10 animate-pulse absolute top-0 left-0 w-full h-full block" />
+        <img class="absolute z-10 w-full h-full object-cover" src={info.getValue()} alt="" />
       </div>
     ),
   },

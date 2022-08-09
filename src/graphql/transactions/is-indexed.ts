@@ -79,14 +79,17 @@ const HAS_TX_BEEN_INDEXED = `
 
 async function hasTxBeenIndexed(txHash: string) {
   const isIndexed = await client
-    .query(HAS_TX_BEEN_INDEXED, {
-      request: {
-        txHash,
+    .query(
+      HAS_TX_BEEN_INDEXED,
+      {
+        request: {
+          txHash,
+        },
       },
-    }, {
-      requestPolicy: 'network-only',
-    }
-  )
+      {
+        requestPolicy: 'network-only',
+      },
+    )
     .toPromise()
   return isIndexed
 }

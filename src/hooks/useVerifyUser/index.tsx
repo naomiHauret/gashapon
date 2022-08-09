@@ -1,6 +1,6 @@
 import { createContext, createEffect, createMemo, createUniqueId, useContext } from 'solid-js'
 import { addMinutes } from 'date-fns'
-import { useMachine, useSetup, normalizeProps } from '@zag-js/solid'
+import { useMachine, normalizeProps } from '@zag-js/solid'
 import * as dialog from '@zag-js/dialog'
 import { createCookieStorage } from '@solid-primitives/storage'
 import { signMessage } from '@wagmi/core'
@@ -37,24 +37,23 @@ const ContextUserVerification = createContext()
 
 export function ProviderUserVerification(props) {
   const toast = useToast()
-  const dialogId = createUniqueId()
   const [state, send] = useMachine(
     dialog.machine({
+      id: createUniqueId(),
       closeOnOutsideClick: false,
       closeOnEsc: false,
     }),
   )
-  const dialogRef = useSetup({ send, id: dialogId })
   const dialogApi = createMemo(() => dialog.connect(state, send, normalizeProps))
 
-  const [storage, setStorage, { clear }] = createCookieStorage()
+  const [storage, setStorage, { remove }] = createCookieStorage()
   const { accountData } = useAccount()
   const { networkData } = useNetwork()
 
   const walletVerifiedState = useVerifyWalletStore()
 
   async function verify() {
-    clear()
+    remove(COOKIE_ACCESS_TOKENS)
     walletVerifiedState.setLoading(true)
     walletVerifiedState.setError(null)
 
@@ -94,7 +93,8 @@ export function ProviderUserVerification(props) {
     if (
       accountData().address &&
       networkData()?.chain?.unsupported === false &&
-      storage[COOKIE_ACCESS_TOKENS] !== null
+      storage[COOKIE_ACCESS_TOKENS] !== null &&
+      storage[COOKIE_ACCESS_TOKENS]
     ) {
       walletVerifiedState.setLoading(false)
       walletVerifiedState.setVerified(true)
@@ -105,9 +105,8 @@ export function ProviderUserVerification(props) {
   const store = {
     walletVerifiedState,
     storage,
-    clear,
+    remove,
     dialogApi,
-    dialogRef,
     verify,
   }
 

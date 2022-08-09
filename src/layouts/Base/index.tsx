@@ -20,10 +20,16 @@ import Button from '@components/Button'
 import Navigation from './Navigation'
 import useAccount from '@hooks/useAccount'
 import useCurrentUserDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
+import useNetwork from '@hooks/useNetwork'
+import { chain } from '@wagmi/core'
+import { chains } from '@config/wagmi'
+import { useConnect } from '@hooks/useConnect'
 
 export const BasicLayout = (props) => {
-  //@ts-ignore
   const { accountData } = useAccount()
+  const { networkData } = useNetwork()
+  const { switchToSupportedNetwork } = useConnect()
+
   //@ts-ignore
   const { walletVerifiedState, dialogApi, verify } = useVerifyUser()
   //@ts-ignore
@@ -49,7 +55,10 @@ export const BasicLayout = (props) => {
   })
 
   createEffect(async () => {
-    if (accountData().address && walletVerifiedState.connected && walletVerifiedState.verified) {
+    if (
+      (accountData().address && walletVerifiedState.connected && walletVerifiedState.verified) ||
+      stateFetchDefaultProfile.refresh === true
+    ) {
       await fetchProfiles()
       await fetchDefaultProfile()
     } else {
@@ -143,16 +152,23 @@ export const BasicLayout = (props) => {
                 <p class="mt-5 text-rose-400 font-bold">Something went wrong, please try verifying again.</p>
               </Show>
               <div class="flex">
-                <Button
-                  isLoading={walletVerifiedState.loading === true}
-                  onClick={async () => await verify()}
-                  class="mx-auto mt-5"
-                >
-                  <Switch>
-                    <Match when={walletVerifiedState.error === null}>Verify my wallet</Match>
-                    <Match when={walletVerifiedState.error !== null}>Try again</Match>
-                  </Switch>
-                </Button>
+                <Show when={networkData()?.chain?.unsupported === false}>
+                  <Button
+                    isLoading={walletVerifiedState.loading === true}
+                    onClick={async () => await verify()}
+                    class="mx-auto mt-5"
+                  >
+                    <Switch>
+                      <Match when={walletVerifiedState.error === null}>Verify my wallet</Match>
+                      <Match when={walletVerifiedState.error !== null}>Try again</Match>
+                    </Switch>
+                  </Button>
+                </Show>
+                <Show when={networkData()?.chain?.unsupported === true}>
+                  <Button onClick={switchToSupportedNetwork} class="mx-auto mt-5">
+                    Switch to {chains[0].id === chain.polygon.id ? 'Polygon' : 'Polygon Mumbai'} network
+                  </Button>
+                </Show>
               </div>
             </Show>
           </DialogModal>

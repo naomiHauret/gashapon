@@ -1,13 +1,13 @@
 import Button from '@components/Button'
 import * as dialog from '@zag-js/dialog'
-import { useMachine, useSetup, normalizeProps } from '@zag-js/solid'
+import { useMachine, normalizeProps } from '@zag-js/solid'
 import DialogSendTip from '@components/DialogSendTip'
 import { IconItch, IconTwitch, IconTwitter, IconWebsite } from '@components/Icons'
 import useAccount from '@hooks/useAccount'
 import useIsFollowing from '@hooks/useIsFollowing'
 import useNetwork from '@hooks/useNetwork'
 import useVerifyUser from '@hooks/useVerifyUser'
-import { createEffect, For, Show, createMemo } from 'solid-js'
+import { createEffect, For, Show, createMemo, createUniqueId } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import ButtonFollow from './ButtonFollow'
 
@@ -37,8 +37,11 @@ export const UserProfileLayout = (props) => {
   const { walletVerifiedState } = useVerifyUser()
   //@ts-ignore
   const { stateIsFollowingThisProfile, checkIfIsFollowing } = useIsFollowing()
-  const [stateDialogSendTip, sendDialogSendTip] = useMachine(dialog.machine)
-  const refDialogSendTip = useSetup({ send: sendDialogSendTip, id: 'dialog-send-tip' })
+  const [stateDialogSendTip, sendDialogSendTip] = useMachine(
+    dialog.machine({
+      id: createUniqueId(),
+    }),
+  )
   const apiDialogSendTip = createMemo(() => dialog.connect(stateDialogSendTip, sendDialogSendTip, normalizeProps))
 
   // Update UI with custom user data
@@ -101,7 +104,6 @@ export const UserProfileLayout = (props) => {
                   <ButtonFollow profile={props?.profile} />
                 </div>
                 <Button
-                  ref={refDialogSendTip}
                   {...apiDialogSendTip().triggerProps}
                   disabled={
                     !networkData()?.chain ||

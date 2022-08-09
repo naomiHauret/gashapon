@@ -256,9 +256,25 @@
 
 :root {
   --accent-user-profile: ;
+  --swiper-pagination-bullet-inactive-color: theme('colors.white');
+  --swiper-theme-color: var(--brand);
+  --swiper-navigation-color: theme('colors.white');
 }
+
+html {
+  @apply bg-black;
+}
+
 #page-user-profile {
   accent-color: var(--accent-user-profile);
+}
+
+.swiper-slide {
+  @apply flex justify-center items-center m-auto p-3 !important;
+}
+
+.swiper-pagination-bullet-active {
+  --swiper-theme-color: var(--brand);
 }
 
 .toast-group [data-part='root'] {

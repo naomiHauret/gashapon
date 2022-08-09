@@ -20,12 +20,7 @@ import { IconLock } from '@components/Icons'
 export default function Page() {
   const game = useRouteData()
   const params = useParams()
-  const {
-    unindexPublication,
-    stateDeletePublication,
-    apiDialogModalDeletePublication,
-    refDialogModalDeletePublication,
-  } = useDeletePublication()
+  const { unindexPublication, stateDeletePublication, apiDialogModalDeletePublication } = useDeletePublication()
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
   createEffect(() => {
@@ -101,14 +96,18 @@ export default function Page() {
                   <div class="flex flex-col md:flex-row md:justify-between md:items-center">
                     <div>
                       <div class="flex flex-col space-y-2 xs:space-y-0 xs:flex-row xs:space-i-6">
-                        <img
-                          class="w-full 2xs:w-48 xs:w-32 aspect-game-thumbnail rounded-md bg-neutral-500"
-                          src={
-                            game()?.data?.publication?.metadata?.attributes.filter(
-                              (attr) => attr.traitType === 'thumbnail',
-                            )[0]?.value
-                          }
-                        />
+                        <div class="relative w-32 md:w-auto md:h-20 lg:h-32 aspect-game-thumbnail overflow-hidden rounded-md">
+                          <span class="w-full h-full absolute top-0 left-0 bg-white bg-opacity-10 animate-pulse block" />
+                          <img
+                            class="w-full h-full object-cover relative z-10"
+                            src={
+                              game()?.data?.publication?.metadata?.attributes.filter(
+                                (attr) => attr.traitType === 'thumbnail',
+                              )[0]?.value
+                            }
+                          />
+                        </div>
+
                         <div class="xs:pie-6">
                           <h1 class="font-bold text-2xl">
                             {

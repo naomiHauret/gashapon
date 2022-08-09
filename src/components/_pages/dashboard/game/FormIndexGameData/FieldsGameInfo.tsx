@@ -12,6 +12,7 @@ import InputTags from '@components/InputTags'
 import { RadioGroup, RadioGroupOption } from 'solid-headless'
 import { IconCamera, IconCircleSolidClose } from '@components/Icons'
 import FormSelect from '@components/FormSelect'
+import RichTextEditor from '@components/RichTextEditor'
 
 export const FieldsGameInfo = (props) => {
   return (
@@ -235,7 +236,7 @@ export const FieldsGameInfo = (props) => {
           <FormField.Description id="input-tags-description">
             Any other keywords to describe your game.
           </FormField.Description>
-          <InputTags placeholder="Type your game tags..." ref={props.refTagsInput} api={props.apiTagsInput} />
+          <InputTags placeholder="Type your game tags..." api={props.apiTagsInput} />
         </FormField.InputField>
         <FormField.HelpBlock id="input-tags-helpblock">Minimum 1 tag, maximum 10.</FormField.HelpBlock>
       </FormField>
@@ -262,14 +263,8 @@ export const FieldsGameInfo = (props) => {
         <FormField.InputField>
           <FormField.Label for="description">Description</FormField.Label>
           <FormField.Description id="input-description-description">A description of your game</FormField.Description>
-          <FormTextarea
-            rows="10"
-            name="description"
-            id="description"
-            class="w-full"
-            value={props?.initialData?.description}
-            aria-describedby="input-description-description input-description-helpblock"
-          />
+
+          <RichTextEditor ref={props.ref} editor={props.gameDescriptionTipTapEditor} />
         </FormField.InputField>
         <FormField.HelpBlock id="input-description-helpblock">A description is required.</FormField.HelpBlock>
       </FormField>

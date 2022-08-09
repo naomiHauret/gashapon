@@ -16,7 +16,7 @@ export function useDeleteAccount() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const stateDeleteAccount = useStoreDeleteAccount()
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
   const toast = useToast()
 
   async function deleteCurrentAccount() {
@@ -54,6 +54,7 @@ export function useDeleteAccount() {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateDeleteAccount.setIsSuccess(true)
         stateDeleteAccount.setData(deletedResult.data)
         //@ts-ignore

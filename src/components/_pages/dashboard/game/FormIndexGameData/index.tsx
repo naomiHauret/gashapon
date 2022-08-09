@@ -1,5 +1,5 @@
 import * as tagsInput from '@zag-js/tags-input'
-import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
+import { normalizeProps, useMachine } from '@zag-js/solid'
 import { Button } from '@components/Button'
 import { createMemo, createUniqueId, Show } from 'solid-js'
 import useIndexGameData from './useIndexGameData'
@@ -11,6 +11,12 @@ import styles from './styles.module.css'
 import PreviewGameData from './PreviewGameData'
 import { Portal } from 'solid-js/web'
 import DialogTrackProgressDataIndexing from './DialogTrackProgressDataIndexing'
+import { createTiptapEditor } from 'solid-tiptap'
+import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image'
+import Link from '@tiptap/extension-link'
+import TextAlign from '@tiptap/extension-text-align'
+import Iframe from '@components/tiptap/Iframe'
 
 export const FormIndexGameData = (props) => {
   const {
@@ -38,10 +44,11 @@ export const FormIndexGameData = (props) => {
     initialData: props?.initialData,
     reference: props?.reference,
   })
+  let refGameDescriptionTipTapEditor!: HTMLDivElement
   const { form } = storeForm
   const [stateTagsInput, sendtagsInput] = useMachine(
-    //@ts-ignore
     tagsInput.machine({
+      id: createUniqueId(),
       value: props?.initialData?.tags ?? [],
       name: 'tags',
       max: 10,
@@ -51,10 +58,42 @@ export const FormIndexGameData = (props) => {
       },
     }),
   )
-  const refTagsInput = useSetup({ send: sendtagsInput, id: createUniqueId() })
-  //@ts-ignore
+
   const apiTagsInput = createMemo(() => tagsInput.connect(stateTagsInput, sendtagsInput, normalizeProps))
-  let refButtonSubmitForm
+
+  const gameDescriptionTipTapEditor = createTiptapEditor({
+    get element() {
+      return refGameDescriptionTipTapEditor
+    },
+    get extensions() {
+      return [
+        StarterKit,
+        Image,
+        TextAlign.configure({
+          types: ['heading', 'paragraph', 'image'],
+          alignments: ['left', 'right', 'center'],
+        }),
+        Link.configure({
+          openOnClick: false,
+          HTMLAttributes: {
+            class: 'link',
+            target: '_blank',
+          },
+        }),
+        Iframe,
+      ]
+    },
+    content: props?.initialData?.description ?? '<p>Start here</p>',
+    editorProps: {
+      attributes: {
+        class: 'prose prose-invert p-3 flex-grow focus:outline-none',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      const content = editor.getHTML()
+      storeForm.setData('description', content)
+    },
+  })
 
   return (
     <>
@@ -71,7 +110,8 @@ export const FormIndexGameData = (props) => {
                 removeThumbnail={removeThumbnail}
                 storeForm={storeForm}
                 apiTagsInput={apiTagsInput}
-                refTagsInput={refTagsInput}
+                ref={refGameDescriptionTipTapEditor}
+                gameDescriptionTipTapEditor={gameDescriptionTipTapEditor}
               />
             </div>
           </fieldset>
@@ -86,6 +126,7 @@ export const FormIndexGameData = (props) => {
             <legend class="font-bold text-ex text-neutral-500 mb-2">Medias</legend>
             <div class="space-y-6">
               <FieldsetMedias
+                storeForm={storeForm}
                 initialData={props?.initialData}
                 gameBannerSrc={gameBannerSrc}
                 onInputGameBannerChange={onInputGameBannerChange}

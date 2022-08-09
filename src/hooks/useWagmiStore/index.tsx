@@ -84,12 +84,6 @@ export function ProviderWagmi(props) {
   })
 
   createEffect(async () => {
-    if (networkData()?.chain?.unsupported === true || !networkData()?.chain) {
-      await disconnect()
-    }
-  })
-
-  createEffect(async () => {
     if (accountData().address && networkData()?.chain) {
       //@ts-ignore
       balanceState.setLoading(true)

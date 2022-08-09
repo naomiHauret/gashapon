@@ -25,7 +25,6 @@ export const InputToken = (props) => {
           }}
           disabled={props.showUserBalance === true && (balanceState.loading === true || props.disabled)}
           aria-disabled={props.showUserBalance === true && (balanceState.loading === true || props.disabled)}
-          ref={props.ref}
           {...props.api().triggerProps}
         >
           <Switch>

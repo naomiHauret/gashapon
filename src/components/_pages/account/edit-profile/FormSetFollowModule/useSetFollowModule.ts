@@ -34,7 +34,7 @@ const useStoreFollowModule = createAsyncStore()
 export function useSetFollowModule() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
   const stateSetFollowModule = useStoreFollowModule()
   const { accountData } = useAccount()
   const toast = useToast()
@@ -126,6 +126,7 @@ export function useSetFollowModule() {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateSetFollowModule.setIsSuccess(true)
         stateSetFollowModule.setData(result.data)
         //@ts-ignore

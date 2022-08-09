@@ -1,11 +1,12 @@
 import { disconnect, connect, switchNetwork, chain } from '@wagmi/core'
 import useVerifyUser from './../useVerifyUser'
 import useWagmiStore from '../useWagmiStore'
+import { COOKIE_ACCESS_TOKENS } from '@config/storage'
 
 export function useConnect() {
   const wagmiState = useWagmiStore()
   //@ts-ignore
-  const { walletVerifiedState, clear } = useVerifyUser()
+  const { walletVerifiedState, remove } = useVerifyUser()
 
   async function connectWallet(connector) {
     walletVerifiedState.setVerified(false)
@@ -23,12 +24,11 @@ export function useConnect() {
     }
   }
 
-  async function disconnectWallet() {
-    clear()
+  function disconnectWallet() {
+    remove(COOKIE_ACCESS_TOKENS)
     walletVerifiedState.setVerified(false)
     walletVerifiedState.setConnected(false)
     walletVerifiedState.setLoading(false)
-    await disconnect()
   }
 
   async function switchToSupportedNetwork() {

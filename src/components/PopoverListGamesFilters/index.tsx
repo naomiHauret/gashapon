@@ -1,27 +1,23 @@
 import input from '@components/FormInput/styles'
 import * as accordion from '@zag-js/accordion'
 import * as popover from '@zag-js/popover'
-import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
+import { normalizeProps, useMachine } from '@zag-js/solid'
 import { createEffect, createMemo, createSignal, createUniqueId, For, Show } from 'solid-js'
 
 export const PopoverListGamesFilters = (props) => {
   const [totalFiltersApplied, setTotalFiltersApplied] = createSignal(
     props.numberAppliedFiltersPlatforms + props.numberAppliedFiltersGenres + props.numberAppliedFiltersTags,
   )
-  const [statePopover, sendPopover] = useMachine(
-    popover.machine({
-      closeOnBlur: false,
-    }),
-  )
+
+  const [statePopover, sendPopover] = useMachine(popover.machine({ id: createUniqueId(), closeOnBlur: false }))
   const apiPopover = createMemo(() => popover.connect(statePopover, sendPopover, normalizeProps))
-  const refPopover = useSetup({ send: sendPopover, id: createUniqueId() })
 
   const [stateAccordion, sendAccordion] = useMachine(
     accordion.machine({
+      id: createUniqueId(),
       multiple: true,
     }),
   )
-  const refAccordion = useSetup({ send: sendAccordion, id: createUniqueId() })
 
   const apiAccordion = createMemo(() => accordion.connect(stateAccordion, sendAccordion, normalizeProps))
 

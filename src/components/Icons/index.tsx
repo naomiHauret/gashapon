@@ -435,6 +435,547 @@ export const IconPlatformWeb = (props) => {
   )
 }
 
+export const IconChevronLeft = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        fill-rule="evenodd"
+        d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+      ></path>
+    </svg>
+  )
+}
+
+export const IconChevronRight = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        fill-rule="evenodd"
+        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+      ></path>
+    </svg>
+  )
+}
+
+export const IconSteam = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 496 512"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M496 256c0 137-111.2 248-248.4 248-113.8 0-209.6-76.3-239-180.4l95.2 39.3c6.4 32.1 34.9 56.4 68.9 56.4 39.2 0 71.9-32.4 70.2-73.5l84.5-60.2c52.1 1.3 95.8-40.9 95.8-93.5 0-51.6-42-93.5-93.7-93.5s-93.7 42-93.7 93.5v1.2L176.6 279c-15.5-.9-30.7 3.4-43.5 12.1L0 236.1C10.2 108.4 117.1 8 247.6 8 384.8 8 496 119 496 256zM155.7 384.3l-30.5-12.6a52.79 52.79 0 0 0 27.2 25.8c26.9 11.2 57.8-1.6 69-28.4 5.4-13 5.5-27.3.1-40.3-5.4-13-15.5-23.2-28.5-28.6-12.9-5.4-26.7-5.2-38.9-.6l31.5 13c19.8 8.2 29.2 30.9 20.9 50.7-8.3 19.9-31 29.2-50.8 21zm173.8-129.9c-34.4 0-62.4-28-62.4-62.3s28-62.3 62.4-62.3 62.4 28 62.4 62.3-27.9 62.3-62.4 62.3zm.1-15.6c25.9 0 46.9-21 46.9-46.8 0-25.9-21-46.8-46.9-46.8s-46.9 21-46.9 46.8c.1 25.8 21.1 46.8 46.9 46.8z"></path>
+    </svg>
+  )
+}
+
+export const IconItchIo = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 512 512"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M71.92 34.77C50.2 47.67 7.4 96.84 7 109.73v21.34c0 27.06 25.29 50.84 48.25 50.84 27.57 0 50.54-22.85 50.54-50 0 27.12 22.18 50 49.76 50s49-22.85 49-50c0 27.12 23.59 50 51.16 50h.5c27.57 0 51.16-22.85 51.16-50 0 27.12 21.47 50 49 50s49.76-22.85 49.76-50c0 27.12 23 50 50.54 50 23 0 48.25-23.78 48.25-50.84v-21.34c-.4-12.9-43.2-62.07-64.92-75C372.56 32.4 325.76 32 256 32S91.14 33.1 71.92 34.77zm132.32 134.39c-22 38.4-77.9 38.71-99.85.25-13.17 23.14-43.17 32.07-56 27.66-3.87 40.15-13.67 237.13 17.73 269.15 80 18.67 302.08 18.12 379.76 0 31.65-32.27 21.32-232 17.75-269.15-12.92 4.44-42.88-4.6-56-27.66-22 38.52-77.85 38.1-99.85-.24-7.1 12.49-23.05 28.94-51.76 28.94a57.54 57.54 0 0 1-51.75-28.94zm-41.58 53.77c16.47 0 31.09 0 49.22 19.78a436.91 436.91 0 0 1 88.18 0C318.22 223 332.85 223 349.31 223c52.33 0 65.22 77.53 83.87 144.45 17.26 62.15-5.52 63.67-33.95 63.73-42.15-1.57-65.49-32.18-65.49-62.79-39.25 6.43-101.93 8.79-155.55 0 0 30.61-23.34 61.22-65.49 62.79-28.42-.06-51.2-1.58-33.94-63.73 18.67-67 31.56-144.45 83.88-144.45zM256 270.79s-44.38 40.77-52.35 55.21l29-1.17v25.32c0 1.55 21.34.16 23.33.16 11.65.54 23.31 1 23.31-.16v-25.28l29 1.17c-8-14.48-52.35-55.24-52.35-55.24z"></path>
+    </svg>
+  )
+}
+
+export const IconGooglePlay = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 512 512"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorBold = (props) => {
+  return (
+    <span aria-hidden="true" class={`bold ${props?.class ?? ''}`}>
+      B
+    </span>
+  )
+}
+
+export const IconEditorItalic = (props) => {
+  return (
+    <span aria-hidden="true" class={`italic ${props?.class ?? ''}`}>
+      I
+    </span>
+  )
+}
+
+export const IconEditorUnderline = (props) => {
+  return (
+    <span aria-hidden="true" class={`underline ${props?.class ?? ''}`}>
+      U
+    </span>
+  )
+}
+
+export const IconEditorStrike = (props) => {
+  return (
+    <span aria-hidden="true" class={`strike ${props?.class ?? ''}`}>
+      S
+    </span>
+  )
+}
+
+export const IconEditorH1 = (props) => {
+  return (
+    <span aria-hidden="true" class={`font-bold uppercase ${props?.class ?? ''}`}>
+      H1
+    </span>
+  )
+}
+
+export const IconEditorH2 = (props) => {
+  return (
+    <span aria-hidden="true" class={`font-bold uppercase ${props?.class ?? ''}`}>
+      H2
+    </span>
+  )
+}
+
+export const IconEditorH3 = (props) => {
+  return (
+    <span aria-hidden="true" class={`font-bold uppercase ${props?.class ?? ''}`}>
+      H3
+    </span>
+  )
+}
+
+export const IconEditorH4 = (props) => {
+  return (
+    <span aria-hidden="true" class={`font-bold uppercase ${props?.class ?? ''}`}>
+      H4
+    </span>
+  )
+}
+
+export const IconEditorH5 = (props) => {
+  return (
+    <span aria-hidden="true" class={`font-bold uppercase ${props?.class ?? ''}`}>
+      H5
+    </span>
+  )
+}
+
+export const IconEditorParagraph = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M12 6v15h-2v-5a6 6 0 1 1 0-12h10v2h-3v15h-2V6h-3zm-2 0a4 4 0 1 0 0 8V6z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorAnchor = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M4.222 19.778a4.983 4.983 0 0 0 3.535 1.462 4.986 4.986 0 0 0 3.536-1.462l2.828-2.829-1.414-1.414-2.828 2.829a3.007 3.007 0 0 1-4.243 0 3.005 3.005 0 0 1 0-4.243l2.829-2.828-1.414-1.414-2.829 2.828a5.006 5.006 0 0 0 0 7.071zm15.556-8.485a5.008 5.008 0 0 0 0-7.071 5.006 5.006 0 0 0-7.071 0L9.879 7.051l1.414 1.414 2.828-2.829a3.007 3.007 0 0 1 4.243 0 3.005 3.005 0 0 1 0 4.243l-2.829 2.828 1.414 1.414 2.829-2.828z"
+        {...props}
+      ></path>
+      <path d="m8.464 16.95-1.415-1.414 8.487-8.486 1.414 1.415z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorRemoveAnchor = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M16.949 14.121 19.071 12a5.008 5.008 0 0 0 0-7.071 5.006 5.006 0 0 0-7.071 0l-.707.707 1.414 1.414.707-.707a3.007 3.007 0 0 1 4.243 0 3.005 3.005 0 0 1 0 4.243l-2.122 2.121a2.723 2.723 0 0 1-.844.57L13.414 12l1.414-1.414-.707-.707a4.965 4.965 0 0 0-3.535-1.465c-.235 0-.464.032-.691.066L3.707 2.293 2.293 3.707l18 18 1.414-1.414-5.536-5.536c.277-.184.538-.396.778-.636zm-6.363 3.536a3.007 3.007 0 0 1-4.243 0 3.005 3.005 0 0 1 0-4.243l1.476-1.475-1.414-1.414L4.929 12a5.008 5.008 0 0 0 0 7.071 4.983 4.983 0 0 0 3.535 1.462A4.982 4.982 0 0 0 12 19.071l.707-.707-1.414-1.414-.707.707z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorCode = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 512 512"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+        d="M160 368L32 256l128-112m192 224l128-112-128-112"
+      ></path>
+    </svg>
+  )
+}
+
+export const IconEditorCodeBlock = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M20 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path>
+      <path d="M9.293 9.293 5.586 13l3.707 3.707 1.414-1.414L8.414 13l2.293-2.293zm5.414 0-1.414 1.414L15.586 13l-2.293 2.293 1.414 1.414L18.414 13z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorImage = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M20 5H4v14l9.292-9.294a1 1 0 0 1 1.414 0L20 15.01V5zM2 3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V3.993zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorQuote = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorEmbed = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 512 512"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M190.4 354.1L91.9 256l98.4-98.1-30-29.9L32 256l128.4 128 30-29.9zm131.2 0L420 256l-98.4-98.1 30-29.9L480 256 351.6 384l-30-29.9z"></path>
+      <path d="M155.6 276h40v-40h-40v40zm200.8-40h-40v40h40v-40zM236 276h40v-40h-40v40z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorDivider = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 1024 1024"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M904 476H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorListUnordered = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M8 4h13v2H8V4zm-5-.5h3v3H3v-3zm0 7h3v3H3v-3zm0 7h3v3H3v-3zM8 11h13v2H8v-2zm0 7h13v2H8v-2z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorListOrdered = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M8 4h13v2H8V4zM5 3v3h1v1H3V6h1V4H3V3h2zM3 14v-2.5h2V11H3v-1h3v2.5H4v.5h2v1H3zm2 5.5H3v-1h2V18H3v-1h3v4H3v-1h2v-.5zM8 11h13v2H8v-2zm0 7h13v2H8v-2z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorUndo = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M9 10h6c1.654 0 3 1.346 3 3s-1.346 3-3 3h-3v2h3c2.757 0 5-2.243 5-5s-2.243-5-5-5H9V5L4 9l5 4v-3z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorRedo = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M9 18h3v-2H9c-1.654 0-3-1.346-3-3s1.346-3 3-3h6v3l5-4-5-4v3H9c-2.757 0-5 2.243-5 5s2.243 5 5 5z"></path>
+    </svg>
+  )
+}
+
+export const IconEditorClearFormat = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M12.651 14.065L11.605 20H9.574l1.35-7.661-7.41-7.41L4.93 3.515 20.485 19.07l-1.414 1.414-6.42-6.42zm-.878-6.535l.27-1.53h-1.8l-2-2H20v2h-5.927L13.5 9.257 11.773 7.53z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorTextCenter = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M3 4h18v2H3V4zm2 15h14v2H5v-2zm-2-5h18v2H3v-2zm2-5h14v2H5V9z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorTextLeft = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M3 4h18v2H3V4zm0 15h14v2H3v-2zm0-5h18v2H3v-2zm0-5h14v2H3V9z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const IconEditorTextRight = (props) => {
+  return (
+    <svg
+      aria-hidden="true"
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 24 24"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <g>
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M3 4h18v2H3V4zm4 15h14v2H7v-2zm-4-5h18v2H3v-2zm4-5h14v2H7V9z"></path>
+      </g>
+    </svg>
+  )
+}
+
+export const DICTIONNARIES_ICONS_EDITOR = {
+  'align-left': IconEditorTextLeft,
+  'align-center': IconEditorTextCenter,
+  'align-right': IconEditorTextRight,
+  anchor: IconEditorAnchor,
+  italic: IconEditorItalic,
+  underline: IconEditorUnderline,
+  strike: IconEditorStrike,
+  bold: IconEditorBold,
+  code: IconEditorCode,
+  'code-block': IconEditorCodeBlock,
+  paragraph: IconEditorParagraph,
+  clear: IconEditorClearFormat,
+  undo: IconEditorUndo,
+  redo: IconEditorRedo,
+  divider: IconEditorDivider,
+  image: IconEditorImage,
+  embed: IconEditorEmbed,
+  'list-unordered': IconEditorListUnordered,
+  'list-ordered': IconEditorListOrdered,
+  quote: IconEditorQuote,
+  h1: IconEditorH1,
+  h2: IconEditorH2,
+  h3: IconEditorH3,
+  h4: IconEditorH4,
+  h5: IconEditorH5,
+}
+
 export const DICTIONNARIES_ICONS_PLATFORMS = {
   [PLATFORMS.WINDOWS]: IconPlatformWindows,
   [PLATFORMS.DEBIAN]: IconPlatformDebian,

@@ -1,6 +1,6 @@
 import { string, object, instanceof as zodValidationInstanceOf } from 'zod'
 import * as dialog from '@zag-js/dialog'
-import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
+import { useMachine, normalizeProps } from '@zag-js/solid'
 import { validator } from '@felte/validator-zod'
 import { createForm } from '@felte/solid'
 import { createAsyncStore } from '@hooks/useAsync'
@@ -17,7 +17,7 @@ import { signTypedData, writeContract } from '@wagmi/core'
 import splitSignature from '@helpers/splitSignature'
 import { CONTRACT_LENS_HUB_PROXY, CONTRACT_LENS_PERIPHERY } from '@config/contracts'
 import { v4 as uuidv4 } from 'uuid'
-import { createSignal, createMemo, createUniqueId, createEffect } from 'solid-js'
+import { createSignal, createMemo, createUniqueId, createEffect, onMount } from 'solid-js'
 import updateProfilePictureMetadata from '@graphql/profile/update-profile-picture'
 
 const useStoreUploadProfilePicture = createAsyncStore()
@@ -48,7 +48,7 @@ export function useEditProfile() {
   const stateUploadProfilePicture = useStoreUploadProfilePicture()
   const stateUploadProfileBanner = useStoreUploadProfileBanner()
 
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
   // Profile picture
   const [profilePictureSrc, setProfilePictureSrc] = createSignal(
     stateFetchDefaultProfile.data?.picture?.original?.url ?? null,
@@ -61,16 +61,17 @@ export function useEditProfile() {
   const [fileProfileBanner, setFileProfileBanner] = createSignal()
   const [stateDialogModalTrackProgress, sendDialogModalTrackProgress] = useMachine(
     dialog.machine({
+      id: createUniqueId(),
       role: 'alertdialog',
       closeOnOutsideClick: false,
       closeOnEsc: false,
       preventScroll: true,
     }),
   )
+
   const apiDialogModalTrackProgress = createMemo(() =>
     dialog.connect(stateDialogModalTrackProgress, sendDialogModalTrackProgress, normalizeProps),
   )
-  const dialogModalTrackProgressRef = useSetup({ send: sendDialogModalTrackProgress, id: createUniqueId() })
 
   const storeForm = createForm({
     initialValues: {
@@ -321,8 +322,10 @@ export function useEditProfile() {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateEditProfile.setIsSuccess(true)
         stateEditProfile.setData(result.data)
+        stateFetchDefaultProfile.setRefresh(true)
         stateEditProfile.setIsLoading(false)
         //@ts-ignore
         toast().create({
@@ -382,7 +385,6 @@ export function useEditProfile() {
     profilePictureSrc,
     profileBannerSrc,
     apiDialogModalTrackProgress,
-    dialogModalTrackProgressRef,
     stateUploadProfilePicture,
     stateUploadProfileBanner,
     stateUploadProfileData,

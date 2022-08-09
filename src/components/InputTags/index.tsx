@@ -10,7 +10,6 @@ export const InputTags = (props) => {
           scale: props.scale,
           class: `flex items-baseline flex-wrap ${props.class ?? ''}`,
         })}
-        ref={props.ref}
         {...props.api().rootProps}
       >
         <For each={props.api().value}>

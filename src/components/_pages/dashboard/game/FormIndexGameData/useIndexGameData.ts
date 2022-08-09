@@ -3,7 +3,7 @@ import { validator } from '@felte/validator-zod'
 import { createForm } from '@felte/solid'
 import { createAsyncStore } from '@hooks/useAsync'
 import * as dialog from '@zag-js/dialog'
-import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
+import { normalizeProps, useMachine } from '@zag-js/solid'
 import { createEffect, createMemo, createUniqueId } from 'solid-js'
 import abiLensHubProxy from '@abis/lens-hub-proxy'
 import useToast from '@hooks/useToast'
@@ -80,13 +80,14 @@ export function useIndexGameData(options) {
       closeOnOutsideClick: false,
       closeOnEsc: false,
       preventScroll: true,
+
+      id: createUniqueId(),
     }),
   )
 
   const apiDialogModalTrackProgress = createMemo(() =>
     dialog.connect(stateDialogModalTrackProgress, sendDialogModalTrackProgress, normalizeProps),
   )
-  const dialogModalTrackProgressRef = useSetup({ send: sendDialogModalTrackProgress, id: createUniqueId() })
 
   //@ts-ignore
   const { uploadData, setDataLink, getEntryLink, getFileMetadata } = useSkynet()
@@ -99,7 +100,7 @@ export function useIndexGameData(options) {
   const stateUploadNewGameData = useStoreUploadNewGameData()
   const stateIndexGameData = useStoreIndexGameData()
 
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
 
   // Game thumbnail
   const [gameThumbnailSrc, setGameThumbnailSrc] = createSignal(options?.initialData?.thumbnail ?? null)
@@ -283,7 +284,8 @@ export function useIndexGameData(options) {
         await uploadGameMedias()
       }
       const thumbnailMetadata = fileGameThumbnail()
-        ? fileGameThumbnail()?.type
+        ? //@ts-ignore
+          fileGameThumbnail()?.type
         : await getFileMetadata(gameThumbnailSrc())
       const gameMetadata = {
         appId: LENS_PUBLICATIONS_APP_ID_GAMES_STORE,
@@ -530,6 +532,7 @@ export function useIndexGameData(options) {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateIndexGameData.setIsSuccess(true)
         stateIndexGameData.setData(result.data)
         //@ts-ignore
@@ -612,7 +615,6 @@ export function useIndexGameData(options) {
     stateIndexGameData,
 
     apiDialogModalTrackProgress,
-    dialogModalTrackProgressRef,
   }
 }
 

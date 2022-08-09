@@ -131,11 +131,15 @@ export const FieldsMedias = (props) => {
       <FormField>
         <FormField.InputField>
           <FormField.Label class="items-baseline" for="videoTrailerUrl">
-            <span class="mie-1ex">Video trailer </span>{' '}
+            <span class="mie-1ex">Embedded video trailer </span>{' '}
             <span class="font-medium text-neutral-400 text-2xs ">(optional)</span>
           </FormField.Label>
           <FormField.Description id="input-videoTrailerUrl-description">
-            A link to the trailer of your game.
+            The embed/iframe a video hosted on another platform.{' '}
+            <span class="font-bold">
+              Make sure to use the <code>URL</code> displayed in the iframe snippet{' '}
+              <code>{'<iframe src=”URL”></iframe>'}</code>
+            </span>
           </FormField.Description>
           <FormInput
             value={props?.initialData?.videoTrailerUrl}
@@ -148,10 +152,6 @@ export const FieldsMedias = (props) => {
         </FormField.InputField>
         <FormField.HelpBlock id="input-videoTrailerUrl-helpblock">
           The trailer link must be a valid URL. We recommend you to use a decentralized video service like{' '}
-          <a href="https://lenstube.xyz/" target="_blank" rel="nofollow noreferrer">
-            Lenstube
-          </a>{' '}
-          or{' '}
           <a href="https://odysee.com/" target="_blank" rel="nofollow noreferrer">
             Odysee
           </a>

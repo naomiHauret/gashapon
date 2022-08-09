@@ -7,15 +7,13 @@ import {
   ROUTE_DASHBOARD_LIST_GAMES,
 } from '@config/routes'
 import { useParams, useRouteData } from 'solid-app-router'
-import { createEffect, Match, Suspense, Switch } from 'solid-js'
+import { Match, Suspense, Switch } from 'solid-js'
 import { Title } from 'solid-meta'
 
 export default function Page() {
   const game = useRouteData()
   const params = useParams()
-  createEffect(() => {
-    console.log(game()?.data)
-  })
+
   return (
     <>
       <Suspense fallback={<>Loading...</>}>
