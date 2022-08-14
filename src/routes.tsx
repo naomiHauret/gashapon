@@ -29,8 +29,9 @@ import {
   ROUTE_DASHBOARD_LIST_GAMES,
   ROUTE_DASHBOARD_GAME_OVERVIEW,
   ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE,
-  ROUTE_DASHBOARD_GAME_OVERVIEW_DOWNLOAD_LINKS,
+  ROUTE_DASHBOARD_GAME_OVERVIEW_FILES,
   ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS,
+  ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS,
 } from '@config/routes'
 import { UserProfileData } from '@pages/user/[idUser].data'
 import { GameData } from '@pages/game/[idGame].data'
@@ -49,9 +50,9 @@ const PageCreateNewGame = lazy(() => import('./pages/dashboard/game/new'))
 const PageDashboardGamesList = lazy(() => import('./pages/dashboard/games'))
 const PageDashboardGameOverview = lazy(() => import('./pages/dashboard/game/[idGame]/index'))
 const PageDashboardGameEditData = lazy(() => import('./pages/dashboard/game/[idGame]/edit'))
-const PageDashboardGameDownloadLinks = lazy(() => import('./pages/dashboard/game/[idGame]/download-links'))
+const PageDashboardGameDownloadLinks = lazy(() => import('./pages/dashboard/game/[idGame]/files'))
 const PageDashboardGameSalesOffers = lazy(() => import('./pages/dashboard/game/[idGame]/offers'))
-const PageDashboardGamePostUpdate = lazy(() => import('./pages/dashboard/game/[idGame]/post-update'))
+const PageDashboardGamePosts = lazy(() => import('./pages/dashboard/game/[idGame]/posts'))
 
 const PageGame = lazy(() => import('./pages/game/[idGame]/index'))
 
@@ -79,12 +80,13 @@ export const Router = () => {
       <Route path={ROUTE_CREATE_GAME} element={<PageCreateNewGame />} />
       <Route path={ROUTE_DASHBOARD} element={<PageDashboard />} />
       <Route path={ROUTE_DASHBOARD_LIST_GAMES} element={<PageDashboardGamesList />} />
+      
       <Route path={ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT_DATA} data={GameData} element={<PageDashboardGameEditData />} />
       <Route path={ROUTE_DASHBOARD_GAME_OVERVIEW} data={GameData} element={<PageDashboardGameOverview />} />
       <Route
-        path={ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE}
+        path={ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS}
         data={GameData}
-        element={<PageDashboardGamePostUpdate />}
+        element={<PageDashboardGamePosts />}
       />
       <Route
         path={ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS}
@@ -92,7 +94,7 @@ export const Router = () => {
         element={<PageDashboardGameSalesOffers />}
       />
       <Route
-        path={ROUTE_DASHBOARD_GAME_OVERVIEW_DOWNLOAD_LINKS}
+        path={ROUTE_DASHBOARD_GAME_OVERVIEW_FILES}
         data={GameData}
         element={<PageDashboardGameDownloadLinks />}
       />

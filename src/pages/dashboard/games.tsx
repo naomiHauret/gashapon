@@ -9,7 +9,6 @@ import { ROUTE_CREATE_GAME, ROUTE_DASHBOARD, ROUTE_DASHBOARD_LIST_GAMES } from '
 import TableGamesCreated from '@components/_pages/dashboard/games/TableGamesCreated'
 import Breadcrumbs from '@components/Breadcrumbs'
 import { IconLock } from '@components/Icons'
-import Button from '@components/Button'
 import button from '@components/Button/button'
 import { Link } from 'solid-app-router'
 

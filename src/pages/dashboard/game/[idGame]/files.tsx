@@ -1,17 +1,16 @@
-import { Link, useParams, useRouteData } from 'solid-app-router'
+import { useParams, useRouteData } from 'solid-app-router'
 import { createEffect, createSignal, Match, Show, Suspense, Switch } from 'solid-js'
 import { Title } from 'solid-meta'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
 import { IconLock } from '@components/Icons'
 import DashboardGameLayout from '@layouts/DashboardGame'
-import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE, ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS } from '@config/routes'
-import button from '@components/Button/button'
+import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
 
 export default function Page() {
   const game = useRouteData()
+  const params = useParams()
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
-  const params = useParams()
   createEffect(() => {
     // Refetch user games when profile ID changes
     if (stateFetchDefaultProfile?.data?.id) setUserId(stateFetchDefaultProfile?.data?.id)
@@ -55,27 +54,18 @@ export default function Page() {
             <Match when={game()?.data && game()?.data?.publication?.profile?.id === userId()}>
               <Title>
                 {game()?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]?.value}{' '}
-                sales offers dashboard  - Gashapon
+                files dashboard  - Gashapon
               </Title>
               <DashboardGameLayout 
-                ctaGroup={
-                  <Link
-                    class={button({ scale: 'xs' })}
-                    href={ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS.replace(':idGame', params.idGame)}
-                  >
-                    Create new offer
-                  </Link>
-                } 
-                gameAttributes={game()?.data?.publication?.metadata?.attributes}
                 breadcrumbs={[
                   {
-                    href: ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS.replace(':idGame', params.idGame),
-                    label: 'Sales offers',
-                  },
+                    href: ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE.replace(':idGame', params.idGame),
+                    label: 'Files',
+                  }
                 ]}
-              >
+                gameAttributes={game()?.data?.publication?.metadata?.attributes}>
                   <div class="container animate-appear mx-auto">
-                    <h2>Sales offers</h2>
+                    <h2>Files</h2>
                   </div>
                 </DashboardGameLayout>
             </Match>
