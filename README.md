@@ -75,8 +75,8 @@ This project was created during [Skynet Summer 2022 Developer Program](https://s
 ---
 
 - **Game**
-    - [ ]  [as an authenticated user with an account] Create a game  ( *→ uses Lens publication collect module under the hood*)
-    - [ ]  [as anyone] Display a game page
+    - [x]  [as an authenticated user with an account] Create a game  ( *→ uses Lens publication collect module under the hood*)
+    - [x]  [as anyone] Display a game page
     - [ ]  [as an authenticated user with an account] Buy a game
     - [ ]  [as an authenticated user with an account and a game bought] Download game / access game (→ uses Lit protocol to gate access ?)
     - [ ]  [as an authenticated user that created a game] Publish game updates
@@ -89,7 +89,7 @@ This project was created during [Skynet Summer 2022 Developer Program](https://s
     - Tip/support tiers
         - [ ]  Display total tips $$$
         - [ ]  Display followers list
-        - [ ]  Display created games
+        - [x]  Display created games
         - [ ]  Display total games sold $$$
     - Posts
         - [ ]  List my posts
