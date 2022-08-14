@@ -79,27 +79,27 @@ const HAS_TX_BEEN_INDEXED = `
 
 async function hasTxBeenIndexed(txHash: string) {
   const isIndexed = await client
-    .query(HAS_TX_BEEN_INDEXED, {
-      request: {
-        txHash,
+    .query(
+      HAS_TX_BEEN_INDEXED,
+      {
+        request: {
+          txHash,
+        },
       },
-      options: { fetchPolicy: 'network-only' },
-    })
+      {
+        requestPolicy: 'network-only',
+      },
+    )
     .toPromise()
-  console.log(isIndexed)
   return isIndexed
 }
 
 export async function pollUntilIndexed(txHash: string) {
   while (true) {
     const result = await hasTxBeenIndexed(txHash)
-    console.log('pool until indexed: result', result.data)
 
     const response = result.data.hasTxHashBeenIndexed
     if (response.__typename === 'TransactionIndexedResult') {
-      console.log('pool until indexed: indexed', response.indexed)
-      console.log('pool until metadataStatus: metadataStatus', response.metadataStatus)
-
       if (response.metadataStatus) {
         if (response.metadataStatus.status === 'SUCCESS') {
           return response
@@ -113,8 +113,6 @@ export async function pollUntilIndexed(txHash: string) {
           return response
         }
       }
-
-      console.log('pool until indexed: sleep for 1500 milliseconds then try again')
       // sleep for a second before trying again
       await sleep(1500)
     } else {

@@ -3,7 +3,7 @@ import StateAccountNotCreated from '@components/_pages/account/StateAccountNotCr
 import StateAccountNotSelected from '@components/_pages/account/StateAccountNotSelected'
 import StateAccountSelected from '@components/_pages/account/StateAccountSelected'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
-import { Match, Show, Switch } from 'solid-js'
+import { createEffect, Match, Show, Switch } from 'solid-js'
 import { Title } from 'solid-meta'
 
 export default function Page() {
@@ -29,7 +29,7 @@ export default function Page() {
             </h1>
           </Show>
           <Switch>
-            <Match when={stateFetchDefaultProfile.data === null && stateFetchOwnedProfiles.data === null}>
+            <Match when={stateFetchDefaultProfile.data === null && stateFetchOwnedProfiles.data.length === 0}>
               <StateAccountNotCreated />
             </Match>
             <Match

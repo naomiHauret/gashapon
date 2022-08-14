@@ -5,6 +5,8 @@ import FormInput from '@components/FormInput'
 import FormTextarea from '@components/FormTextarea'
 import { IconCamera } from '@components/Icons'
 import { Show } from 'solid-js'
+import { Portal } from 'solid-js/web'
+import DialogTrackProgressDataIndexing from './DialogTrackProgressDataIndexing'
 import useEditProfile from './useEditProfile'
 
 export const FormEditProfile = () => {
@@ -16,6 +18,12 @@ export const FormEditProfile = () => {
     onInputProfileBannerChange,
     profilePictureSrc,
     profileBannerSrc,
+    stateUploadProfileData,
+    apiDialogModalTrackProgress,
+    stateUploadProfilePicture,
+    stateUploadProfileBanner,
+    fileProfileBanner,
+    fileProfilePicture,
   } = useEditProfile()
   const { form } = storeForm
   return (
@@ -38,7 +46,7 @@ export const FormEditProfile = () => {
                     Click on the picture to upload a custom image from your files.
                   </FormField.Description>
                 </div>
-                <div class="h-28 rounded-md overflow-hidden aspect-banner relative bg-gray-100 bg-opacity-20">
+                <div class="input-file_wrapper w-full h-auto rounded-md overflow-hidden aspect-banner relative bg-gray-100 bg-opacity-20">
                   <input
                     onChange={(e) => {
                       //@ts-ignore
@@ -83,7 +91,7 @@ export const FormEditProfile = () => {
                     Click on the picture to upload a custom image from your files.
                   </FormField.Description>
                 </div>
-                <div class="h-28 w-28 rounded-full overflow-hidden relative bg-gray-100 bg-opacity-20">
+                <div class="input-file_wrapper h-28 w-28 rounded-full overflow-hidden relative bg-gray-100 bg-opacity-20">
                   <input
                     onChange={(e) => {
                       //@ts-ignore
@@ -97,7 +105,7 @@ export const FormEditProfile = () => {
                     aria-describedby="input-profile-picture-description input-profile-picture-helpblock"
                   />
                   <div class="absolute w-full h-full rounded-full inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
-                    <IconCamera class="text-2xl text-true-white" />
+                    <IconCamera class="text-2xl text-white" />
                   </div>
                   <Show when={profilePictureSrc() !== null}>
                     <img
@@ -303,7 +311,7 @@ export const FormEditProfile = () => {
         </fieldset>
         <Button
           class="w-full xs:w-auto mt-8"
-          disabled={stateEditProfile.isLoading}
+          disabled={stateEditProfile.isLoading || !storeForm.isValid()}
           isLoading={stateEditProfile.isLoading}
         >
           <Show when={stateEditProfile.isError === false && !stateEditProfile.isLoading}>Edit profile</Show>
@@ -311,6 +319,21 @@ export const FormEditProfile = () => {
           <Show when={stateEditProfile.isError === true}>Try again</Show>
         </Button>
       </form>
+
+      {apiDialogModalTrackProgress().isOpen && (
+        <Portal>
+          <DialogTrackProgressDataIndexing
+            api={apiDialogModalTrackProgress}
+            stateUploadProfilePicture={stateUploadProfilePicture}
+            stateUploadProfileBanner={stateUploadProfileBanner}
+            stateUploadProfileData={stateUploadProfileData}
+            stateEditProfile={stateEditProfile}
+            fileProfileBanner={fileProfileBanner}
+            fileProfilePicture={fileProfilePicture}
+            showWaitMessage={showWaitMessage}
+          />
+        </Portal>
+      )}
     </>
   )
 }

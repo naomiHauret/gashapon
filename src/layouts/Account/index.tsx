@@ -23,7 +23,7 @@ export const AccoutLayout = (props) => {
   })
   return (
     <div class="flex-grow flex flex-col md:flex-row space-y-6 md:space-y-0 container mx-auto">
-      <nav class={`${styles.navbar}`}>
+      <nav style={{'--colCount': 3}} class={`${styles.navbar}`}>
         <Switch>
           <Match when={!stateFetchDefaultProfile?.data?.handle}>
             <span class={styles.navItem}>

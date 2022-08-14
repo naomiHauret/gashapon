@@ -46,7 +46,7 @@ export const FormCreateAccount = () => {
         </fieldset>
         <Button
           class="w-full xs:w-auto"
-          disabled={stateCreateAccount.isLoading}
+          disabled={stateCreateAccount.isLoading || !storeForm.isValid()}
           isLoading={stateCreateAccount.isLoading}
         >
           <Show when={stateCreateAccount.isError === false && !stateCreateAccount.isLoading}>Claim handle</Show>

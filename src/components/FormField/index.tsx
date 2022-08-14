@@ -4,7 +4,7 @@ import { IconErrorCircleOutline } from '@components/Icons'
 const FormField = (props) => {
   return (
     <div
-      class="flex flex-col border-solid rounded-md overflow-hidden border max-w-[inherit]"
+      class={`flex flex-col border-solid rounded-md overflow-hidden border max-w-[inherit] ${props.class ?? ''}`}
       classList={{
         'border-neutral-100 border-opacity-[0.15] focus-within:border-opacity-25':
           props.hasError === false || !props?.hasError,
@@ -22,7 +22,7 @@ const InputField = (props) => {
 
 const Label = (props) => {
   return (
-    <label class="flex items-center font-bold" for={props.form}>
+    <label class="flex items-center text-ex font-bold" for={props.form}>
       <Show when={props?.hasError === true}>
         <IconErrorCircleOutline class="text-negative-10 mie-1ex" />
       </Show>
@@ -42,7 +42,7 @@ const Description = (props) => {
 const HelpBlock = (props) => {
   return (
     <div
-      class="px-4 py-3 border-t border-solid text-2xs border-opacity-10"
+      class="mt-auto px-4 py-3 border-t border-solid text-2xs border-opacity-10"
       classList={{
         'border-neutral-400 bg-white bg-opacity-10': props.hasError === false || !props?.hasError,
         'border-negative-300 bg-negative-800 bg-opacity-20': props.hasError === true,

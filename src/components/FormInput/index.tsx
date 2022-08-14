@@ -6,7 +6,7 @@ import { addon } from './styles'
 export const FormInput = (props) => {
   //@ts-ignore
   return (
-    <div class="flex items-center">
+    <div class={`flex items-center ${props.wrapperClass ?? ''}`}>
       <Show when={props.addonStart}>
         <span
           class={addon({
@@ -21,7 +21,7 @@ export const FormInput = (props) => {
         </span>
       </Show>
       <input
-        {...omitProps(props, ['class', 'addonStart', 'addonEnd', 'appearance', 'scale', 'hasError'])}
+        {...omitProps(props, ['class', 'wrapperClass', 'addonStart', 'addonEnd', 'appearance', 'scale', 'hasError'])}
         class={input({
           //@ts-ignore
           appearance: props.appearance ?? 'square',

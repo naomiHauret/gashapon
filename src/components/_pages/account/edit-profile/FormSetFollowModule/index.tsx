@@ -1,6 +1,6 @@
-import { createSignal, createMemo, Show } from 'solid-js'
+import { createSignal, createMemo, Show, createUniqueId } from 'solid-js'
 import * as dialog from '@zag-js/dialog'
-import { useMachine, useSetup, normalizeProps } from '@zag-js/solid'
+import { useMachine, normalizeProps } from '@zag-js/solid'
 import Button from '@components/Button'
 import Callout from '@components/Callout'
 import { FOLLOW_MODULE_TYPES, useSetFollowModule } from './useSetFollowModule'
@@ -10,15 +10,23 @@ import useNetwork from '@hooks/useNetwork'
 import InputToken from '@components/InputToken'
 import { whitelist } from '@helpers/tokens'
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from 'solid-headless'
-import styles from './styles.module.css'
 
 export const FormSetFollowModule = () => {
   const { storeForm, stateSetFollowModule, showWaitMessage } = useSetFollowModule()
   const { networkData } = useNetwork()
   const { form } = storeForm
-  const [stateDialogPickToken, sendDialogPickToken] = useMachine(dialog.machine)
-  const refDialogPickToken = useSetup({ send: sendDialogPickToken, id: 'dialog-pick-token-follow-module' })
+
+  const [stateDialogPickToken, sendDialogPickToken] = useMachine(
+    dialog.machine({
+      id: createUniqueId(),
+      closeOnOutsideClick: false,
+      closeOnEsc: false,
+      preventScroll: true,
+    }),
+  )
+
   const apiDialogPickToken = createMemo(() => dialog.connect(stateDialogPickToken, sendDialogPickToken, normalizeProps))
+
   const [amountValid, setAmountValid] = createSignal(true)
 
   function resetFeeInputs() {
@@ -49,28 +57,28 @@ export const FormSetFollowModule = () => {
             <>
               <RadioGroupLabel class="sr-only">Follow settings</RadioGroupLabel>
               <div class="space-y-4">
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.FREE}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.FREE}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">Free</span> - Anyone can follow you, for free.
                     </>
                   )}
                 </RadioGroupOption>
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.REVERT}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.REVERT}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">No followers</span> - No one can follow you.
                     </>
                   )}
                 </RadioGroupOption>
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.PROFILE}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.PROFILE}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">Profiles only</span> - Only people with a profile can follow you.
                     </>
                   )}
                 </RadioGroupOption>
-                <RadioGroupOption class={styles.pseudoIndicator} value={FOLLOW_MODULE_TYPES.FEE}>
+                <RadioGroupOption class="radio-pseudoIndicator" value={FOLLOW_MODULE_TYPES.FEE}>
                   {({ isSelected: checked }) => (
                     <>
                       <span class="font-bold">Charge a fee</span> - Charge a fee to allow people to follow you.
@@ -84,7 +92,6 @@ export const FormSetFollowModule = () => {
         <div class="pis-5 mt-2.5 xs:max-w-fit-content">
           <InputToken
             api={apiDialogPickToken}
-            ref={refDialogPickToken}
             amountValid={amountValid}
             setAmountValid={setAmountValid}
             hasErrors={storeForm.data()?.type === FOLLOW_MODULE_TYPES.FEE && storeForm.errors().amount?.length > 0}
@@ -93,7 +100,7 @@ export const FormSetFollowModule = () => {
             onAmountChange={(value) => storeForm.setData('feeAmount', parseFloat(value))}
             showUserBalance={false}
             value={storeForm.data()?.feeAmount}
-            tokens={whitelist[networkData().chain.id]}
+            tokens={whitelist[networkData()?.chain?.id]}
           />
         </div>
 
@@ -113,7 +120,7 @@ export const FormSetFollowModule = () => {
         <Portal>
           <DialogPickToken
             showUserBalance={false}
-            tokens={whitelist[networkData().chain.id]}
+            tokens={whitelist[networkData()?.chain?.id]}
             pickedToken={storeForm.data().feeCurrencyAddress}
             api={apiDialogPickToken}
             onRadioChange={(value) => {

@@ -24,12 +24,11 @@ export function useConnect() {
     }
   }
 
-  async function disconnectWallet() {
+  function disconnectWallet() {
     remove(COOKIE_ACCESS_TOKENS)
     walletVerifiedState.setVerified(false)
     walletVerifiedState.setConnected(false)
     walletVerifiedState.setLoading(false)
-    await disconnect()
   }
 
   async function switchToSupportedNetwork() {

@@ -1,0 +1,8 @@
+.breadcrumbs li:not(:last-child)::after {
+  @apply opacity-50 px-3;
+  content: '/';
+}
+
+.breadcrumbs li:last-child {
+  @apply opacity-50 italic;
+}

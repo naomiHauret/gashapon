@@ -15,6 +15,7 @@ export function useIndexingTxWaitMessage() {
   return {
     showWaitMessage,
     setCanStartCountdown,
+    setShowWaitMessage,
   }
 }
 

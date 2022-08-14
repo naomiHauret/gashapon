@@ -21,7 +21,7 @@ export function useFollow() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
 
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
 
   async function followProfile(profileToFollow) {
     stateFollowRequest.setIsLoading(true)
@@ -98,6 +98,7 @@ export function useFollow() {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateFollowRequest.setIsSuccess(true)
         stateFollowRequest.setData(result.data)
         //@ts-ignore

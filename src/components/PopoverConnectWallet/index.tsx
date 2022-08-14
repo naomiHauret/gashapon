@@ -1,6 +1,6 @@
 import { createMemo, createEffect, createSignal, Match, Switch, createUniqueId, Show } from 'solid-js'
 import * as popover from '@zag-js/popover'
-import { normalizeProps, useMachine, useSetup } from '@zag-js/solid'
+import { normalizeProps, useMachine } from '@zag-js/solid'
 import ButtonGroupWalletOptions from '@components/ButtonGroupWalletOptions'
 import useAccount from '@hooks/useAccount'
 import useConnect from '@hooks/useConnect'
@@ -24,10 +24,9 @@ import { IconLogout } from '@components/Icons'
 const popoverButtonStyles = button({ intent: 'primary', aspect: 'popout-primary', scale: 'sm' })
 
 export const PopoverConnectWallet = (props) => {
-  const id = createUniqueId()
-  const [state, send] = useMachine(popover.machine)
-  const ref = useSetup({ send, id })
+  const [state, send] = useMachine(popover.machine({ id: createUniqueId() }))
   const api = createMemo(() => popover.connect(state, send, normalizeProps))
+
   const { accountData } = useAccount()
   const { disconnect } = useConnect()
   //@ts-ignore
@@ -49,7 +48,7 @@ export const PopoverConnectWallet = (props) => {
   })
 
   return (
-    <div class="relative" ref={ref}>
+    <div class="relative">
       <button
         classList={{
           [popoverButtonStyles]:
@@ -86,13 +85,16 @@ export const PopoverConnectWallet = (props) => {
           >
             <Switch>
               <Match when={stateFetchDefaultProfile.data?.picture?.original?.url}>
-                <img
-                  class="rounded-full"
-                  height="40px"
-                  width="40px"
-                  src={stateFetchDefaultProfile.data.picture.original.url}
-                  alt=""
-                />
+                <div class="rounded-full w-10 h-10 overflow-hidden relative">
+                  <span class="absolute top-0 left-0 w-full h-full animate-pulse bg-neutral-800" />
+                  <img
+                    class="relative z-10"
+                    height="40px"
+                    width="40px"
+                    src={stateFetchDefaultProfile.data.picture.original.url}
+                    alt=""
+                  />
+                </div>
               </Match>
               <Match when={!stateFetchDefaultProfile.data?.picture?.original?.url}>{popoverLabel()}</Match>
             </Switch>
@@ -148,23 +150,23 @@ export const PopoverConnectWallet = (props) => {
                   <div class={popoverStyles.popoverSectionName}>Creator</div>
                   <ul>
                     <li>
-                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_CREATE_GAME}>
-                        Create new game
+                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_DASHBOARD}>
+                        Dashboard
                       </Link>
                     </li>
                     <li>
-                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_DASHBOARD}>
-                        Dashboard
+                      <Link class={popoverStyles.popoverSectionLink} href={ROUTE_CREATE_GAME}>
+                        Create new game
                       </Link>
                     </li>
                   </ul>
                 </div>
 
                 <button
-                  class={`mt-1 border-opacity-10 border-white w-full ${popoverStyles.logoutButton} ${popoverStyles.popoverSectionLink}`}
-                  onClick={async () => await disconnect()}
+                  class={`flex items-center mt-1 border-opacity-10 border-white w-full ${popoverStyles.logoutButton} ${popoverStyles.popoverSectionLink}`}
+                  onClick={() => disconnect()}
                 >
-                  <IconLogout class="text-neutral-9 h-[1em] mie-[0.5ch]" />
+                  <IconLogout class="text-neutral-9 h-[1.5em] mie-[0.5ch]" />
                   Log out
                 </button>
               </div>

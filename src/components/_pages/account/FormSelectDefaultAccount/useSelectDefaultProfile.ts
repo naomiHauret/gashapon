@@ -21,7 +21,7 @@ const schema = object({
 export function useSelectDefaultProfile() {
   const toast = useToast()
   const stateSetDefaultProfile = useStoreSetDefaultProfile()
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
   const storeForm = createForm({
     onSubmit: async (values) => {
       await setDefaultUserProfile(values.defaultAccount)
@@ -62,6 +62,7 @@ export function useSelectDefaultProfile() {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateSetDefaultProfile.setIsSuccess(true)
         stateSetDefaultProfile.setData(newDefaultProfile.data)
         //@ts-ignore

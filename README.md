@@ -47,3 +47,63 @@ Video list that inspirated this project
 
 ---
 This project was created during [Skynet Summer 2022 Developer Program](https://skynetlabs.com/news/announcing-skynet-developer-program/).
+
+---
+
+- **Account**
+    - [x]  [as anyone with a wallet] claim handle
+    - [x]  [as an authenticated user with an account] select default account
+    - [x]  [as an authenticated user with an account] delete account
+    
+
+---
+
+- **Profile**
+    - Data
+        - [x]  [as an authenticated user with an account] Update profile
+        - [x]  [as anyone] Display an existing profile page
+    - Follow
+        - [x]  [as an authenticated user with an account/anyone with a wallet] Follow a profile
+        - [x]  [as a follower] Unfollow a profile
+        - [x]  [as  an authenticated user with an account] Update follow module
+    - Tip/support tiers
+        - [ ]  [as an authenticated user with an account] Set support tiers (tipping)
+        - [ ]  [as  an authenticated user with an account] Tip using the support tier ( *→ uses Lens publication collect module under the hood*)
+    - [ ]  Search for a profile (criteria tbd)
+    
+
+---
+
+- **Game**
+    - [ ]  [as an authenticated user with an account] Create a game  ( *→ uses Lens publication collect module under the hood*)
+    - [ ]  [as anyone] Display a game page
+    - [ ]  [as an authenticated user with an account] Buy a game
+    - [ ]  [as an authenticated user with an account and a game bought] Download game / access game (→ uses Lit protocol to gate access ?)
+    - [ ]  [as an authenticated user that created a game] Publish game updates
+    - [ ]  [as anyone] search a game (which criteria?)
+    
+
+---
+
+- **Dashboard** [gated: authenticated user with an account]
+    - Tip/support tiers
+        - [ ]  Display total tips $$$
+        - [ ]  Display followers list
+        - [ ]  Display created games
+        - [ ]  Display total games sold $$$
+    - Posts
+        - [ ]  List my posts
+        - [ ]  Create a post
+    - Community
+        - [ ]  Create a community
+        - [ ]  Update a community
+        - [ ]  Delete a community
+        - [ ]  List my communities
+        
+
+---
+
+- **Communities**
+    - [ ]  Join a community (can be gated)
+    - [ ]  Leave a community
+    - [ ]  Publish in a community (can be gated)

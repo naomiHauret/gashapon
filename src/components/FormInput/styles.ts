@@ -7,7 +7,7 @@ export const input = cva(
     'appearance-none',
     'border-solid border-opacity-20 hover:border-opacity-25 focus:border-opacity-40',
     'bg-opacity-3.5 focus:bg-opacity-5',
-    'input placeholder:text-opacity-30',
+    'placeholder:text-opacity-30',
     'disabled:pointer-events-none',
   ],
   {

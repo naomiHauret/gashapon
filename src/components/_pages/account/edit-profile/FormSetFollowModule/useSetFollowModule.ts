@@ -13,7 +13,6 @@ import splitSignature from '@helpers/splitSignature'
 import { CONTRACT_LENS_HUB_PROXY } from '@config/contracts'
 import abiLensHubProxy from '@abis/lens-hub-proxy'
 import useToast from '@hooks/useToast'
-import { createEffect } from 'solid-js'
 
 export const FOLLOW_MODULE_TYPES = {
   FREE: 'free',
@@ -35,7 +34,7 @@ const useStoreFollowModule = createAsyncStore()
 export function useSetFollowModule() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
   const stateSetFollowModule = useStoreFollowModule()
   const { accountData } = useAccount()
   const toast = useToast()
@@ -127,6 +126,7 @@ export function useSetFollowModule() {
         })
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateSetFollowModule.setIsSuccess(true)
         stateSetFollowModule.setData(result.data)
         //@ts-ignore

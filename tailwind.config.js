@@ -70,7 +70,7 @@ module.exports = {
       xs: clamp(-1),
       sm: clamp(-0.5),
       base: clamp(0),
-      ex: clamp(0.35),
+      ex: clamp(0.125),
       md: clamp(0.5),
       lg: clamp(1),
       xl: clamp(2),
@@ -92,6 +92,7 @@ module.exports = {
     extend: {
       aspectRatio: {
         banner: '3 / 1',
+        'game-thumbnail': '5 / 4',
       },
       colors: {
         'brand-pink': '#FF98E8',

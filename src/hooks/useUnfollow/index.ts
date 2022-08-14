@@ -16,12 +16,8 @@ const useStoreUnfollowRequest = createAsyncStore()
 
 export function useUnfollow() {
   const toast = useToast()
-  const { accountData } = useAccount()
   const stateUnfollowRequest = useStoreUnfollowRequest()
-  //@ts-ignore
-  const { stateFetchDefaultProfile } = useDefaultProfile()
-
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
 
   async function unfollowProfile(profileToUnfollow) {
     stateUnfollowRequest.setIsLoading(true)
@@ -54,6 +50,7 @@ export function useUnfollow() {
 
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
+        setShowWaitMessage(false)
         stateUnfollowRequest.setIsSuccess(true)
         stateUnfollowRequest.setData(result.data)
         //@ts-ignore

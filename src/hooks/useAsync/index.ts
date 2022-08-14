@@ -2,11 +2,13 @@ import create from 'solid-zustand'
 
 interface AsyncState {
   data: any
+  refresh: boolean
   didFetch: boolean
   isSuccess: boolean
   isError: boolean
   isLoading: boolean
   error: null | string
+  setRefresh: (shouldRefresh: boolean) => void
   setDidFetch: (didFetch: boolean) => void
   setIsSuccess: (isSuccess: boolean) => void
   setError: (err: string | null, isErr: boolean) => void
@@ -22,6 +24,8 @@ export const createAsyncStore = () =>
     isLoading: false,
     error: null,
     didFetch: false,
+    refresh: false,
+    setRefresh: (value) => set(() => ({ refresh: value })),
     setDidFetch: (value) => set(() => ({ didFetch: value })),
     setIsSuccess: (value) => set(() => ({ isSuccess: value })),
     setError: (err, isErr) => set(() => ({ error: err, isError: isErr })),

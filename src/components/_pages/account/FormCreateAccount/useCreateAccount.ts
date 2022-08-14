@@ -16,7 +16,7 @@ const schema = object({
 export function useCreateAccount() {
   const toast = useToast()
   const stateCreateAccount = useStoreCreateAccount()
-  const { showWaitMessage, setCanStartCountdown } = useIndexingTxWaitMessage()
+  const { showWaitMessage, setCanStartCountdown, setShowWaitMessage } = useIndexingTxWaitMessage()
   const storeForm = createForm({
     onSubmit: async (values) => {
       await createUserProfile(values.handle)
@@ -34,6 +34,7 @@ export function useCreateAccount() {
       if (claimedProfile?.data) {
         setCanStartCountdown(true)
         await pollUntilIndexed(claimedProfile.data.createProfile.txHash)
+        setShowWaitMessage(false)
         stateCreateAccount.setIsSuccess(true)
         stateCreateAccount.setData(claimedProfile.data)
         //@ts-ignore

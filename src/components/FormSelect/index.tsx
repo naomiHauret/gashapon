@@ -3,7 +3,7 @@ import { omitProps } from 'solid-use'
 import styles from './styles.module.css'
 export const FormSelect = (props) => {
   return (
-    <div class="relative">
+    <div class={`${props?.wrapperClass ?? ''} relative`}>
       <select
         {...omitProps(props, ['class', 'children', 'appearance', 'scale', 'hasError'])}
         class={`pie-10 ${styles.select} ${input({

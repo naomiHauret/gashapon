@@ -1,4 +1,4 @@
-import { useMachine, useSetup, normalizeProps } from '@zag-js/solid'
+import { useMachine, normalizeProps } from '@zag-js/solid'
 import * as toast from '@zag-js/toast'
 import { createContext, createUniqueId, For, useContext, createMemo } from 'solid-js'
 import Toast from '@components/Toast'
@@ -10,6 +10,7 @@ export const ProviderToast = (props) => {
   const id = createUniqueId()
   const [state, send] = useMachine(
     toast.group.machine({
+      id,
       offsets: {
         top: '1rem',
         right: '1rem',
@@ -18,7 +19,6 @@ export const ProviderToast = (props) => {
       },
     }),
   )
-  const ref = useSetup({ send, id })
   const api = createMemo(() => toast.group.connect(state, send, normalizeProps))
 
   return (
@@ -26,7 +26,6 @@ export const ProviderToast = (props) => {
       {props.children}
       <Portal>
         <div
-          ref={ref}
           {...api().getGroupProps({ placement: 'bottom' })}
           class="toast-group relative z-50 flex flex-col items-center justify-center"
         >

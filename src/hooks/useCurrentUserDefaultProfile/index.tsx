@@ -58,11 +58,13 @@ export function ProviderDefaultProfile(props) {
       }
       stateFetchDefaultProfile.setIsLoading(false)
       stateFetchDefaultProfile.setDidFetch(true)
+      stateFetchDefaultProfile.setRefresh(false)
     } catch (e) {
       stateFetchDefaultProfile.setIsSuccess(false)
       stateFetchDefaultProfile.setIsLoading(false)
       stateFetchDefaultProfile.setError(e, true)
       stateFetchDefaultProfile.setDidFetch(true)
+      stateFetchDefaultProfile.setRefresh(false)
     }
   }
 

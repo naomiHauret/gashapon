@@ -8,7 +8,7 @@ import useAccount from '@hooks/useAccount'
 export const ButtonGroupWalletOptions = () => {
   const { connect, connectors, switchToSupportedNetwork } = useConnect()
   //@ts-ignore
-  const { walletVerifiedState, dialogApi, dialogRef } = useVerifyUser()
+  const { walletVerifiedState, dialogApi } = useVerifyUser()
   const { networkData } = useNetwork()
   const { accountData } = useAccount()
   return (
@@ -31,7 +31,6 @@ export const ButtonGroupWalletOptions = () => {
           {(connector) => (
             <>
               <Button
-                ref={dialogRef}
                 {...dialogApi().triggerProps}
                 /* @ts-expect-error */
                 intent={`wallet-${connector.name}`}

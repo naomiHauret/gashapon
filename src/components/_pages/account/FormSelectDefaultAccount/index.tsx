@@ -44,7 +44,7 @@ export const FormSelectDefaultProfile = () => {
         </fieldset>
         <Button
           class="w-full xs:w-auto"
-          disabled={stateSetDefaultProfile.isLoading}
+          disabled={stateSetDefaultProfile.isLoading || !storeForm.isValid()}
           isLoading={stateSetDefaultProfile.isLoading}
         >
           <Show when={stateSetDefaultProfile.isError === false && !stateSetDefaultProfile.isLoading}>

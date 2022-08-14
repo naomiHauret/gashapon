@@ -1,10 +1,9 @@
 import { PORTAL, SKYNET_SEED_PREFIX } from '@config/skynet'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
-import { genKeyPairFromSeed } from 'skynet-js'
+import { genKeyPairFromSeed, getEntryLink as _getEntryLink } from 'skynet-js'
 import { createContext, useContext } from 'solid-js'
 import { client } from '@config/skynet'
 import useToast from '@hooks/useToast'
-import { string } from 'solid-use'
 
 const ContextSkynet = createContext()
 
@@ -38,7 +37,10 @@ export function ProviderSkynet(props) {
           title: successMessage ?? 'Data uploaded successfully!',
         })
       }
-      return `${PORTAL}/${uploaded.skylink.replace('sia://', '')}`
+      return {
+        https: `${PORTAL}/${uploaded.skylink.replace('sia://', '')}`,
+        skylink: uploaded.skylink,
+      }
     } catch (error) {
       if (!silentUpload) {
         //@ts-ignore
@@ -64,9 +66,40 @@ export function ProviderSkynet(props) {
       console.error(error)
     }
   }
+
+  async function setDataLink(dataKey, skylink) {
+    console.log(dataKey, skylink)
+    const { privateKey, publicKey } = getKeys()
+    try {
+      await client.db.setDataLink(privateKey, dataKey, skylink)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  async function getEntryLink(profileId, dataKey) {
+    const seed = `${SKYNET_SEED_PREFIX}.${profileId}`
+    const { publicKey } = genKeyPairFromSeed(seed)
+    const resolverSkylink = _getEntryLink(publicKey, dataKey)
+
+    return resolverSkylink
+  }
+
+  async function getFileMetadata(skylink) {
+    try {
+      const result = await client.getMetadata(skylink)
+      return result
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const store = {
     uploadData,
     loadFileContent,
+    getKeys,
+    setDataLink,
+    getEntryLink,
+    getFileMetadata,
   }
   return <ContextSkynet.Provider value={store}>{props.children}</ContextSkynet.Provider>
 }
