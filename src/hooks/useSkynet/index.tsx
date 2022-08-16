@@ -68,7 +68,6 @@ export function ProviderSkynet(props) {
   }
 
   async function setDataLink(dataKey, skylink) {
-    console.log(dataKey, skylink)
     const { privateKey, publicKey } = getKeys()
     try {
       await client.db.setDataLink(privateKey, dataKey, skylink)
@@ -90,7 +89,7 @@ export function ProviderSkynet(props) {
       const result = await client.getMetadata(skylink)
       return result
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
   const store = {

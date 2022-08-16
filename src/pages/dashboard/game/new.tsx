@@ -1,16 +1,21 @@
 import { IconLock } from '@components/Icons'
 import FormIndexGameData from '@components/_pages/dashboard/game/FormIndexGameData'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
+import useVerifyUser from '@hooks/useVerifyUser'
 import { Show } from 'solid-js'
 import { Title } from 'solid-meta'
 
 export default function Page() {
+  //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
-
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   return (
     <>
       <Title>Create a new game - Gashapon</Title>
-      <Show when={!stateFetchDefaultProfile?.data?.id}>
+      <Show
+        when={!stateFetchDefaultProfile?.data?.id || !walletVerifiedState?.connected || !walletVerifiedState?.verified}
+      >
         <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
           <h2 class="text-2xl text-white font-bold flex items-center">
             <IconLock class="mie-1ex" /> Access restricted
@@ -20,7 +25,9 @@ export default function Page() {
           </p>
         </div>
       </Show>
-      <Show when={stateFetchDefaultProfile?.data?.id}>
+      <Show
+        when={stateFetchDefaultProfile?.data?.id && walletVerifiedState?.connected && walletVerifiedState?.verified}
+      >
         <main class="mx-auto container animate-appear">
           <h1 class="font-bold mb-3 text-xl">Create new game page</h1>
 

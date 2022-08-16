@@ -1,12 +1,13 @@
-import { createEffect, createResource, createSignal, For, Match, Show, Switch } from 'solid-js'
+import { createResource, createSignal, Match, Switch } from 'solid-js'
 import { LENS_PUBLICATIONS_APP_ID_GAMES_STORE } from '@config/lens'
 import { explorePublications } from '@graphql/explore/explore-publications'
 import { Title } from 'solid-meta'
 import Callout from '@components/Callout'
-import { ListGames } from '@components/ListGames'
+import { ListGames } from '@components/_pages/explore/ListGames'
 
 async function fetchGames(sort) {
   const result = await explorePublications({
+    //@ts-ignore
     publicationTypes: ['POST'],
     metadata: {
       tags: {
@@ -23,7 +24,7 @@ async function fetchGames(sort) {
 export default function Page() {
   //@ts-ignore
   const [sortOrder, setSortOrder] = createSignal('TOP_COLLECTED')
-  const [games] = createResource(sortOrder, fetchGames)
+  const [games] = createResource(() => sortOrder(), fetchGames)
 
   return (
     <>

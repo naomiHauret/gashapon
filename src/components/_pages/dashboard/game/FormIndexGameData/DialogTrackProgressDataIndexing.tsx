@@ -186,7 +186,12 @@ export const DialogTrackProgressDataIndexing = (props) => {
           <Link href={ROUTE_DASHBOARD_LIST_GAMES} class={button({ class: 'w-full xs:w-auto' })}>
             Go to created games list
           </Link>
-          <Button intent="neutral--revert" class="w-full xs:w-auto" {...props.api().closeButtonProps}>
+          <Button
+            aspect="outline-sm"
+            intent="neutral--revert"
+            class="w-full xs:w-auto"
+            {...props.api().closeButtonProps}
+          >
             Go back
           </Button>
         </div>

@@ -54,6 +54,7 @@ export function usePurchaseGamePass() {
           types: omit(typedData?.types, '__typename'),
           value: omit(typedData?.value, '__typename'),
         })
+
         const { v, r, s } = splitSignature(signature)
         const tx = await writeContract({
           addressOrName: CONTRACT_LENS_HUB_PROXY,
@@ -76,6 +77,7 @@ export function usePurchaseGamePass() {
         await pollUntilIndexed(tx.hash)
         setShowWaitMessage(false)
         setCanStartCountdown(false)
+        stateIndexPurchaseGamePass.setIsLoading(false)
         stateIndexPurchaseGamePass.setIsSuccess(true)
         stateIndexPurchaseGamePass.setData(result.data)
 
@@ -85,6 +87,8 @@ export function usePurchaseGamePass() {
             type: 'success',
             title: `Your game pass was created successfully!`,
           })
+
+        return
       } else {
         setShowWaitMessage(false)
         setCanStartCountdown(false)

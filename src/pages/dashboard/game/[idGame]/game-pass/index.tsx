@@ -10,6 +10,7 @@ import Callout from '@components/Callout'
 import { useDashboardGamePass } from '@hooks/useDashboardGamePass'
 import Button from '@components/Button'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 export default function Page() {
   const data = useRouteData()
@@ -17,9 +18,13 @@ export default function Page() {
   const { refreshData, gamePassList } = useDashboardGamePass()
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   return (
     <>
-      <Show when={!stateFetchDefaultProfile?.data?.id}>
+      <Show
+        when={!stateFetchDefaultProfile?.data?.id || !walletVerifiedState?.connected || !walletVerifiedState?.verified}
+      >
         <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
           <h2 class="text-2xl text-white font-bold flex items-center">
             <IconLock class="mie-1ex" /> Access restricted
@@ -29,7 +34,9 @@ export default function Page() {
           </p>
         </div>
       </Show>
-      <Show when={stateFetchDefaultProfile?.data?.id}>
+      <Show
+        when={stateFetchDefaultProfile?.data?.id && walletVerifiedState?.connected && walletVerifiedState?.verified}
+      >
         <Suspense fallback={<>Loading...</>}>
           <Switch>
             {/* @ts-ignore */}
@@ -101,28 +108,32 @@ export default function Page() {
                   buyer decides to sell their game pass.
                 </p>
                 <p class="text-neutral-300 italic mb-8">You can create several game pass for the same game.</p>
-                <Show when={gamePassList()?.data?.publications || gamePassList()?.error}>
-                  <Button
-                    aspect="outline-sm"
-                    onClick={refreshData}
-                    scale="xs"
-                    intent="primary--revert"
-                    class="mis-auto mb-8"
-                  >
-                    Refresh
-                  </Button>
-                </Show>
-                <Switch fallback={<>Loading...</>}>
-                  <Match when={gamePassList()?.error?.message}>
-                    <Callout>{gamePassList()?.error?.message}</Callout>
-                  </Match>
-                  <Match when={gamePassList()?.data?.publications?.items?.length === 0}>No game pass to show</Match>
-                  <Match when={gamePassList()?.data?.publications?.items?.length > 0}>
-                    <div class="animate-appear">
-                      <TableGamePass gamePassList={gamePassList()?.data?.publications?.items} />
-                    </div>
-                  </Match>
-                </Switch>
+                <div class="flex flex-col">
+                  <Show when={gamePassList()?.data?.publications || gamePassList()?.error}>
+                    <Button
+                      aspect="outline-sm"
+                      onClick={refreshData}
+                      scale="xs"
+                      intent="primary--revert"
+                      class="mis-auto mb-8 animate-appear"
+                    >
+                      Refresh
+                    </Button>
+                  </Show>
+                  <Switch fallback={<>Loading...</>}>
+                    <Match when={gamePassList()?.error?.message}>
+                      <Callout>{gamePassList()?.error?.message}</Callout>
+                    </Match>
+                    <Match when={gamePassList()?.data?.publications?.items?.length === 0}>
+                      <p class="italic text-neutral-400 animate-appear">No game pass created yet.</p>
+                    </Match>
+                    <Match when={gamePassList()?.data?.publications?.items?.length > 0}>
+                      <div class="animate-appear">
+                        <TableGamePass gamePassList={gamePassList()?.data?.publications?.items} />
+                      </div>
+                    </Match>
+                  </Switch>
+                </div>
               </DashboardGameLayout>
             </Match>
           </Switch>

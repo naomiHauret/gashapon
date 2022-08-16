@@ -6,14 +6,18 @@ import { ROUTE_DASHBOARD, ROUTE_DASHBOARD_LIST_GAMES } from '@config/routes'
 import { Link } from 'solid-app-router'
 import Breadcrumbs from '@components/Breadcrumbs'
 import { IconLock } from '@components/Icons'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 export default function Page() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
 
   createEffect(() => {
-    if (stateFetchDefaultProfile?.data?.id) setUserId(stateFetchDefaultProfile?.data?.id)
+    if (stateFetchDefaultProfile?.data?.id && walletVerifiedState?.connected && walletVerifiedState?.verified)
+      setUserId(stateFetchDefaultProfile?.data?.id)
   })
   return (
     <>
@@ -35,7 +39,7 @@ export default function Page() {
 
       <main class="mx-auto container">
         <Suspense fallback={<span class="animate-appear">Loading...</span>}>
-          <Show when={!userId()}>
+          <Show when={!userId() || !walletVerifiedState?.connected || !walletVerifiedState?.verified}>
             <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
               <h2 class="text-2xl text-white font-bold flex items-center">
                 <IconLock class="mie-1ex" /> Access restricted
@@ -46,7 +50,7 @@ export default function Page() {
             </div>
           </Show>
 
-          <Show when={userId()}>
+          <Show when={userId() && walletVerifiedState?.connected && walletVerifiedState?.verified}>
             <Link href={ROUTE_DASHBOARD_LIST_GAMES}>Games</Link>
           </Show>
         </Suspense>

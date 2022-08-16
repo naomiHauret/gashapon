@@ -3,6 +3,7 @@ import { createEffect, createSignal, onMount, createResource } from 'solid-js'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
 import { getPublications } from '@graphql/publications/get-publications'
 import { LENS_PUBLICATIONS_APP_ID_GAMES_STORE } from '@config/lens'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 async function fetchGamePassList(resource) {
   if (!resource.idUser) return
@@ -25,14 +26,15 @@ export function useDashboardGamePass() {
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const [resource, setResource] = createSignal({ idUser: stateFetchDefaultProfile?.data?.id, timestamp: new Date() })
   const [gamePassList] = createResource(resource, fetchGamePassList)
-
-  onMount(() => {
-    setResource({ idUser: stateFetchDefaultProfile?.data?.id, timestamp: new Date() })
-  })
+  const { walletVerifiedState } = useVerifyUser()
 
   createEffect(() => {
     // Refetch user games when profile ID changes
-    setResource({ idUser: stateFetchDefaultProfile?.data?.id, timestamp: new Date() })
+    if (stateFetchDefaultProfile?.data?.id && walletVerifiedState?.verified && walletVerifiedState?.connected) {
+      setResource({ idUser: stateFetchDefaultProfile?.data?.id, timestamp: new Date() })
+    } else {
+      setResource()
+    }
   })
 
   function refreshData() {

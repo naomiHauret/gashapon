@@ -18,7 +18,7 @@ export const FormSendTip = (props) => {
         <RadioGroup
           class="space-y-2"
           onChange={(e) => {
-            console.log(e)
+            // console.log(e)
           }}
         >
           {({ isSelected, isActive }) => (

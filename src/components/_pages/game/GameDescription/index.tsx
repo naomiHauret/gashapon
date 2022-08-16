@@ -46,7 +46,6 @@ export const GameDescription = (props) => {
       iframes[i].width = iframes[i].contentWindow.document.body.scrollWidth
       if (iframes[i].src.includes('store.steampowered.com/widget/')) {
         iframes[i].style.minHeight = '190px'
-        console.log(iframes[i])
       } else {
         iframes[i].height = iframes[i].contentWindow.document.body.scrollHeight
       }

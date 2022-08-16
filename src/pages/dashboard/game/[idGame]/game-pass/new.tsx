@@ -2,6 +2,7 @@ import { IconLock } from '@components/Icons'
 import FormNewGamePass from '@components/_pages/dashboard/game/FormNewGamePass'
 import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_GAME_PASS, ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
+import useVerifyUser from '@hooks/useVerifyUser'
 import DashboardGameLayout from '@layouts/DashboardGame'
 import { useParams, useRouteData } from 'solid-app-router'
 import { createEffect, createSignal, Match, Show, Suspense, Switch } from 'solid-js'
@@ -10,16 +11,20 @@ import { Title } from 'solid-meta'
 export default function Page() {
   const data = useRouteData()
   const params = useParams()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
+  //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
   createEffect(() => {
     // Refetch user games when profile ID changes
-    if (stateFetchDefaultProfile?.data?.id) setUserId(stateFetchDefaultProfile?.data?.id)
+    if (stateFetchDefaultProfile?.data?.id && walletVerifiedState?.connected && walletVerifiedState?.verified)
+      setUserId(stateFetchDefaultProfile?.data?.id)
   })
 
   return (
     <>
-      <Show when={!userId()}>
+      <Show when={!userId() || !walletVerifiedState?.connected || !walletVerifiedState?.verified}>
         <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
           <h2 class="text-2xl text-white font-bold flex items-center">
             <IconLock class="mie-1ex" /> Access restricted
@@ -29,7 +34,7 @@ export default function Page() {
           </p>
         </div>
       </Show>
-      <Show when={userId()}>
+      <Show when={userId() && walletVerifiedState?.connected && walletVerifiedState?.verified}>
         <Suspense fallback={<>Loading...</>}>
           <Switch>
             {/* @ts-ignore */}

@@ -1,5 +1,5 @@
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
-import { Match, Show, Switch } from 'solid-js'
+import { createEffect, Match, Show, Switch } from 'solid-js'
 import { Title } from 'solid-meta'
 import { Suspense } from 'solid-js'
 import Callout from '@components/Callout'
@@ -11,11 +11,13 @@ import button from '@components/Button/button'
 import { Link } from 'solid-app-router'
 import useDashboardGames from '@hooks/useDashboardGames'
 import Button from '@components/Button'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 export default function Page() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const { refreshData, gamesList } = useDashboardGames()
+  const { walletVerifiedState } = useVerifyUser()
 
   return (
     <>
@@ -37,7 +39,11 @@ export default function Page() {
           />
           <div class="mt-4 space-y-4 flex flex-col md:flex-row md:justify-between md:items-center md:space-y-0">
             <h1 class="font-bold text-2xl">Created games</h1>
-            <Show when={stateFetchDefaultProfile?.data?.id}>
+            <Show
+              when={
+                stateFetchDefaultProfile?.data?.id && walletVerifiedState?.connected && walletVerifiedState?.verified
+              }
+            >
               <div>
                 <Link href={ROUTE_CREATE_GAME} class={button({ scale: 'xs' })}>
                   Create new game
@@ -48,9 +54,13 @@ export default function Page() {
         </div>
       </div>
 
-      <main class="mx-auto container">
+      <main class="mx-auto container flex flex-col">
         <Suspense fallback={<span class="animate-appear">Loading your created games...</span>}>
-          <Show when={!stateFetchDefaultProfile?.data?.id}>
+          <Show
+            when={
+              !stateFetchDefaultProfile?.data?.id || !walletVerifiedState?.verified || !walletVerifiedState?.connected
+            }
+          >
             <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
               <h2 class="text-2xl text-white font-bold flex items-center">
                 <IconLock class="mie-1ex" /> Access restricted
@@ -60,17 +70,39 @@ export default function Page() {
               </p>
             </div>
           </Show>
-          <Show when={gamesList()?.error}>
+          <Show
+            when={
+              stateFetchDefaultProfile?.data?.id &&
+              gamesList()?.error &&
+              walletVerifiedState?.verified &&
+              walletVerifiedState?.connected
+            }
+          >
             <div class="animate-appear mb-6">
               <Callout>An error occured: {gamesList().error.message}</Callout>
             </div>
           </Show>
-          <Show when={gamesList()?.data?.publications || gamesList()?.error}>
+          <Show
+            when={
+              (stateFetchDefaultProfile?.data?.id &&
+                walletVerifiedState?.verified &&
+                walletVerifiedState?.connected &&
+                gamesList()?.data?.publications) ||
+              gamesList()?.error
+            }
+          >
             <Button aspect="outline-sm" onClick={refreshData} scale="xs" intent="primary--revert" class="mis-auto mb-8">
               Refresh
             </Button>
           </Show>
-          <Show when={gamesList()?.data?.publications}>
+          <Show
+            when={
+              stateFetchDefaultProfile?.data?.id &&
+              walletVerifiedState?.verified &&
+              walletVerifiedState?.connected &&
+              gamesList()?.data?.publications
+            }
+          >
             <div class="animate-appear">
               <Switch>
                 <Match when={gamesList()?.data?.publications?.items.length === 0}>

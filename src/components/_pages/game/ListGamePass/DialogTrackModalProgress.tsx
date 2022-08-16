@@ -2,7 +2,7 @@ import { Button } from '@components/Button'
 import Callout from '@components/Callout'
 import DialogTrackProgress from '@components/DialogTrackProgress'
 import { IconCircleSolidCheck, IconErrorCircleOutline, IconSpinner } from '@components/Icons'
-import { Match, Show, Switch } from 'solid-js'
+import { createEffect, Match, Show, Switch } from 'solid-js'
 
 export const DialogTrackProgressDataIndexing = (props) => {
   return (
@@ -17,13 +17,13 @@ export const DialogTrackProgressDataIndexing = (props) => {
           class="flex items-center"
         >
           <Switch>
-            <Match when={props.stateIndexPurchaseGamePass.isLoading}>
+            <Match when={props.stateIndexPurchaseGamePass.isLoading === true}>
               <IconSpinner class="text-md mie-1ex animate-spin" />
             </Match>
-            <Match when={props.stateIndexPurchaseGamePass.isSuccess}>
+            <Match when={props.stateIndexPurchaseGamePass.isSuccess === true}>
               <IconCircleSolidCheck class="text-md mie-1ex" />
             </Match>
-            <Match when={props.stateIndexPurchaseGamePass.isError}>
+            <Match when={props.stateIndexPurchaseGamePass.isError === true}>
               <IconErrorCircleOutline class="text-md mie-1ex" />
             </Match>
           </Switch>
@@ -44,7 +44,12 @@ export const DialogTrackProgressDataIndexing = (props) => {
       </Show>
       <Show when={props.stateIndexPurchaseGamePass.isError || props.stateIndexPurchaseGamePass.isSuccess}>
         <div class="mt-6 flex flex-col space-y-4 xs:space-y-0 xs:flex-row xs:space-i-4">
-          <Button intent="neutral--revert" class="w-full xs:w-auto" {...props.api().closeButtonProps}>
+          <Button
+            aspect="outline-sm"
+            intent="neutral--revert"
+            class="w-full xs:w-auto"
+            {...props.api().closeButtonProps}
+          >
             Go back
           </Button>
         </div>

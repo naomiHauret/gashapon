@@ -4,11 +4,6 @@ import { createEffect } from 'solid-js'
 import { Title } from 'solid-meta'
 
 export default function Page() {
-  const { stateFetchDefaultProfile } = useDefaultProfile()
-
-  createEffect(() => {
-    console.log(stateFetchDefaultProfile.data)
-  })
   return (
     <>
       <Title>Follow settings - Gashapon</Title>

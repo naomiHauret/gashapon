@@ -3,12 +3,16 @@ import { IconLock } from '@components/Icons'
 import { LENS_HANDLE_EXTENSION } from '@config/lens'
 import { ROUTE_ACCOUNT, ROUTE_SETTINGS, ROUTE_EDIT_PROFILE, ROUTE_USER } from '@config/routes'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
+import useVerifyUser from '@hooks/useVerifyUser'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'solid-app-router'
 import { createEffect, Match, Show, Switch } from 'solid-js'
 import styles from './styles.module.css'
 export const AccoutLayout = (props) => {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
+
   const navigate = useNavigate()
   const location = useLocation()
   createEffect(() => {
@@ -25,7 +29,13 @@ export const AccoutLayout = (props) => {
     <div class="flex-grow flex flex-col md:flex-row space-y-6 md:space-y-0 container mx-auto">
       <nav style={{ '--colCount': 3 }} class={`${styles.navbar}`}>
         <Switch>
-          <Match when={!stateFetchDefaultProfile?.data?.handle}>
+          <Match
+            when={
+              !stateFetchDefaultProfile?.data?.handle ||
+              !walletVerifiedState?.connected ||
+              !walletVerifiedState?.verified
+            }
+          >
             <span class={styles.navItem}>
               <IconLock class="mie-1ex" />
               Edit profile
@@ -48,13 +58,23 @@ export const AccoutLayout = (props) => {
         </NavLink>
 
         <Switch>
-          <Match when={!stateFetchDefaultProfile?.data?.handle}>
+          <Match
+            when={
+              !stateFetchDefaultProfile?.data?.handle ||
+              !walletVerifiedState?.connected ||
+              !walletVerifiedState?.verified
+            }
+          >
             <span class={styles.navItem}>
               <IconLock class="mie-1ex" />
               Settings
             </span>
           </Match>
-          <Match when={stateFetchDefaultProfile?.data?.handle}>
+          <Match
+            when={
+              stateFetchDefaultProfile?.data?.handle && walletVerifiedState?.verified && walletVerifiedState?.connected
+            }
+          >
             <NavLink end={true} activeClass={styles['navItem--active']} class={styles.navItem} href={ROUTE_SETTINGS}>
               Settings
             </NavLink>
@@ -62,7 +82,22 @@ export const AccoutLayout = (props) => {
         </Switch>
       </nav>
       <div class="md:pis-8 md:w-full md:grid-cols-1">
-        <Show when={stateFetchDefaultProfile.data !== null}>
+        <Show when={!walletVerifiedState?.verified || !walletVerifiedState?.connected}>
+          <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
+            <h2 class="text-2xl text-white font-bold flex items-center">
+              <IconLock class="mie-1ex" /> Access restricted
+            </h2>
+            <p class="pt-2 text-center text-neutral-400 font-semibold max-w-screen-xs">
+              Please sign-in and verify your account to access this page.
+            </p>
+          </div>
+        </Show>
+
+        <Show
+          when={
+            stateFetchDefaultProfile.data !== null && walletVerifiedState?.verified && walletVerifiedState?.connected
+          }
+        >
           <Callout class="animate-appear mb-6 p-5 flex flex-col" intent="dark">
             <span class="text-opacity-70 text-white text-2xs">Currently using Gashapon as:</span> <br />
             <div class="pt-2 flex flex-col items-center xs:flex-row space-y-4 xs:space-y-0 xs:space-i-4">
@@ -88,7 +123,14 @@ export const AccoutLayout = (props) => {
             </div>
           </Callout>
         </Show>
-        <Show when={!stateFetchDefaultProfile.isLoading && stateFetchDefaultProfile.didFetch}>
+        <Show
+          when={
+            !stateFetchDefaultProfile.isLoading &&
+            stateFetchDefaultProfile.didFetch &&
+            walletVerifiedState?.connected &&
+            walletVerifiedState?.verified
+          }
+        >
           <Outlet />
         </Show>
       </div>

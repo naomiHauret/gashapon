@@ -1,8 +1,9 @@
-import { createContext, useContext } from 'solid-js'
+import { createContext, createEffect, useContext } from 'solid-js'
 import { getDefaultProfile } from '@graphql/profile/get-default-profile'
 import { createAsyncStore } from '@hooks/useAsync'
 import { useAccount } from '@hooks/useAccount'
 import { getProfiles } from '@graphql/profile/get-profiles'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 const useStoreFetchDefaultProfile = createAsyncStore()
 const useStoreFetchOwnedProfile = createAsyncStore()
@@ -12,7 +13,8 @@ const ContextDefaultProfile = createContext()
 export function ProviderDefaultProfile(props) {
   const stateFetchOwnedProfiles = useStoreFetchOwnedProfile()
   const stateFetchDefaultProfile = useStoreFetchDefaultProfile()
-
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   const { accountData } = useAccount()
 
   async function fetchProfiles() {
@@ -75,6 +77,15 @@ export function ProviderDefaultProfile(props) {
     fetchProfiles,
   }
 
+  createEffect(() => {
+    if (accountData()?.address && walletVerifiedState?.verified && walletVerifiedState?.connected) {
+      fetchProfiles()
+      fetchDefaultProfile()
+    } else {
+      stateFetchOwnedProfiles.setData(null)
+      stateFetchDefaultProfile.setData(null)
+    }
+  })
   return <ContextDefaultProfile.Provider value={store}>{props.children}</ContextDefaultProfile.Provider>
 }
 

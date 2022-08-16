@@ -1,10 +1,10 @@
 import { createForm } from '@felte/solid'
-import { createEffect, createMemo, createSignal } from 'solid-js'
+import { createMemo, createSignal } from 'solid-js'
 
 export function useFilterListGames(list) {
   const storeForm = createForm({
     onSubmit: (values) => {
-      console.log(values)
+      return
     },
   })
   const [tagsOptions, setTagsOptions] = createSignal(

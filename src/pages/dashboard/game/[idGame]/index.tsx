@@ -10,22 +10,27 @@ import { ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT_DATA, ROUTE_DASHBOARD_LIST_GAMES } f
 import button from '@components/Button/button'
 import { Portal } from 'solid-js/web'
 import DialogModal from '@components/DialogModal'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 export default function Page() {
   const data = useRouteData()
+  //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
   const params = useParams()
   const { unindexPublication, stateDeletePublication, apiDialogModalDeletePublication } = useDeletePublication()
 
   createEffect(() => {
     // Refetch user games when profile ID changes
-    if (stateFetchDefaultProfile?.data?.id) setUserId(stateFetchDefaultProfile?.data?.id)
+    if (stateFetchDefaultProfile?.data?.id && walletVerifiedState?.connected && walletVerifiedState?.verified)
+      setUserId(stateFetchDefaultProfile?.data?.id)
   })
 
   return (
     <>
-      <Show when={!userId()}>
+      <Show when={!userId() || !walletVerifiedState?.connected || !walletVerifiedState?.verified}>
         <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
           <h2 class="text-2xl text-white font-bold flex items-center">
             <IconLock class="mie-1ex" /> Access restricted
@@ -35,7 +40,7 @@ export default function Page() {
           </p>
         </div>
       </Show>
-      <Show when={userId()}>
+      <Show when={userId() && walletVerifiedState?.connected && walletVerifiedState?.verified}>
         <Suspense fallback={<>Loading...</>}>
           <Switch>
             {/* @ts-ignore */}

@@ -6,11 +6,15 @@ import { IconLock } from '@components/Icons'
 import DashboardGameLayout from '@layouts/DashboardGame'
 import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
 import button from '@components/Button/button'
+import useVerifyUser from '@hooks/useVerifyUser'
 
 export default function Page() {
   const data = useRouteData()
   const params = useParams()
+  //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
   createEffect(() => {
     // Refetch user games when profile ID changes
@@ -19,7 +23,7 @@ export default function Page() {
 
   return (
     <>
-      <Show when={!userId()}>
+      <Show when={!userId() || !walletVerifiedState?.connected || !walletVerifiedState?.verified}>
         <div class="animate-appear flex flex-col mt-6  items-center justify-center text-xl">
           <h2 class="text-2xl text-white font-bold flex items-center">
             <IconLock class="mie-1ex" /> Access restricted
@@ -29,7 +33,7 @@ export default function Page() {
           </p>
         </div>
       </Show>
-      <Show when={userId()}>
+      <Show when={userId() && walletVerifiedState?.connected && walletVerifiedState?.verified}>
         <Suspense fallback={<>Loading...</>}>
           <Switch>
             {/* @ts-ignore */}

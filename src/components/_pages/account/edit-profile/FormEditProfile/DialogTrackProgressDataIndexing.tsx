@@ -137,7 +137,7 @@ export const DialogTrackProgressDataIndexing = (props) => {
         <Button {...props.api().closeButtonProps}>Close</Button>
       </Show>
       <Show when={props.stateEditProfile.isError || props.stateEditProfile.isSuccess}>
-        <Button intent="neutral--revert" class="mt-6" {...props.api().closeButtonProps}>
+        <Button intent="neutral--revert" aspect="outline-sm" class="mt-6" {...props.api().closeButtonProps}>
           Go back
         </Button>
       </Show>

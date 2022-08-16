@@ -76,7 +76,12 @@ export const DialogTrackProgressDataIndexing = (props) => {
           >
             Go to game pass list
           </Link>
-          <Button intent="neutral--revert" class="w-full xs:w-auto" {...props.api().closeButtonProps}>
+          <Button
+            aspect="outline-sm"
+            intent="neutral--revert"
+            class="w-full xs:w-auto"
+            {...props.api().closeButtonProps}
+          >
             Go back
           </Button>
         </div>
