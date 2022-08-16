@@ -8,7 +8,9 @@ async function fetchGameData(publicationId) {
 
 export function GameData({ params }) {
   const [game] = createResource(() => params.idGame, fetchGameData)
-  return game
+  return {
+    game,
+  }
 }
 
 export default GameData

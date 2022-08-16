@@ -8,6 +8,11 @@ import { ListGames } from '@components/ListGames'
 async function fetchGames(sort) {
   const result = await explorePublications({
     publicationTypes: ['POST'],
+    metadata: {
+      tags: {
+        oneOf: ['gameInfo'],
+      },
+    },
     sources: [LENS_PUBLICATIONS_APP_ID_GAMES_STORE],
     sortCriteria: sort,
     limit: 50, // Limit can't be greater than 50
@@ -20,10 +25,6 @@ export default function Page() {
   const [sortOrder, setSortOrder] = createSignal('TOP_COLLECTED')
   const [games] = createResource(sortOrder, fetchGames)
 
-  createEffect(() => {
-    console.log(games())
-  })
-
   return (
     <>
       <Title>Explore - Gashapon</Title>
@@ -34,7 +35,7 @@ export default function Page() {
           <Match when={games()?.error?.message}>
             <Callout>{games()?.error?.message}</Callout>
           </Match>
-          <Match when={games()?.data?.explorePublications?.items?.length === 0}>Empty</Match>
+          <Match when={games()?.data?.explorePublications?.items?.length === 0}>No game to show</Match>
           <Match when={games()?.data?.explorePublications?.items?.length > 0}>
             <div class="animate-appear">
               <ListGames

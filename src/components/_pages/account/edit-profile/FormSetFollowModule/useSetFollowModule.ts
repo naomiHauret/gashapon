@@ -127,6 +127,7 @@ export function useSetFollowModule() {
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
         setShowWaitMessage(false)
+        setCanStartCountdown(false)
         stateSetFollowModule.setIsSuccess(true)
         stateSetFollowModule.setData(result.data)
         //@ts-ignore
@@ -136,6 +137,9 @@ export function useSetFollowModule() {
           title: `Your "follow" settings were updated successfully!`,
         })
       } else {
+        setShowWaitMessage(false)
+        setCanStartCountdown(false)
+
         stateSetFollowModule.setError(result.error.message, true)
         //@ts-ignore
         toast().create({
@@ -146,6 +150,9 @@ export function useSetFollowModule() {
       console.error(result.error.message)
       stateSetFollowModule.setIsLoading(false)
     } catch (e) {
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
+
       console.error(e)
       stateSetFollowModule.setIsLoading(false)
       stateSetFollowModule.setIsSuccess(false)

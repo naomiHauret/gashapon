@@ -23,7 +23,7 @@ export const AccoutLayout = (props) => {
   })
   return (
     <div class="flex-grow flex flex-col md:flex-row space-y-6 md:space-y-0 container mx-auto">
-      <nav style={{'--colCount': 3}} class={`${styles.navbar}`}>
+      <nav style={{ '--colCount': 3 }} class={`${styles.navbar}`}>
         <Switch>
           <Match when={!stateFetchDefaultProfile?.data?.handle}>
             <span class={styles.navItem}>
@@ -61,7 +61,7 @@ export const AccoutLayout = (props) => {
           </Match>
         </Switch>
       </nav>
-      <div class="md:pis-20 md:w-full md:grid-cols-1">
+      <div class="md:pis-8 md:w-full md:grid-cols-1">
         <Show when={stateFetchDefaultProfile.data !== null}>
           <Callout class="animate-appear mb-6 p-5 flex flex-col" intent="dark">
             <span class="text-opacity-70 text-white text-2xs">Currently using Gashapon as:</span> <br />

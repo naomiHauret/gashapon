@@ -323,35 +323,44 @@ export function useEditProfile() {
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
         setShowWaitMessage(false)
+        setCanStartCountdown(false)
         stateEditProfile.setIsSuccess(true)
         stateEditProfile.setData(result.data)
         stateFetchDefaultProfile.setRefresh(true)
         stateEditProfile.setIsLoading(false)
         //@ts-ignore
-        toast().create({
-          type: 'success',
-          title: `Your profile was updated successfully!`,
-        })
+        !apiDialogModalTrackProgress().isOpen &&
+          toast().create({
+            type: 'success',
+            title: `Your profile was updated successfully!`,
+          })
       } else {
+        setShowWaitMessage(false)
+        setCanStartCountdown(false)
         stateEditProfile.setError(result.error.message, true)
         stateEditProfile.setIsLoading(false)
         stateEditProfile.setIsSuccess(false)
         //@ts-ignore
-        toast().create({
-          type: 'error',
-          title: `Something went wrong and your profile data couldn't be updated: ${result.error.message}`,
-        })
+        !apiDialogModalTrackProgress().isOpen &&
+          toast().create({
+            type: 'error',
+            title: `Something went wrong and your profile data couldn't be updated: ${result.error.message}`,
+          })
       }
     } catch (e) {
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
+
       console.error(e)
       stateEditProfile.setError(e?.message ?? e, true)
       stateEditProfile.setIsLoading(false)
       stateEditProfile.setIsSuccess(false)
       //@ts-ignore
-      toast().create({
-        type: 'error',
-        title: `Something went wrong and your profile data couldn't be updated: ${e?.message ?? e}`,
-      })
+      !apiDialogModalTrackProgress().isOpen &&
+        toast().create({
+          type: 'error',
+          title: `Something went wrong and your profile data couldn't be updated: ${e?.message ?? e}`,
+        })
       console.error(e)
     }
   }

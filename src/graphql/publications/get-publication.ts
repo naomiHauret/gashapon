@@ -105,6 +105,7 @@ const GET_PUBLICATION = `
     name
     description
     content
+    tags
     media {
       original {
         ...MediaFields

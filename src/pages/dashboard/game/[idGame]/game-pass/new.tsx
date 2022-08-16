@@ -1,10 +1,11 @@
+import { IconLock } from '@components/Icons'
+import FormNewGamePass from '@components/_pages/dashboard/game/FormNewGamePass'
+import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_GAME_PASS, ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
+import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
+import DashboardGameLayout from '@layouts/DashboardGame'
 import { useParams, useRouteData } from 'solid-app-router'
 import { createEffect, createSignal, Match, Show, Suspense, Switch } from 'solid-js'
 import { Title } from 'solid-meta'
-import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
-import { IconLock } from '@components/Icons'
-import DashboardGameLayout from '@layouts/DashboardGame'
-import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
 
 export default function Page() {
   const data = useRouteData()
@@ -53,23 +54,50 @@ export default function Page() {
             </Match>
             <Match when={data?.game()?.data && data?.game()?.data?.publication?.profile?.id === userId()}>
               <Title>
+                Create new game pass -{' '}
                 {
                   data?.game()?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]
                     ?.value
                 }{' '}
-                files dashboard - Gashapon
+                - Gashapon
               </Title>
               <DashboardGameLayout
                 breadcrumbs={[
                   {
-                    href: ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE.replace(':idGame', params.idGame),
-                    label: 'Files',
+                    href: ROUTE_DASHBOARD_GAME_OVERVIEW_POST_GAME_PASS.replace(':idGame', params.idGame),
+                    label: 'New game pass offer',
                   },
                 ]}
                 gameAttributes={data?.game()?.data?.publication?.metadata?.attributes}
               >
-                <div class="container animate-appear mx-auto">
-                  <h2>Files</h2>
+                <div class="animate-appear">
+                  <h2 class="font-bold mb-3 text-lg">Create a new game pass</h2>
+                  <p class="font-semibold text-md mb-3">
+                    Let's create a game pass for{' '}
+                    <span class="text-brand-yellow">
+                      {
+                        data
+                          ?.game()
+                          ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]
+                          ?.value
+                      }
+                    </span>
+                    .
+                  </p>
+                  <p class="text-neutral-300 italic mb-8">You'll upload your game files later.</p>
+                  <FormNewGamePass
+                    game={{
+                      id: params.idGame,
+                      title: data
+                        ?.game()
+                        ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]
+                        ?.value,
+                      banner: data
+                        ?.game()
+                        ?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'banner')[0]
+                        ?.value,
+                    }}
+                  />
                 </div>
               </DashboardGameLayout>
             </Match>

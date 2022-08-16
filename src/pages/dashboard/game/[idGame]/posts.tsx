@@ -8,7 +8,7 @@ import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
 import button from '@components/Button/button'
 
 export default function Page() {
-  const game = useRouteData()
+  const data = useRouteData()
   const params = useParams()
   const { stateFetchDefaultProfile } = useDefaultProfile()
   const [userId, setUserId] = createSignal(stateFetchDefaultProfile?.data?.id)
@@ -33,7 +33,7 @@ export default function Page() {
         <Suspense fallback={<>Loading...</>}>
           <Switch>
             {/* @ts-ignore */}
-            <Match when={game()?.error && !game()?.data}>
+            <Match when={data?.game()?.error && !data?.game()?.data}>
               <Title>Game not found - Dashboard - Gashapon</Title>
               <div class="mt-32 container mx-auto flex flex-col justify-start items-start xs:items-center xs:justify-center">
                 <h1 class="mb-4 font-bold text-2xl">This game is a MissingNo !</h1>
@@ -42,7 +42,7 @@ export default function Page() {
                 </p>
               </div>
             </Match>
-            <Match when={game()?.data && game()?.data?.publication?.profile?.id !== userId()}>
+            <Match when={data?.game()?.data && data?.game()?.data?.publication?.profile?.id !== userId()}>
               <div class="animate-appear">
                 <h2 class="text-2xl text-white font-bold flex items-center">
                   <IconLock class="mie-1ex" /> Access restricted
@@ -52,31 +52,35 @@ export default function Page() {
                 </p>
               </div>
             </Match>
-            <Match when={game()?.data && game()?.data?.publication?.profile?.id === userId()}>
+            <Match when={data?.game()?.data && data?.game()?.data?.publication?.profile?.id === userId()}>
               <Title>
-                {game()?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]?.value}{' '}
-                updates dashboard  - Gashapon
+                {
+                  data?.game()?.data?.publication?.metadata?.attributes.filter((attr) => attr.traitType === 'title')[0]
+                    ?.value
+                }{' '}
+                updates dashboard - Gashapon
               </Title>
-              <DashboardGameLayout 
-                              ctaGroup={
-                                <Link
-                                  class={button({ scale: 'xs' })}
-                                  href={ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE.replace(':idGame', params.idGame)}
-                                >
-                                  New update
-                                </Link>
-                              } 
+              <DashboardGameLayout
+                ctaGroup={
+                  <Link
+                    class={button({ scale: 'xs' })}
+                    href={ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE.replace(':idGame', params.idGame)}
+                  >
+                    New update
+                  </Link>
+                }
                 breadcrumbs={[
                   {
                     href: ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE.replace(':idGame', params.idGame),
                     label: 'Updates',
-                  }
+                  },
                 ]}
-                gameAttributes={game()?.data?.publication?.metadata?.attributes}>
-                  <div class="container animate-appear mx-auto">
-                    <h2>Updates</h2>
-                  </div>
-                </DashboardGameLayout>
+                gameAttributes={data?.game()?.data?.publication?.metadata?.attributes}
+              >
+                <div class="container animate-appear mx-auto">
+                  <h2>Updates</h2>
+                </div>
+              </DashboardGameLayout>
             </Match>
           </Switch>
         </Suspense>

@@ -7,13 +7,13 @@ import {
   ROUTE_DASHBOARD_LIST_GAMES,
   ROUTE_DASHBOARD_GAME_OVERVIEW,
   ROUTE_GAME,
-  ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS,
+  ROUTE_DASHBOARD_GAME_OVERVIEW_GAME_PASS,
   ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE,
   ROUTE_DASHBOARD_GAME_OVERVIEW_FILES,
   ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS,
 } from '@config/routes'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
-import { Link, NavLink, Outlet, useLocation, useNavigate, useParams } from 'solid-app-router'
+import { Link, NavLink, useLocation, useNavigate, useParams } from 'solid-app-router'
 import { createEffect } from 'solid-js'
 import styles from './../Account/styles.module.css'
 export const DashboardGameLayout = (props) => {
@@ -52,7 +52,7 @@ export const DashboardGameLayout = (props) => {
                 href: ROUTE_DASHBOARD_GAME_OVERVIEW.replace(':idGame', params.idGame),
                 label: `${props.gameAttributes.filter((attr) => attr.traitType === 'title')[0]?.value} overview`,
               },
-              ...props?.breadcrumbs
+              ...props?.breadcrumbs,
             ]}
           />
         </div>
@@ -81,32 +81,50 @@ export const DashboardGameLayout = (props) => {
                 </div>
               </div>
             </div>
-            <div class="mt-4 flex space-i-4 md:space-i-0 md:flex-col md:space-y-4">
-              {props.ctaGroup}
-            </div>
+            <div class="mt-4 flex space-i-4 md:space-i-0 md:flex-col md:space-y-4">{props.ctaGroup}</div>
           </div>
         </div>
         <div class="container animate-appear mx-auto"></div>
       </div>
-      <div class="py-6 flex-grow flex flex-col md:flex-row space-y-6 md:space-y-0 container mx-auto">
-        <nav style={{'--colCount': 4}}class={`${styles.navbar}`}>
-          <NavLink end={true} activeClass={styles['navItem--active']} class={styles.navItem} href={ROUTE_DASHBOARD_GAME_OVERVIEW.replace(':idGame', params.idGame)}>
+      <div class="py-6 flex-grow flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-i-10 container mx-auto">
+        <nav style={{ '--colCount': 4 }} class={`${styles.navbar}`}>
+          <NavLink
+            end={true}
+            activeClass={styles['navItem--active']}
+            class={styles.navItem}
+            href={ROUTE_DASHBOARD_GAME_OVERVIEW.replace(':idGame', params.idGame)}
+          >
             Overview
           </NavLink>
 
-          <NavLink end={true} activeClass={styles['navItem--active']} class={styles.navItem} href={ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS.replace(':idGame', params.idGame)}>
-            Sales
+          <NavLink
+            end={true}
+            activeClass={styles['navItem--active']}
+            class={styles.navItem}
+            href={ROUTE_DASHBOARD_GAME_OVERVIEW_GAME_PASS.replace(':idGame', params.idGame)}
+          >
+            Game pass offers
           </NavLink>
 
-          <NavLink end={true} activeClass={styles['navItem--active']} class={styles.navItem} href={ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS.replace(':idGame', params.idGame)}>
+          <NavLink
+            end={true}
+            activeClass={styles['navItem--active']}
+            class={styles.navItem}
+            href={ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS.replace(':idGame', params.idGame)}
+          >
             Updates
           </NavLink>
 
-          <NavLink end={true} activeClass={styles['navItem--active']} class={styles.navItem} href={ROUTE_DASHBOARD_GAME_OVERVIEW_FILES.replace(':idGame', params.idGame)}>
+          <NavLink
+            end={true}
+            activeClass={styles['navItem--active']}
+            class={styles.navItem}
+            href={ROUTE_DASHBOARD_GAME_OVERVIEW_FILES.replace(':idGame', params.idGame)}
+          >
             Game files
           </NavLink>
         </nav>
-        <Outlet />
+        <div class="md:pis-8 md:w-full md:grid-cols-1">{props.children}</div>
       </div>
     </>
   )

@@ -7,7 +7,7 @@ export const button = cva(
     'focus:outline-none',
     'font-sans',
     'transition-colors transition-500',
-    'disabled:opacity-50',
+    'disabled:opacity-50 disabled:pointer-events-none',
   ],
   {
     variants: {
@@ -27,6 +27,12 @@ export const button = cva(
         danger: ['bg-negative-400 hover:bg-opacity-90 focus:bg-negative-500 text-black'],
         'danger--revert': [
           'bg-black hover:bg-negative-400 hover:text-black focus:bg-negative-500 focus:text-black text-white focus:border-negative-500 border-negative-400',
+        ],
+        'primary--revert': [
+          'bg-black text-white',
+          'border-brand-pink border-solid',
+          'hover:bg-brand-pink hover:bg-opacity-90 hover:text-black focus:border-transparent',
+          'focus:bg-brand-pink focus:text-black focus:border-transparent',
         ],
         'neutral--revert': [
           'bg-black hover:bg-neutral-100 hover:text-black focus:bg-neutral-300 focus:text-black text-white focus:border-transparent border-neutral-500',

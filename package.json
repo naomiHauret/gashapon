@@ -56,6 +56,7 @@
     "interweave": "^13.0.0",
     "interweave-autolink": "^5.1.0",
     "js-cookie": "^3.0.1",
+    "lit-js-sdk": "^1.1.211",
     "omit-deep": "^0.3.0",
     "skynet-js": "^4.3.0",
     "solid-app-router": "^0.4.2",

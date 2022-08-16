@@ -30,8 +30,9 @@ import {
   ROUTE_DASHBOARD_GAME_OVERVIEW,
   ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE,
   ROUTE_DASHBOARD_GAME_OVERVIEW_FILES,
-  ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS,
+  ROUTE_DASHBOARD_GAME_OVERVIEW_GAME_PASS,
   ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS,
+  ROUTE_DASHBOARD_GAME_OVERVIEW_POST_GAME_PASS,
 } from '@config/routes'
 import { UserProfileData } from '@pages/user/[idUser].data'
 import { GameData } from '@pages/game/[idGame].data'
@@ -51,7 +52,9 @@ const PageDashboardGamesList = lazy(() => import('./pages/dashboard/games'))
 const PageDashboardGameOverview = lazy(() => import('./pages/dashboard/game/[idGame]/index'))
 const PageDashboardGameEditData = lazy(() => import('./pages/dashboard/game/[idGame]/edit'))
 const PageDashboardGameDownloadLinks = lazy(() => import('./pages/dashboard/game/[idGame]/files'))
-const PageDashboardGameSalesOffers = lazy(() => import('./pages/dashboard/game/[idGame]/offers'))
+const PageDashboardGameListGamePass = lazy(() => import('./pages/dashboard/game/[idGame]/game-pass'))
+const PageDashboardGameNewGamePass = lazy(() => import('./pages/dashboard/game/[idGame]/game-pass/new'))
+
 const PageDashboardGamePosts = lazy(() => import('./pages/dashboard/game/[idGame]/posts'))
 
 const PageGame = lazy(() => import('./pages/game/[idGame]/index'))
@@ -80,24 +83,21 @@ export const Router = () => {
       <Route path={ROUTE_CREATE_GAME} element={<PageCreateNewGame />} />
       <Route path={ROUTE_DASHBOARD} element={<PageDashboard />} />
       <Route path={ROUTE_DASHBOARD_LIST_GAMES} element={<PageDashboardGamesList />} />
-      
+
       <Route path={ROUTE_DASHBOARD_GAME_OVERVIEW_EDIT_DATA} data={GameData} element={<PageDashboardGameEditData />} />
       <Route path={ROUTE_DASHBOARD_GAME_OVERVIEW} data={GameData} element={<PageDashboardGameOverview />} />
+      <Route path={ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS} data={GameData} element={<PageDashboardGamePosts />} />
       <Route
-        path={ROUTE_DASHBOARD_GAME_OVERVIEW_POSTS}
+        path={ROUTE_DASHBOARD_GAME_OVERVIEW_GAME_PASS}
         data={GameData}
-        element={<PageDashboardGamePosts />}
+        element={<PageDashboardGameListGamePass />}
       />
       <Route
-        path={ROUTE_DASHBOARD_GAME_OVERVIEW_SALES_OFFERS}
+        path={ROUTE_DASHBOARD_GAME_OVERVIEW_POST_GAME_PASS}
+        element={<PageDashboardGameNewGamePass />}
         data={GameData}
-        element={<PageDashboardGameSalesOffers />}
       />
-      <Route
-        path={ROUTE_DASHBOARD_GAME_OVERVIEW_FILES}
-        data={GameData}
-        element={<PageDashboardGameDownloadLinks />}
-      />
+      <Route path={ROUTE_DASHBOARD_GAME_OVERVIEW_FILES} data={GameData} element={<PageDashboardGameDownloadLinks />} />
 
       <Route path={ROUTE_GAME} element={<PageGame />} data={GameData} />
 

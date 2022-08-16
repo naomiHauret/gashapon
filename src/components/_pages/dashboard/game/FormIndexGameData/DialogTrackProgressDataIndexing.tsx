@@ -1,7 +1,10 @@
 import { Button } from '@components/Button'
+import button from '@components/Button/button'
 import Callout from '@components/Callout'
 import DialogTrackProgress from '@components/DialogTrackProgress'
 import { IconCircleSolidCheck, IconErrorCircleOutline, IconSpinner } from '@components/Icons'
+import { ROUTE_DASHBOARD_LIST_GAMES } from '@config/routes'
+import { Link } from 'solid-app-router'
 import { Match, Show, Switch } from 'solid-js'
 
 export const DialogTrackProgressDataIndexing = (props) => {
@@ -179,9 +182,14 @@ export const DialogTrackProgressDataIndexing = (props) => {
         <Button {...props.api().closeButtonProps}>Close</Button>
       </Show>
       <Show when={props.stateIndexGameData.isError || props.stateIndexGameData.isSuccess}>
-        <Button class="mt-6" {...props.api().closeButtonProps}>
-          Go back
-        </Button>
+        <div class="mt-6 flex flex-col space-y-4 xs:space-y-0 xs:flex-row xs:space-i-4">
+          <Link href={ROUTE_DASHBOARD_LIST_GAMES} class={button({ class: 'w-full xs:w-auto' })}>
+            Go to created games list
+          </Link>
+          <Button intent="neutral--revert" class="w-full xs:w-auto" {...props.api().closeButtonProps}>
+            Go back
+          </Button>
+        </div>
       </Show>
     </DialogTrackProgress>
   )

@@ -264,7 +264,7 @@ export function useIndexGameData(options) {
     stateIndexGameData.setIsLoading(true)
     stateIndexGameData.setError(null, false)
     apiDialogModalTrackProgress().open()
-    const uuid = options?.reference ?? uuidv4()
+    const uuid = options?.reference ?? uuidv4().replace('-', '')
     try {
       await login()
       // If thumbnail changed
@@ -283,24 +283,17 @@ export function useIndexGameData(options) {
         // Upload it to skynet
         await uploadGameMedias()
       }
-      const thumbnailMetadata = fileGameThumbnail()
-        ? //@ts-ignore
-          fileGameThumbnail()?.type
-        : await getFileMetadata(gameThumbnailSrc())
+
       const gameMetadata = {
         appId: LENS_PUBLICATIONS_APP_ID_GAMES_STORE,
         description: `${values.title} - Digital Gashapon Game Caspule`,
         content: `${values.title} is a game distributed on Gashapon.`,
         name: `${values.title} - Game info`,
         image: gameThumbnailSrc(),
-        //@ts-ignore
-        imageMimeType: thumbnailMetadata,
+        mainContentFocus: 'ARTICLE',
+        tags: ['gameInfo', 'gashapon', uuid],
+        locale: 'en-US',
         attributes: [
-          {
-            displayType: 'string',
-            value: 'game-info',
-            traitType: 'type',
-          },
           {
             displayType: 'string',
             value: uuid,
@@ -463,7 +456,7 @@ export function useIndexGameData(options) {
             traitType: 'recommendedSystemRequirementsAdditionalNotes',
           },
         ],
-        version: '1.0.0',
+        version: '2.0.0',
         metadata_id: uuid,
       }
 
@@ -533,18 +526,23 @@ export function useIndexGameData(options) {
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
         setShowWaitMessage(false)
+        setCanStartCountdown(false)
+        stateIndexGameData.setIsLoading(false)
         stateIndexGameData.setIsSuccess(true)
         stateIndexGameData.setData(result.data)
         //@ts-ignore
-
-        toast().create({
-          type: 'success',
-          title: `Your game was created successfully!`,
-        })
+        !apiDialogModalTrackProgress()?.isOpen &&
+          toast().create({
+            type: 'success',
+            title: `Your game was created successfully!`,
+          })
       } else {
         stateIndexGameData.setError(result.error.message, true)
         stateIndexGameData.setIsLoading(false)
         stateIndexGameData.setIsSuccess(false)
+        setShowWaitMessage(false)
+        setCanStartCountdown(false)
+
         //@ts-ignore
         toast().create({
           type: 'error',
@@ -553,20 +551,26 @@ export function useIndexGameData(options) {
       }
     } catch (e) {
       console.error(e)
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
       stateIndexGameData.setError(e?.message ?? e, true)
       stateIndexGameData.setIsLoading(false)
       stateIndexGameData.setIsSuccess(false)
       //@ts-ignore
-      toast().create({
-        type: 'error',
-        title: `Something went wrong and we couldn't create your game: ${e?.message ?? e}`,
-      })
+      !apiDialogModalTrackProgress()?.isOpen &&
+        toast().create({
+          type: 'error',
+          title: `Something went wrong and we couldn't create your game: ${e?.message ?? e}`,
+        })
       console.error(e)
     }
   }
 
   createEffect(() => {
     if (!apiDialogModalTrackProgress().isOpen) {
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
+
       stateUploadNewGameData.setIsLoading(false)
       stateUploadNewGameData.setIsSuccess(false)
       stateUploadNewGameData.setError(null, false)

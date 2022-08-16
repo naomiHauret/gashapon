@@ -110,6 +110,7 @@ const GET_PUBLICATIONS = `
   }
   fragment MetadataOutputFields on MetadataOutput {
     name
+    tags
     description
     content
     media {

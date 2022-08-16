@@ -55,6 +55,7 @@ export function useDeleteAccount() {
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
         setShowWaitMessage(false)
+        setCanStartCountdown(false)
         stateDeleteAccount.setIsSuccess(true)
         stateDeleteAccount.setData(deletedResult.data)
         //@ts-ignore
@@ -63,6 +64,9 @@ export function useDeleteAccount() {
           title: `${accountToDeleteHandle} was deleted successfully!`,
         })
       } else {
+        setShowWaitMessage(false)
+        setCanStartCountdown(false)
+
         stateDeleteAccount.setError(deletedResult.error.message, true)
         //@ts-ignore
         toast().create({
@@ -73,6 +77,9 @@ export function useDeleteAccount() {
       }
       stateDeleteAccount.setIsLoading(false)
     } catch (e) {
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
+
       stateDeleteAccount.setError(e?.message ?? e, true)
       stateDeleteAccount.setIsLoading(false)
       stateDeleteAccount.setIsSuccess(false)

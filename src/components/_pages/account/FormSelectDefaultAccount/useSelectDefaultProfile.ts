@@ -63,6 +63,7 @@ export function useSelectDefaultProfile() {
         setCanStartCountdown(true)
         await pollUntilIndexed(tx.hash)
         setShowWaitMessage(false)
+        setCanStartCountdown(false)
         stateSetDefaultProfile.setIsSuccess(true)
         stateSetDefaultProfile.setData(newDefaultProfile.data)
         //@ts-ignore
@@ -71,6 +72,9 @@ export function useSelectDefaultProfile() {
           title: `Your new default profile was set successfully!`,
         })
       } else {
+        setShowWaitMessage(false)
+        setCanStartCountdown(false)
+
         stateSetDefaultProfile.setError(newDefaultProfile.error.message, true)
         //@ts-ignore
         toast().create({
@@ -80,6 +84,9 @@ export function useSelectDefaultProfile() {
       }
       stateSetDefaultProfile.setIsLoading(false)
     } catch (e) {
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
+
       stateSetDefaultProfile.setError(e?.message ?? e, true)
       stateSetDefaultProfile.setIsLoading(false)
       stateSetDefaultProfile.setIsSuccess(false)

@@ -18,6 +18,10 @@ export const FormSelect = (props) => {
         {props.children}
       </select>
       <div
+        classList={{
+          [styles['indicator--default']]: !props.scale || props.scale === 'default',
+          [styles['indicator--sm']]: props.scale === 'sm',
+        }}
         class={`${styles.indicator} absolute inline-end-0 top-0 aspect-square rounded-ie-md h-full z-10 pointer-events-none bg-white bg-opacity-5 border-is border-white border-opacity-10`}
       />
     </div>

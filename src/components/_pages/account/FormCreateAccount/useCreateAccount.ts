@@ -35,6 +35,7 @@ export function useCreateAccount() {
         setCanStartCountdown(true)
         await pollUntilIndexed(claimedProfile.data.createProfile.txHash)
         setShowWaitMessage(false)
+        setCanStartCountdown(false)
         stateCreateAccount.setIsSuccess(true)
         stateCreateAccount.setData(claimedProfile.data)
         //@ts-ignore
@@ -43,6 +44,8 @@ export function useCreateAccount() {
           title: `${handle}.lens was claimed successfully!`,
         })
       } else {
+        setShowWaitMessage(false)
+        setCanStartCountdown(false)
         console.error(claimedProfile.error)
         stateCreateAccount.setError(claimedProfile.error.message, true)
         //@ts-ignore
@@ -53,6 +56,9 @@ export function useCreateAccount() {
       }
       stateCreateAccount.setIsLoading(false)
     } catch (e) {
+      setShowWaitMessage(false)
+      setCanStartCountdown(false)
+
       stateCreateAccount.setError(e?.message ?? e, true)
       stateCreateAccount.setIsLoading(false)
       stateCreateAccount.setIsSuccess(false)
