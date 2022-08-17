@@ -47,7 +47,7 @@ export default function Page() {
               </div>
             </Match>
             <Match when={data?.game()?.data && data?.game()?.data?.publication?.profile?.id !== userId()}>
-              <div class="animate-appear">
+              <div class="container mx-auto animate-appear flex flex-col justify-start items-start xs:items-center xs:justify-center">
                 <h2 class="text-2xl text-white font-bold flex items-center">
                   <IconLock class="mie-1ex" /> Access restricted
                 </h2>

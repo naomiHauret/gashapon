@@ -7,6 +7,7 @@ import { Link } from 'solid-app-router'
 import Breadcrumbs from '@components/Breadcrumbs'
 import { IconLock } from '@components/Icons'
 import useVerifyUser from '@hooks/useVerifyUser'
+import button from '@components/Button/button'
 
 export default function Page() {
   //@ts-ignore
@@ -51,7 +52,35 @@ export default function Page() {
           </Show>
 
           <Show when={userId() && walletVerifiedState?.connected && walletVerifiedState?.verified}>
-            <Link href={ROUTE_DASHBOARD_LIST_GAMES}>Games</Link>
+            <div class="animate-appear flex flex-col pt-8 space-y-12 sm:max-w-3/4">
+              <div class="flex items-baseline flex-col">
+                <Link class="text-xl font-bold" href={ROUTE_DASHBOARD_LIST_GAMES}>
+                  Games{' '}
+                </Link>
+                <p class="mt-2 mb-4 text-neutral-400 text-sm font-medium">
+                  Manage the games you created on Gashapon - post udpates, create game pass, upload your game files and
+                  track your earnings.
+                </p>
+                <Link
+                  class={button({ intent: 'neutral--revert', scale: 'xs', aspect: 'outline-sm' })}
+                  href={ROUTE_DASHBOARD_LIST_GAMES}
+                >
+                  View games dashboard{' '}
+                </Link>
+              </div>
+              <div class="flex items-baseline flex-col">
+                <Link class="text-xl font-bold" href={ROUTE_DASHBOARD_LIST_GAMES}>
+                  Posts{' '}
+                </Link>
+                <p class="mt-2 mb-4 text-neutral-400 text-sm font-medium">Manage the posts related to your profile.</p>
+                <Link
+                  class={button({ intent: 'neutral--revert', scale: 'xs', aspect: 'outline-sm' })}
+                  href={ROUTE_DASHBOARD_LIST_GAMES}
+                >
+                  View posts dashboard{' '}
+                </Link>
+              </div>
+            </div>
           </Show>
         </Suspense>
       </main>

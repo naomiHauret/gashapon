@@ -54,7 +54,7 @@ export default function Page() {
               </div>
             </Match>
             <Match when={data?.game()?.data && data?.game()?.data?.publication?.profile?.id !== userId()}>
-              <div class="animate-appear">
+              <div class="container mx-auto animate-appear flex flex-col justify-start items-start xs:items-center xs:justify-center">
                 <h2 class="text-2xl text-white font-bold flex items-center">
                   <IconLock class="mie-1ex" /> Access restricted
                 </h2>
@@ -94,7 +94,8 @@ export default function Page() {
                 gameAttributes={data?.game()?.data?.publication?.metadata?.attributes}
               >
                 <div class="container animate-appear mx-auto">
-                  <h2>Overview</h2>
+                  <h2 class="font-bold mb-3 text-lg">Overview</h2>
+                  <p>Create game pass offers, post updates and upload game files.</p>
                 </div>
 
                 {apiDialogModalDeletePublication().isOpen && (

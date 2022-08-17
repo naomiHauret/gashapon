@@ -3,6 +3,7 @@ import { createEffect, createSignal, Match, Show, Suspense, Switch } from 'solid
 import { Title } from 'solid-meta'
 import useDefaultProfile from '@hooks/useCurrentUserDefaultProfile'
 import { IconLock } from '@components/Icons'
+import FormUploadGameFiles from '@components/_pages/dashboard/game/FormUploadGameFiles'
 import DashboardGameLayout from '@layouts/DashboardGame'
 import { ROUTE_DASHBOARD_GAME_OVERVIEW_POST_UPDATE } from '@config/routes'
 import useVerifyUser from '@hooks/useVerifyUser'
@@ -47,7 +48,7 @@ export default function Page() {
               </div>
             </Match>
             <Match when={data?.game()?.data && data?.game()?.data?.publication?.profile?.id !== userId()}>
-              <div class="animate-appear">
+              <div class="container mx-auto animate-appear flex flex-col justify-start items-start xs:items-center xs:justify-center">
                 <h2 class="text-2xl text-white font-bold flex items-center">
                   <IconLock class="mie-1ex" /> Access restricted
                 </h2>
@@ -74,7 +75,23 @@ export default function Page() {
                 gameAttributes={data?.game()?.data?.publication?.metadata?.attributes}
               >
                 <div class="container animate-appear mx-auto">
-                  <h2>Files</h2>
+                  <h2 class="font-bold mb-3 text-lg">Manage game files</h2>
+                  <h3 class="font-bold mb-3 text-sm italic text-brand-yellow">
+                    How does uploading game files work on Gashapon ?
+                  </h3>
+
+                  <p class="text-neutral-300 italic mb-8">
+                    First, you need to make sure you created at least one &nbsp;
+                    <span class="font-bold">game pass</span> for your game. <br />
+                    Game pass are like a key that will grant downloading privileges of your game to the people that
+                    bought its game pass.
+                  </p>
+                  <p class="text-neutral-300 italic mb-8">
+                    To ensure that can access your game files location without owning a game pass, Gashapon uses{' '}
+                    <span class="font-bold">Lit Protocol</span> to encrypt and decrypt the link to your game files.
+                  </p>
+
+                  <FormUploadGameFiles />
                 </div>
               </DashboardGameLayout>
             </Match>

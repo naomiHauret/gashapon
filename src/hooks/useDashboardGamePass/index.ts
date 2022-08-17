@@ -24,9 +24,10 @@ async function fetchGamePassList(resource) {
 export function useDashboardGamePass() {
   //@ts-ignore
   const { stateFetchDefaultProfile } = useDefaultProfile()
+  //@ts-ignore
+  const { walletVerifiedState } = useVerifyUser()
   const [resource, setResource] = createSignal({ idUser: stateFetchDefaultProfile?.data?.id, timestamp: new Date() })
   const [gamePassList] = createResource(resource, fetchGamePassList)
-  const { walletVerifiedState } = useVerifyUser()
 
   createEffect(() => {
     // Refetch user games when profile ID changes
@@ -42,7 +43,6 @@ export function useDashboardGamePass() {
   }
 
   return {
-    resource,
     refreshData,
     gamePassList,
   }

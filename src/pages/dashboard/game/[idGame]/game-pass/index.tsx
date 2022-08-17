@@ -55,7 +55,7 @@ export default function Page() {
                 data?.game()?.data?.publication?.profile?.id !== stateFetchDefaultProfile?.data?.id
               }
             >
-              <div class="animate-appear">
+              <div class="container mx-auto animate-appear flex flex-col justify-start items-start xs:items-center xs:justify-center">
                 <h2 class="text-2xl text-white font-bold flex items-center">
                   <IconLock class="mie-1ex" /> Access restricted
                 </h2>
@@ -94,20 +94,23 @@ export default function Page() {
                   },
                 ]}
               >
-                <h2 class="font-bold mb-3 text-lg">Game pass overview</h2>
-                <h3 class="font-bold mb-3 text-sm italic text-brand-yellow">What's a game pass ?</h3>
+                <div class="animate-appear">
+                  <h2 class="font-bold mb-3 text-lg">Game pass overview</h2>
+                  <h3 class="font-bold mb-3 text-sm italic text-brand-yellow">What's a game pass ?</h3>
 
-                <p class="text-neutral-300 italic mb-8">
-                  A game pass is a mix between{' '}
-                  <span class="font-bold">a key to access your game files and a price tag</span>. <br /> People who
-                  purchase a game pass gain access to the game files associated to it.
-                </p>
-                <p class="text-neutral-300 italic mb-8">
-                  You can of course define the price and currency in your game pass, but also define who can purchase
-                  it, the maximum amount of copies to grab, a date until the offer expires, and even a royalty fee if a
-                  buyer decides to sell their game pass.
-                </p>
-                <p class="text-neutral-300 italic mb-8">You can create several game pass for the same game.</p>
+                  <p class="text-neutral-300 italic mb-8">
+                    A game pass is a mix between{' '}
+                    <span class="font-bold">a key to access your game files and a price tag</span>. <br /> People who
+                    purchase a game pass gain access to the game files associated to it.
+                  </p>
+                  <p class="text-neutral-300 italic mb-8">
+                    You can of course define the price and currency in your game pass, but also define who can purchase
+                    it, the maximum amount of copies to grab, a date until the offer expires, and even a royalty fee if
+                    a buyer decides to sell their game pass.
+                  </p>
+
+                  <p class="text-neutral-300 italic mb-8">You can create several game pass for the same game.</p>
+                </div>
                 <div class="flex flex-col">
                   <Show when={gamePassList()?.data?.publications || gamePassList()?.error}>
                     <Button
